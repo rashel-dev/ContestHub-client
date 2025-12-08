@@ -1,20 +1,21 @@
-import React from 'react';
-import Logo from '../ui/Logo';
-import { Link } from 'react-router';
+import React from "react";
+import Logo from "../ui/Logo";
+import { Link } from "react-router";
 
 const Navbar = () => {
-
-    const menuItems = <>
-        <li>
-            <Link to="/">Home</Link>
-        </li>
-        <li>
-            <Link to="/contest">Contest</Link>
-        </li>
-        <li>
-            <Link to="/about">About</Link>
-        </li>
-    </>
+    const menuItems = (
+        <>
+            <li>
+                <Link to="/">Home</Link>
+            </li>
+            <li>
+                <Link to="/contest">Contest</Link>
+            </li>
+            <li>
+                <Link to="/about">About</Link>
+            </li>
+        </>
+    );
 
     return (
         <div className="navbar bg-base-100 shadow-sm px-4">
@@ -27,15 +28,15 @@ const Navbar = () => {
                         </svg>
                     </div>
                     <ul tabIndex="-1" className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                       {menuItems}
+                        {menuItems}
                     </ul>
                 </div>
-                <Link to="/" className="text-xl"><Logo /></Link>
+                <Link to="/" className="text-xl">
+                    <Logo />
+                </Link>
             </div>
             <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                    {menuItems}
-                </ul>
+                <ul className="menu menu-horizontal px-1">{menuItems}</ul>
             </div>
             <div className="navbar-end">
                 <a className="btn">Login</a>
