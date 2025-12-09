@@ -134,7 +134,7 @@ const Navbar = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-primary hover:bg-gray-100 transition-colors">
+                                    <button onClick={handleLogout} className="w-full text-left font-bold px-4 py-2 text-primary hover:bg-gray-100 transition-colors">
                                         Logout
                                     </button>
                                 </li>
@@ -142,7 +142,7 @@ const Navbar = () => {
                         </div>
                     </div>
                 ) : (
-                    <Link to="/login" className="btn btn-sm sm:btn-md bg-primary text-white">
+                    <Link to="/login" className="btn btn-sm sm:btn-md bg-primary hover:bg-primary/90 text-white">
                         Login
                     </Link>
                 )}
