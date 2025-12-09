@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaImage, FaTrophy, FaArrowRight, FaGoogle } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight } from "react-icons/fa";
 import logoImg from "../../assets/logo.PNG";
 import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import { FcGoogle } from "react-icons/fc";
 import SocialLogin from "../../Components/ui/SocialLogin";
 import useAuth from "../../Hooks/useAuth";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const navigate = useNavigate();
-    const { registerUser } = useAuth();
+    const { registerUser, updateUserProfile } = useAuth();
 
     const {
         register,
@@ -22,11 +22,38 @@ export default function RegisterPage() {
 
     const handleRegistration = (data) => {
         const { email, password } = data;
+
         registerUser(email, password)
             .then((result) => {
-                console.log(result.user);
-                toast.success("Account created successfully");
-                navigate("/");
+                console.log(result);
+
+                //1. get the photo file by react hook form
+                const profileImage = data.photo[0];
+
+                //2. prepare form data for uploading image to imgbb
+                const formData = new FormData();
+                formData.append("image", profileImage);
+
+                //3. upload image to imgbb server
+                axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOST_KEY}`, formData).then((res) => {
+                    console.log(res.data);                    
+
+                    //4. update user profile with name and photoURL
+                    const userProfile = {
+                        displayName: data.name,
+                        photoURL: res.data.data.url,
+                    };
+                    updateUserProfile(userProfile)
+                    .then(() => {
+                        toast.success("Account created successfully");
+                        navigate("/");
+                    })
+                    .catch((error) => {
+                        // console.log(error);
+                        toast.error(error.message);
+                    })
+                });
+
             })
             .catch((error) => {
                 if (error.code === "auth/email-already-in-use") {
@@ -36,7 +63,7 @@ export default function RegisterPage() {
                 }
             });
     };
-        
+
     return (
         <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
             {/* Animated Stained Glass Background */}
@@ -105,7 +132,7 @@ export default function RegisterPage() {
                                     <input
                                         type="text"
                                         {...register("name", { required: true })}
-                                        className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
+                                        className="w-full text-accent pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
                                         placeholder="John Doe"
                                     />
                                 </div>
@@ -117,18 +144,10 @@ export default function RegisterPage() {
                             {/* Photo URL Field */}
                             <div className="relative group">
                                 <label htmlFor="photoURL" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Photo URL
+                                    Photo
                                 </label>
                                 <div className="relative h-12 flex items-center">
-                                    <div className="absolute left-3 text-gray-400">
-                                        <FaImage className="text-gray-400 group-focus-within:text-purple-500 transition-colors" />
-                                    </div>
-                                    <input
-                                        type="url"
-                                        {...register("photoURL", { required: true })}
-                                        className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
-                                        placeholder="https://example.com/photo.jpg"
-                                    />
+                                    <input type="file" {...register("photo", { required: true })} className="file-input file-input-primary bg-accent w-full" />
                                 </div>
                                 {errors.photoURL?.type === "required" && <p className="text-red-500">Photo is required.</p>}
                             </div>
@@ -145,7 +164,7 @@ export default function RegisterPage() {
                                     <input
                                         type="email"
                                         {...register("email", { required: true })}
-                                        className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
+                                        className="block text-accent w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
                                         placeholder="you@example.com"
                                     />
                                 </div>
@@ -164,7 +183,7 @@ export default function RegisterPage() {
                                     <input
                                         type={showPassword ? "text" : "password"}
                                         {...register("password", { required: true, minLength: 6, pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/ })}
-                                        className="block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
+                                        className="block text-accent w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
                                         placeholder="••••••••"
                                     />
                                     <button
