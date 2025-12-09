@@ -38,7 +38,7 @@ export default function RegisterPage() {
                 axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOST_KEY}`, formData).then((res) => {
                     console.log(res.data);                    
 
-                    //4. update user profile with name and photoURL
+                    //4. update user profile with name and photoURL to firebase
                     const userProfile = {
                         displayName: data.name,
                         photoURL: res.data.data.url,

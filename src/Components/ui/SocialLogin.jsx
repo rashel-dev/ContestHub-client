@@ -27,6 +27,9 @@ const SocialLogin = ({ page }) => {
             })
             .catch((error) => {
                 console.error(error);
+                if(error.code === "auth/popup-closed-by-user"){
+                    return;
+                }
                 toast.error("Failed to login with Google", {
                     position: "top-right",
                     autoClose: 5000,

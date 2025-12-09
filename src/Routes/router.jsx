@@ -6,6 +6,7 @@ import AboutUs from "../Pages/AboutUs/Aboutus";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
 import AuthLayout from "../Layout/AuthLayout";
+import Error from "../Pages/Error/Error";
 
 const router = createBrowserRouter([
     {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
             },
         ],
     },
+    {
+        path: "*",
+        element: <Error></Error>
+    }
 ]);
 
 export default router;
