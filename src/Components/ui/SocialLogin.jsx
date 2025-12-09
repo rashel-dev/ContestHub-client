@@ -27,6 +27,14 @@ const SocialLogin = ({ page }) => {
             })
             .catch((error) => {
                 console.error(error);
+                toast.error("Failed to login with Google",{
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    theme: "light",
+                    transition: Bounce,
+                })
             });
     };
 

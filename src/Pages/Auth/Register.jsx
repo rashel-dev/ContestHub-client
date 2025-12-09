@@ -5,10 +5,14 @@ import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import SocialLogin from "../../Components/ui/SocialLogin";
+import useAuth from "../../Hooks/useAuth";
+import { toast } from "react-toastify";
 
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+
+    const { registerUser } = useAuth();
 
     const {
         register,
@@ -16,8 +20,22 @@ export default function RegisterPage() {
         formState: { errors },
     } = useForm();
 
-    const handleRegistration = () => {};
-
+    const handleRegistration = (data) => {
+        const { email, password } = data;
+        registerUser(email, password)
+            .then((result) => {
+                console.log(result.user);
+                toast.success("Account created successfully");
+            })
+            .catch((error) => {
+                if (error.code === "auth/email-already-in-use") {
+                    toast.error("User already exists with this email. Please try another email!");
+                } else {
+                    toast.error(error.message);
+                }
+            });
+    };
+        
     return (
         <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
             {/* Animated Stained Glass Background */}

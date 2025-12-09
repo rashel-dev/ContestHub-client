@@ -3,19 +3,46 @@ import { MdMail } from "react-icons/md";
 import { CiLock } from "react-icons/ci";
 import { FaArrowRight, FaEye, FaEyeSlash } from "react-icons/fa";
 import logoImg from "../../assets/logo.PNG";
-import { Link } from "react-router";
-import { FcGoogle } from "react-icons/fc";
+import { Link, useNavigate } from "react-router";
 import SocialLogin from "../../Components/ui/SocialLogin";
+import { useForm } from "react-hook-form";
+import useAuth from "../../Hooks/useAuth";
+import { toast } from "react-toastify";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+    const navigate = useNavigate();
+    const { signInUser } = useAuth();
 
-    const handleSubmit = () => {
-        console.log("Login:", { email, password });
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+
+    const handleSignIn = (data) => {
+        const { email, password } = data;
+        signInUser(email, password)
+            .then((result) => {
+                console.log(result.user);
+                toast.success("Login successfully");
+                navigate("/");
+            })
+            .catch((error) => {
+                console.error(error);
+                if (error.code === "auth/invalid-credential") {
+                    toast.error("Invalid credentials. Please check your email and password.");
+                }
+                else if (error.code === "auth/user-not-found") {
+                    toast.error("User not found with this email");
+                }else {
+                    toast.error("Login failed. Please try again");
+                }
+            });
     };
+
+
 
     return (
         <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
@@ -69,7 +96,7 @@ const Login = () => {
                         </div>
 
                         {/* Login Form */}
-                        <div className="space-y-5">
+                        <form onSubmit={handleSubmit(handleSignIn)} className="space-y-5">
                             {/* Email Field */}
                             <div className="relative group">
                                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
@@ -80,14 +107,13 @@ const Login = () => {
                                         <MdMail className="h-5 w-5 text-gray-400 group-focus-within:text-purple-500 transition-colors" />
                                     </div>
                                     <input
-                                        id="email"
                                         type="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        {...register("email", { required: true })}
                                         className="block text-black w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
                                         placeholder="you@example.com"
                                     />
                                 </div>
+                                {errors.email && <p className="text-red-500 mt-2">Email is required</p>}
                             </div>
 
                             {/* Password Field */}
@@ -100,10 +126,8 @@ const Login = () => {
                                         <CiLock className="h-5 w-5 text-gray-400 group-focus-within:text-purple-500 transition-colors" />
                                     </div>
                                     <input
-                                        id="password"
                                         type={showPassword ? "text" : "password"}
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        {...register("password", { required: true })}
                                         className="block text-black w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
                                         placeholder="••••••••"
                                     />
@@ -115,6 +139,7 @@ const Login = () => {
                                         {showPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}
                                     </button>
                                 </div>
+                                {errors.password && <p className="text-red-500 mt-2">Password is required</p>}
                             </div>
 
                             {/* Remember Me & Forgot Password */}
@@ -130,13 +155,12 @@ const Login = () => {
 
                             {/* Submit Button */}
                             <button
-                                onClick={handleSubmit}
                                 className="w-full bg-linear-to-r from-purple-600 to-cyan-600 text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group cursor-pointer"
                             >
                                 <span>Sign In</span>
                                 <FaArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </button>
-                        </div>
+                        </form>
 
                         {/* Divider */}
                         <div className="relative my-6">
