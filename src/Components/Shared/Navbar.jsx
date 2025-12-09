@@ -91,7 +91,7 @@ const Navbar = () => {
                 </button>
 
                 <img src={userLogo} alt="user-image" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-secondary sm:mr-2" />
-                <a className="btn btn-sm sm:btn-md hidden sm:inline-flex bg-primary text-white">Login</a>
+                <Link to="/login" className="btn btn-sm sm:btn-md hidden sm:inline-flex bg-primary text-white">Login</Link>
             </div>
         </div>
     );
