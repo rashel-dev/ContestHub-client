@@ -1,31 +1,42 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import useAuth from "../../Hooks/useAuth";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SocialLogin = ({ page }) => {
     const { signInWithGoogle } = useAuth();
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const handleGoogleSignIn = () => {
         signInWithGoogle()
-        .then((result) => {
-            // console.log(result.user);
-            const user = result.user;
-            console.log(user);
-            navigate("/");
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+            .then((result) => {
+                const user = result.user;
+                console.log(user);
+                toast.success("Login Successfully", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    theme: "light",
+                    transition: Bounce,
+                });
+                // navigate("/");
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     return (
-        <button onClick={handleGoogleSignIn} className="btn bg-white text-black border-[#e5e5e5] w-full">
-            <FcGoogle />
-            {page === "login" ? "Login with Google" : "Register with Google"}
-        </button>
+        <>
+            <button onClick={handleGoogleSignIn} className="btn bg-white text-black border-[#e5e5e5] w-full">
+                <FcGoogle />
+                {page === "login" ? "Login with Google" : "Register with Google"}
+            </button>
+        </>
     );
 };
 
