@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Logo from "../ui/Logo";
 import { Link, NavLink } from "react-router";
 import userLogo from "../../assets/user-logo.png";
 import { FaMoon, FaSun } from "react-icons/fa";
+import useAuth from "../../Hooks/useAuth";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
     // Initialize state from localStorage directly
@@ -22,6 +24,30 @@ const Navbar = () => {
         const newTheme = !darkMode;
         setDarkMode(newTheme);
         localStorage.setItem("theme", newTheme ? "dark" : "light");
+    };
+
+    const { user, logOut } = useAuth();
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef();
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setDropdownOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    const handleLogout = () => {
+        logOut()
+            .then(() => {
+                toast.success("Logged out successfully");
+            })
+            .catch((err) => console.error(err));
+        setDropdownOpen(false);
     };
 
     const menuItems = (
@@ -53,11 +79,6 @@ const Navbar = () => {
 
                     <ul tabIndex="-1" className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow space-y-2">
                         {menuItems}
-                        <li>
-                            <Link to="/login" className="btn btn-primary">
-                                Login
-                            </Link>
-                        </li>
                     </ul>
                 </div>
                 <Link to="/" className="text-xl">
@@ -90,8 +111,41 @@ const Navbar = () => {
                     </div>
                 </button>
 
-                <img src={userLogo} alt="user-image" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-secondary sm:mr-2" />
-                <Link to="/login" className="btn btn-sm sm:btn-md hidden sm:inline-flex bg-primary text-white">Login</Link>
+                {/* User Profile / Login */}
+                {user ? (
+                    <div className="relative" ref={dropdownRef}>
+                        <img
+                            src={user.photoURL ? user.photoURL : userLogo}
+                            alt="user"
+                            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-secondary cursor-pointer"
+                            onClick={() => setDropdownOpen(!dropdownOpen)}
+                        />
+                        {/* Dropdown menu */}
+                        <div
+                            className={`absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 transform origin-top-right ${
+                                dropdownOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
+                            }`}
+                        >
+                            <div className="p-3 border-b text-gray-700 font-semibold"> Hi! {user.displayName || "User"}</div>
+                            <ul className="flex flex-col">
+                                <li>
+                                    <Link to="/dashboard" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors" onClick={() => setDropdownOpen(false)}>
+                                        Dashboard
+                                    </Link>
+                                </li>
+                                <li>
+                                    <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-primary hover:bg-gray-100 transition-colors">
+                                        Logout
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                ) : (
+                    <Link to="/login" className="btn btn-sm sm:btn-md bg-primary text-white">
+                        Login
+                    </Link>
+                )}
             </div>
         </div>
     );

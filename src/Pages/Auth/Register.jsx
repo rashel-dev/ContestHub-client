@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaImage, FaTrophy, FaArrowRight, FaGoogle } from "react-icons/fa";
 import logoImg from "../../assets/logo.PNG";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import SocialLogin from "../../Components/ui/SocialLogin";
@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
-
+    const navigate = useNavigate();
     const { registerUser } = useAuth();
 
     const {
@@ -26,6 +26,7 @@ export default function RegisterPage() {
             .then((result) => {
                 console.log(result.user);
                 toast.success("Account created successfully");
+                navigate("/");
             })
             .catch((error) => {
                 if (error.code === "auth/email-already-in-use") {
