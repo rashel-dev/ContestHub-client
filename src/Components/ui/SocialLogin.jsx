@@ -1,9 +1,24 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
+import useAuth from "../../Hooks/useAuth";
+import { useNavigate } from "react-router";
 
 const SocialLogin = ({ page }) => {
+    const { signInWithGoogle } = useAuth();
+
+    const navigate = useNavigate();
+
     const handleGoogleSignIn = () => {
-        console.log("Google Sign-In");
+        signInWithGoogle()
+        .then((result) => {
+            // console.log(result.user);
+            const user = result.user;
+            console.log(user);
+            navigate("/");
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     };
 
     return (
