@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaImage, FaTrophy, FaArrowRight, FaGoogle } from "react-icons/fa";
 import logoImg from "../../assets/logo.PNG";
+import { Link } from "react-router";
+import { useForm } from "react-hook-form";
+import { FcGoogle } from "react-icons/fc";
+import SocialLogin from "../../Components/ui/SocialLogin";
 
 export default function RegisterPage() {
-    const [name, setName] = useState("");
-    const [photoURL, setPhotoURL] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
 
-    const handleSubmit = () => {
-        console.log("Register:", { name, photoURL, email, password });
-    };
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+
+    const handleRegistration = () => {};
 
     return (
         <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
@@ -67,25 +71,28 @@ export default function RegisterPage() {
                         </div>
 
                         {/* Register Form */}
-                        <div className="space-y-4">
+                        <form onSubmit={handleSubmit(handleRegistration)} className="space-y-4">
                             {/* Name Field */}
                             <div className="relative group">
                                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                                     Full Name
                                 </label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+
+                                <div className="relative h-12 flex items-center">
+                                    <div className="absolute left-3 text-gray-400">
                                         <FaUser className="text-gray-400 group-focus-within:text-purple-500 transition-colors" />
                                     </div>
+
                                     <input
-                                        id="name"
                                         type="text"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
+                                        {...register("name", { required: true })}
+                                        className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
                                         placeholder="John Doe"
                                     />
                                 </div>
+
+                                {/* ERROR message stays OUTSIDE — no effect on height */}
+                                {errors.name && <p className="text-red-500 text-sm mt-1">Name is required.</p>}
                             </div>
 
                             {/* Photo URL Field */}
@@ -93,19 +100,18 @@ export default function RegisterPage() {
                                 <label htmlFor="photoURL" className="block text-sm font-medium text-gray-700 mb-2">
                                     Photo URL
                                 </label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <div className="relative h-12 flex items-center">
+                                    <div className="absolute left-3 text-gray-400">
                                         <FaImage className="text-gray-400 group-focus-within:text-purple-500 transition-colors" />
                                     </div>
                                     <input
-                                        id="photoURL"
                                         type="url"
-                                        value={photoURL}
-                                        onChange={(e) => setPhotoURL(e.target.value)}
-                                        className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
+                                        {...register("photoURL", { required: true })}
+                                        className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
                                         placeholder="https://example.com/photo.jpg"
                                     />
                                 </div>
+                                {errors.photoURL?.type === "required" && <p className="text-red-500">Photo is required.</p>}
                             </div>
 
                             {/* Email Field */}
@@ -113,19 +119,18 @@ export default function RegisterPage() {
                                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                                     Email Address
                                 </label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <div className="relative h-12 flex items-center">
+                                    <div className="absolute left-3 text-gray-400">
                                         <FaEnvelope className="text-gray-400 group-focus-within:text-purple-500 transition-colors" />
                                     </div>
                                     <input
-                                        id="email"
                                         type="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        {...register("email", { required: true })}
                                         className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
                                         placeholder="you@example.com"
                                     />
                                 </div>
+                                {errors.email?.type === "required" && <p className="text-red-500">Email is required.</p>}
                             </div>
 
                             {/* Password Field */}
@@ -133,15 +138,13 @@ export default function RegisterPage() {
                                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                                     Password
                                 </label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <div className="relative h-12 flex items-center">
+                                    <div className="absolute left-3 text-gray-400">
                                         <FaLock className="text-gray-400 group-focus-within:text-purple-500 transition-colors" />
                                     </div>
                                     <input
-                                        id="password"
                                         type={showPassword ? "text" : "password"}
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        {...register("password", { required: true, minLength: 6, pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/ })}
                                         className="block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
                                         placeholder="••••••••"
                                     />
@@ -153,15 +156,21 @@ export default function RegisterPage() {
                                         {showPassword ? <FaEyeSlash /> : <FaEye />}
                                     </button>
                                 </div>
+                                {/* password validation error message*/}
+                                {errors.password?.type === "required" && <p className="text-red-500">Password is required.</p>}
+                                {errors.password?.type === "minLength" && <p className="text-red-500">Password must be 6 characters or longer</p>}
+                                {errors.password?.type === "pattern" && (
+                                    <p className="text-red-500">Password must have at least one uppercase, at least one lowercase, at least one number, and at least one special characters</p>
+                                )}
                             </div>
 
                             {/* Terms & Conditions */}
                             <div className="flex items-start text-sm">
                                 <label className="flex items-start cursor-pointer group">
-                                    <input type="checkbox" className="w-4 h-4 mt-0.5 rounded border-gray-300 text-purple-600 focus:ring-purple-500 focus:ring-offset-0 cursor-pointer" />
+                                    <input type="checkbox" className="w-4 h-4 mt-0.5 rounded border-gray-300 text-purple-600 focus:ring-purple-500 focus:ring-offset-0 cursor-pointer" required />
                                     <span className="ml-2 text-gray-600 group-hover:text-purple-600 transition-colors">
                                         I agree to the{" "}
-                                        <a href="#" className="text-purple-600 hover:text-purple-700 font-medium">
+                                        <a href="" className="text-purple-600 hover:text-purple-700 font-medium">
                                             Terms & Conditions
                                         </a>{" "}
                                         and{" "}
@@ -180,7 +189,7 @@ export default function RegisterPage() {
                                 <span>Create Account</span>
                                 <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
                             </button>
-                        </div>
+                        </form>
 
                         {/* Divider */}
                         <div className="relative my-6">
@@ -193,31 +202,20 @@ export default function RegisterPage() {
                         </div>
 
                         {/* Google */}
-                        <button className="btn bg-white text-black border-[#e5e5e5] w-full">
-                            <svg aria-label="Google logo" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                <g>
-                                    <path d="m0 0H512V512H0" fill="#fff"></path>
-                                    <path fill="#34a853" d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"></path>
-                                    <path fill="#4285f4" d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"></path>
-                                    <path fill="#fbbc02" d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"></path>
-                                    <path fill="#ea4335" d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"></path>
-                                </g>
-                            </svg>
-                            Login with Google
-                        </button>
+                        <SocialLogin page="register"></SocialLogin>
 
                         {/* Sign In Link */}
                         <p className="mt-6 text-center text-sm text-gray-600">
                             Already have an account?{" "}
-                            <a href="#" className="font-semibold text-purple-600 hover:text-purple-700 transition-colors">
+                            <Link to="/login" className="font-semibold text-purple-600 hover:text-purple-700 transition-colors">
                                 Sign in
-                            </a>
+                            </Link>
                         </p>
                     </div>
                 </div>
             </div>
 
-            <style jsx>{`
+            <style>{`
                 @keyframes blob {
                     0%,
                     100% {
