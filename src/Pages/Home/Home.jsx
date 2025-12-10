@@ -1,10 +1,10 @@
 import React from "react";
-import GridLoader from "../../Components/Loader/GridLoader";
+import Banner from "../../Components/Home/Banner";
 
 const Home = () => {
     return (
         <div>
-            home page
+            <Banner></Banner>
         </div>
     );
 };

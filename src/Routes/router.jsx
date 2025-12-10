@@ -43,8 +43,8 @@ const router = createBrowserRouter([
     },
     {
         path: "*",
-        element: <Error></Error>
-    }
+        element: <Error></Error>,
+    },
 ]);
 
 export default router;
