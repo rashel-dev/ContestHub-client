@@ -7,6 +7,7 @@ import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
 import AuthLayout from "../Layout/AuthLayout";
 import Error from "../Pages/Error/Error";
+import CreateContest from "../Pages/CreateContest";
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
                 path: "/about",
                 element: <AboutUs></AboutUs>,
             },
+            {
+                path: "/create-contest",
+                element: <CreateContest></CreateContest>,
+            }
         ],
     },
     {

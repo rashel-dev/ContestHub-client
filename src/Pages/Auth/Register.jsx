@@ -141,7 +141,7 @@ export default function RegisterPage() {
                                 {errors.name && <p className="text-red-500 text-sm mt-1">Name is required.</p>}
                             </div>
 
-                            {/* Photo URL Field */}
+                            {/* Photo Field */}
                             <div className="relative group">
                                 <label htmlFor="photoURL" className="block text-sm font-medium text-gray-700 mb-2">
                                     Photo
