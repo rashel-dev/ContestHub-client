@@ -8,7 +8,7 @@ import useAxiosSecure from "../Hooks/useAxiosSecure";
 import useAuth from "../Hooks/useAuth";
 
 const CreateContest = () => {
-    const {user} = useAuth();
+    const { user } = useAuth();
     const {
         register,
         handleSubmit,
@@ -20,7 +20,6 @@ const CreateContest = () => {
     console.log(user);
     //create contest form submission handler
     const handleContestCreation = (data) => {
-
         // enter extra fields to the database
         data.entryPrice = Number(data.entryPrice);
         data.prizeAmount = Number(data.prizeAmount);
@@ -30,7 +29,6 @@ const CreateContest = () => {
         data.paymentStatus = "pending";
         data.participents = 0;
         data.approvalStatus = "pending";
-
 
         Swal.fire({
             title: "Are you sure to create this contest?",
@@ -155,17 +153,17 @@ const CreateContest = () => {
                                 className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             >
                                 <option value="">Select contest type</option>
-                                <option value="art">Education</option>
-                                <option value="photography">Photography</option>
-                                <option value="design">Design</option>
-                                <option value="writing">Writing</option>
-                                <option value="video">Video</option>
-                                <option value="coding">Coding</option>
-                                <option value="art">Gaming</option>
-                                <option value="art">Entertainment</option>
-                                <option value="other">Other</option>
+                                <option value="Education">Education</option>
+                                <option value="Photography">Photography</option>
+                                <option value="Design">Design</option>
+                                <option value="Writing">Writing</option>
+                                <option value="Video">Video</option>
+                                <option value="Coding">Coding</option>
+                                <option value="Gaming">Gaming</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Other">Other</option>
                             </select>
-                            {errors.contestType && <p className="text-red-500 text-sm mt-2">Please select a contest type</p>}
+                            {errors.contestCategory && <p className="text-red-500 text-sm mt-2">Please select a contest type</p>}
                         </div>
 
                         <div>
