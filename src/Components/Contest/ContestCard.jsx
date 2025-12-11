@@ -3,7 +3,7 @@ import { Calendar, DollarSign, Award, Users, ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 
 const ContestCard = ({ contest }) => {
-    const { _id, contestName, contestBanner, description, contestCategory, entryPrice, prizeAmount, deadline, participents } = contest;
+    const { _id, contestName, contestBanner, description, contestCategory, entryPrice, prizeAmount, deadline, participants } = contest;
 
     // Format deadline
     const formatDeadline = (date) => {
@@ -61,7 +61,7 @@ const ContestCard = ({ contest }) => {
                         <Users className="w-4 h-4 text-green-600 shrink-0" />
                         <div>
                             <p className="text-xs text-gray-500">Participants</p>
-                            <p className="text-sm font-semibold text-gray-900">{participents}</p>
+                            <p className="text-sm font-semibold text-gray-900">{participants}</p>
                         </div>
                     </div>
 

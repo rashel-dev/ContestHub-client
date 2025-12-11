@@ -47,7 +47,7 @@ const Banner = () => {
                         <div className="relative flex gap-2 items-center bg-white rounded-full shadow-2xl overflow-hidden">
                             <input
                                 type="text"
-                                placeholder="Search for contests, categories, or prizes..."
+                                placeholder="Search for contests..."
                                 className="flex-1 px-6 py-4 text-gray-800 text-base md:text-lg focus:outline-none bg-transparent"
                             />
                             <button
