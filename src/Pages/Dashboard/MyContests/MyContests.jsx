@@ -9,7 +9,7 @@ const MyContests = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
 
-    const { data: contests = [] } = useQuery({
+    const { data: contests = [], refetch } = useQuery({
         queryKey: ["myContests", user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/contests?email=${user.email}`);
@@ -36,6 +36,9 @@ const MyContests = () => {
                             text: "Your contest has been deleted.",
                             icon: "success",
                         });
+
+                        //refresh the contests list after delete a contest
+                        refetch();               
                     }
                 })
                 .catch((error) => {
@@ -57,7 +60,6 @@ const MyContests = () => {
                         <tr>
                             <th></th>
                             <th>Contest Name</th>
-                            <th>Payment Status</th>
                             <th>Approval Status</th>
                             <th>Actions</th>
                             <th>See Submissions</th>
@@ -68,15 +70,6 @@ const MyContests = () => {
                             <tr key={contest._id}>
                                 <td className="font-bold">{index + 1}</td>
                                 <td>{contest.contestName}</td>
-                                <td>
-                                    {contest.paymentStatus === "pending" ? (
-                                        <button className="btn btn-primary btn-sm">Pending</button>
-                                    ) : (
-                                        <button className="btn btn-sm" disabled>
-                                            Paid
-                                        </button>
-                                    )}
-                                </td>
                                 <td>{contest.approvalStatus}</td>
 
 
