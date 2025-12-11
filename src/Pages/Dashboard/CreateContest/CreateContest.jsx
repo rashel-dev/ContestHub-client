@@ -53,6 +53,11 @@ const CreateContest = () => {
                         }
                     })
                     .catch((error) => {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "There was an error creating your contest. Please try again later.",
+                            icon: "error",
+                        })
                         console.error("Error creating contest:", error);
                     });
             }

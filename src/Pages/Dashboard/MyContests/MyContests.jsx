@@ -24,18 +24,46 @@ const MyContests = () => {
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Name</th>
-                            <th>Job</th>
-                            <th>Favorite Color</th>
+                            <th>Contest Name</th>
+                            <th>Payment Status</th>
+                            <th>Approval Status</th>
+                            <th>Actions</th>
+                            <th>See Submissions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th>1</th>
-                            <td>Cy Ganderton</td>
-                            <td>Quality Control Specialist</td>
-                            <td>Blue</td>
-                        </tr>
+                        {contests.map((contest, index) => (
+                            <tr key={contest._id}>
+                                <td className="font-bold">{index + 1}</td>
+                                <td>{contest.contestName}</td>
+                                <td>
+                                    {contest.paymentStatus === "pending" ? (
+                                        <button className="btn btn-primary btn-sm">Pending</button>
+                                    ) : (
+                                        <button className="btn btn-sm" disabled>
+                                            Paid
+                                        </button>
+                                    )}
+                                </td>
+                                <td>{contest.approvalStatus}</td>
+                                <td className="space-x-2">
+                                    {contest.approvalStatus === "pending" ? (
+                                        <>
+                                            <button className="btn btn-sm btn-secondary">Edit</button>
+                                            <button className="btn btn-sm btn-error">Delete</button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <button className="btn btn-sm btn-secondary" disabled>Edit</button>
+                                            <button className="btn btn-sm btn-error" disabled>Delete</button>
+                                        </>
+                                    )}
+                                </td>
+                                <td>
+                                    <button className="btn btn-sm btn-info">View Submissions</button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>

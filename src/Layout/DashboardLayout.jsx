@@ -12,7 +12,7 @@ const DashboardLayout = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="drawer lg:drawer-open">
+        <div className="drawer lg:drawer-open max-w-7xl mx-auto">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content">
                 {/* Navbar */}
