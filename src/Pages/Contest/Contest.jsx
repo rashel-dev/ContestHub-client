@@ -40,7 +40,29 @@ const Contest = () => {
         fetchContests();
     }, [axiosSecure]);
 
-    
+    // Handle search, filter, and sort
+    useEffect(() => {
+        let result = [...contests];
+
+        // Search filter
+        if (searchTerm) {
+            result = result.filter((contest) => contest.contestName.toLowerCase().includes(searchTerm.toLowerCase()));
+        }
+
+        // Category filter
+        if (selectedCategory !== "all") {
+            result = result.filter((contest) => contest.contestCategory === selectedCategory);
+        }
+
+        // Sort
+        if (sortBy === "participants") {
+            result.sort((a, b) => (b.participents || 0) - (a.participents || 0));
+        } else if (sortBy === "deadline") {
+            result.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+        }
+
+        setFilteredContests(result);
+    }, [searchTerm, selectedCategory, sortBy, contests]);
 
     // Get unique categories
     const categories = ["all", ...new Set(contests.map((contest) => contest.contestCategory))];
