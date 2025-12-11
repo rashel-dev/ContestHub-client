@@ -4,8 +4,11 @@ import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
+import useAuth from "../Hooks/useAuth";
 
 const CreateContest = () => {
+    const {user} = useAuth();
     const {
         register,
         handleSubmit,
@@ -13,9 +16,21 @@ const CreateContest = () => {
         formState: { errors },
     } = useForm();
 
-    // form submission handler
-
+    const axiosSecure = useAxiosSecure();
+    console.log(user);
+    //create contest form submission handler
     const handleContestCreation = (data) => {
+
+        // enter extra fields to the database
+        data.entryPrice = Number(data.entryPrice);
+        data.prizeAmount = Number(data.prizeAmount);
+        data.creatorName = user?.displayName;
+        data.creatorEmail = user?.email;
+        data.createdAt = new Date();
+        data.paymentStatus = "pending";
+        data.participents = 0;
+        data.approvalStatus = "pending";
+
 
         Swal.fire({
             title: "Are you sure to create this contest?",
@@ -27,12 +42,15 @@ const CreateContest = () => {
             confirmButtonText: "Yes, create it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log(data);
-                Swal.fire({
-                    title: "Created!",
-                    text: "Your contest has been created.",
-                    icon: "success",
-                });
+                // save the contest info to the database
+                axiosSecure
+                    .post("/contests", data)
+                    .then((res) => {
+                        console.log(res.data);
+                    })
+                    .catch((error) => {
+                        console.error("Error creating contest:", error);
+                    });
             }
         });
     };
@@ -133,7 +151,7 @@ const CreateContest = () => {
                         <div>
                             <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">Contest Type</label>
                             <select
-                                {...register("contestType", { required: true })}
+                                {...register("contestCategory", { required: true })}
                                 className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             >
                                 <option value="">Select contest type</option>
