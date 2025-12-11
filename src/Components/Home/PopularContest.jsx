@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import ContestCard from "../Contest/ContestCard";
 import GridLoader from "../Loader/GridLoader";
+import { Link } from "react-router";
 
 const PopularContest = () => {
     const axiosSecure = useAxiosSecure();
@@ -28,6 +29,9 @@ const PopularContest = () => {
                     ))}
                 </div>
             )}
+            <div className="text-center">
+                <Link to="/contest" className="btn btn-primary rounded-full mt-8 text-2xl px-8 py-6 hover:bg-accent">See All</Link>
+            </div>
         </div>
     );
 };
