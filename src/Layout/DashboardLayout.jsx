@@ -3,11 +3,14 @@ import { MdOutlineAssignmentInd, MdOutlineSpaceDashboard } from "react-icons/md"
 import { Link, Outlet, useNavigate } from "react-router";
 import logoImg from "../assets/logo.PNG";
 import { IoIosCreate } from "react-icons/io";
+import useTheme from "../Hooks/useTheme";
 
 const DashboardLayout = () => {
+    // Apply saved theme from localStorage
+    useTheme();
 
     const navigate = useNavigate();
-    
+
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -54,21 +57,21 @@ const DashboardLayout = () => {
                         <li>
                             <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Dashboard">
                                 {/* Dashboard icon */}
-                                <MdOutlineSpaceDashboard className="w-6 h-6"/>
+                                <MdOutlineSpaceDashboard className="w-6 h-6" />
                                 <span className="is-drawer-close:hidden">Dashboard</span>
                             </button>
                         </li>
                         <li>
                             <Link to="/dashboard/create-contest" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Create Contest">
                                 {/* create contest  */}
-                                <IoIosCreate className="w-6 h-6"/>
+                                <IoIosCreate className="w-6 h-6" />
                                 <span className="is-drawer-close:hidden">Create Contest</span>
                             </Link>
                         </li>
                         <li>
                             <Link to="/dashboard/my-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Contest">
                                 {/* create contest  */}
-                                <MdOutlineAssignmentInd className="w-6 h-6"/>
+                                <MdOutlineAssignmentInd className="w-6 h-6" />
                                 <span className="is-drawer-close:hidden">My Contest</span>
                             </Link>
                         </li>

@@ -43,7 +43,14 @@ const CreateContest = () => {
                 axiosSecure
                     .post("/contests", data)
                     .then((res) => {
-                        console.log(res.data);
+                        // console.log(res.data);
+                        if (res.data.insertedId) {
+                            Swal.fire({
+                                title: "Created!",
+                                text: "Your contest has been created successfully.",
+                                icon: "success",
+                            });
+                        }
                     })
                     .catch((error) => {
                         console.error("Error creating contest:", error);
@@ -71,7 +78,7 @@ const CreateContest = () => {
                                 type="text"
                                 {...register("contestName", { required: true })}
                                 placeholder="Enter contest name"
-                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             />
                         </div>
                         {errors.contestName && <p className="text-red-500 text-sm mt-2">Please enter a contest name</p>}
@@ -85,7 +92,7 @@ const CreateContest = () => {
                                 type="url"
                                 {...register("contestBanner", { required: true })}
                                 placeholder="Enter contest banner URL"
-                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             />
                         </div>
                         {errors.contestBanner && <p className="text-red-500 text-sm mt-2">Please upload a contest banner</p>}
@@ -99,7 +106,7 @@ const CreateContest = () => {
                                 {...register("description", { required: true })}
                                 placeholder="Describe your contest"
                                 rows="4"
-                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
+                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
                             />
                         </div>
                         {errors.description && <p className="text-red-500 text-sm mt-2">Please enter a description</p>}
@@ -113,7 +120,7 @@ const CreateContest = () => {
                                 type="number"
                                 {...register("entryPrice", { required: true })}
                                 placeholder="00"
-                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             />
                         </div>
                         {errors.entryPrice && <p className="text-red-500 text-sm mt-2">Please enter an entry price</p>}
@@ -126,7 +133,7 @@ const CreateContest = () => {
                                 type="number"
                                 {...register("prizeAmount", { required: true })}
                                 placeholder="00"
-                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             />
                         </div>
                         {errors.prizeAmount && <p className="text-red-500 text-sm mt-2">Please enter a prize amount</p>}
@@ -140,7 +147,7 @@ const CreateContest = () => {
                                 {...register("taskInstruction", { required: true })}
                                 placeholder="Provide detailed instructions for participants"
                                 rows="4"
-                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
+                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
                             />
                             {errors.taskInstruction && <p className="text-red-500 text-sm mt-2">Please enter a task instruction</p>}
                         </div>
@@ -149,7 +156,7 @@ const CreateContest = () => {
                             <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">Contest Type</label>
                             <select
                                 {...register("contestCategory", { required: true })}
-                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             >
                                 <option value="">Select contest type</option>
                                 <option value="Education">Education</option>
@@ -185,7 +192,7 @@ const CreateContest = () => {
                                         dateFormat="MMMM d, yyyy h:mm aa"
                                         minDate={new Date()}
                                         placeholderText="Select deadline date and time"
-                                        className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                        className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                                         wrapperClassName="w-full"
                                     />
                                 )}
