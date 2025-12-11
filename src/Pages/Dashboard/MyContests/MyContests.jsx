@@ -8,7 +8,7 @@ const MyContests = () => {
     const axiosSecure = useAxiosSecure();
 
     const { data: contests = [] } = useQuery({
-        queryKey: ["myContests", user.email],
+        queryKey: ["myContests", user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/contests?email=${user.email}`);
             return res.data;

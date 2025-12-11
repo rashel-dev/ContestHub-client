@@ -24,7 +24,6 @@ const CreateContest = () => {
         data.prizeAmount = Number(data.prizeAmount);
         data.creatorName = user?.displayName;
         data.creatorEmail = user?.email;
-        data.createdAt = new Date();
         data.paymentStatus = "pending";
         data.participents = 0;
         data.approvalStatus = "pending";
