@@ -61,9 +61,6 @@ const Navbar = () => {
             <li>
                 <NavLink to="/about">About</NavLink>
             </li>
-            <li>
-                <NavLink to="/create-contest">Create Contest</NavLink>
-            </li>
         </>
     );
 

@@ -7,7 +7,10 @@ import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
 import AuthLayout from "../Layout/AuthLayout";
 import Error from "../Pages/Error/Error";
-import CreateContest from "../Pages/CreateContest";
+import PrivateRoute from './PrivateRoute';
+import DashboardLayout from "../Layout/DashboardLayout";
+import MyContests from "../Pages/Dashboard/MyContests/MyContests";
+import CreateContest from "../Pages/Dashboard/CreateContest/CreateContest";
 
 const router = createBrowserRouter([
     {
@@ -26,10 +29,6 @@ const router = createBrowserRouter([
                 path: "/about",
                 element: <AboutUs></AboutUs>,
             },
-            {
-                path: "/create-contest",
-                element: <CreateContest></CreateContest>,
-            }
         ],
     },
     {
@@ -45,6 +44,20 @@ const router = createBrowserRouter([
                 element: <Register></Register>,
             },
         ],
+    },
+    {
+        path: "/dashboard",
+        element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
+        children: [
+            {
+                path: "create-contest",
+                element: <CreateContest></CreateContest>,
+            },
+            {
+                path: "my-contests",
+                element: <MyContests></MyContests>
+            }
+        ]
     },
     {
         path: "*",

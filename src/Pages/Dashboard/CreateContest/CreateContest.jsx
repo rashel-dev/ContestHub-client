@@ -4,8 +4,8 @@ import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
-import useAxiosSecure from "../Hooks/useAxiosSecure";
-import useAuth from "../Hooks/useAuth";
+import useAuth from "../../../Hooks/useAuth";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const CreateContest = () => {
     const { user } = useAuth();
@@ -17,7 +17,6 @@ const CreateContest = () => {
     } = useForm();
 
     const axiosSecure = useAxiosSecure();
-    console.log(user);
     //create contest form submission handler
     const handleContestCreation = (data) => {
         // enter extra fields to the database
@@ -155,6 +154,7 @@ const CreateContest = () => {
                                 <option value="">Select contest type</option>
                                 <option value="Education">Education</option>
                                 <option value="Photography">Photography</option>
+                                <option value="Photography">Technology</option>
                                 <option value="Design">Design</option>
                                 <option value="Writing">Writing</option>
                                 <option value="Video">Video</option>
