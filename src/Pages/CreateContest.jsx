@@ -1,56 +1,40 @@
-import React, { useState } from "react";
-import { Upload, Calendar, DollarSign, Award, FileText, Type, X } from "lucide-react";
-import { useForm } from "react-hook-form";
+import React from "react";
+import { Upload, Calendar, DollarSign, Award, FileText, Type } from "lucide-react";
+import { useForm, Controller } from "react-hook-form";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Swal from "sweetalert2";
 
 const CreateContest = () => {
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null);
-
     const {
         register,
         handleSubmit,
+        control,
         formState: { errors },
     } = useForm();
 
-    //image upload handler
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            // Validate file size (2MB)
-            if (file.size > 2 * 1024 * 1024) {
-                alert("File size should be less than 2MB");
-                return;
-            }
-
-            // Validate file type
-            if (!file.type.startsWith("image/")) {
-                alert("Please select an image file");
-                return;
-            }
-
-            setSelectedImage(file);
-
-            // Create preview
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleRemoveImage = () => {
-        setSelectedImage(null);
-        setImagePreview(null);
-        // Reset the file input
-        const fileInput = document.getElementById("image-upload");
-        if (fileInput) {
-            fileInput.value = "";
-        }
-    };
+    // form submission handler
 
     const handleContestCreation = (data) => {
-        console.log(data);
+
+        Swal.fire({
+            title: "Are you sure to create this contest?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, create it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log(data);
+                Swal.fire({
+                    title: "Created!",
+                    text: "Your contest has been created.",
+                    icon: "success",
+                });
+            }
+        });
     };
 
     return (
@@ -72,7 +56,7 @@ const CreateContest = () => {
                                 type="text"
                                 {...register("contestName", { required: true })}
                                 placeholder="Enter contest name"
-                                className="w-full px-4 py-3 border text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             />
                         </div>
                         {errors.contestName && <p className="text-red-500 text-sm mt-2">Please enter a contest name</p>}
@@ -80,26 +64,14 @@ const CreateContest = () => {
                         <div>
                             <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
                                 <Upload className="w-4 h-4 mr-2" />
-                                Contest banner
+                                Contest banner URL
                             </label>
-                            {!imagePreview ? (
-                                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-purple-500 transition cursor-pointer">
-                                    <input type="file" {...register("contestBanner", { required: true })} className="hidden" id="image-upload" accept="image/*" onChange={handleImageChange} />
-                                    <label htmlFor="image-upload" className="cursor-pointer block">
-                                        <Upload className="w-12 h-12 mx-auto text-gray-400 mb-3" />
-                                        <p className="text-gray-600 mb-1">Click to upload image</p>
-                                        <p className="text-sm text-gray-400">PNG, JPG up to 2MB</p>
-                                    </label>
-                                </div>
-                            ) : (
-                                <div className="relative border-2 border-gray-300 rounded-lg overflow-hidden">
-                                    <img src={imagePreview} alt="Contest preview" className="w-full h-64 object-cover" />
-                                    <button type="button" onClick={handleRemoveImage} className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg">
-                                        <X className="w-5 h-5" />
-                                    </button>
-                                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">{selectedImage?.name}</div>
-                                </div>
-                            )}
+                            <input
+                                type="url"
+                                {...register("contestBanner", { required: true })}
+                                placeholder="Enter contest banner URL"
+                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                            />
                         </div>
                         {errors.contestBanner && <p className="text-red-500 text-sm mt-2">Please upload a contest banner</p>}
 
@@ -112,7 +84,7 @@ const CreateContest = () => {
                                 {...register("description", { required: true })}
                                 placeholder="Describe your contest"
                                 rows="4"
-                                className="w-full px-4 py-3 border text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
+                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
                             />
                         </div>
                         {errors.description && <p className="text-red-500 text-sm mt-2">Please enter a description</p>}
@@ -125,10 +97,8 @@ const CreateContest = () => {
                             <input
                                 type="number"
                                 {...register("entryPrice", { required: true })}
-                                placeholder="0.00"
-                                min="0"
-                                step="0.01"
-                                className="w-full px-4 py-3 border text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                placeholder="00"
+                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             />
                         </div>
                         {errors.entryPrice && <p className="text-red-500 text-sm mt-2">Please enter an entry price</p>}
@@ -140,10 +110,8 @@ const CreateContest = () => {
                             <input
                                 type="number"
                                 {...register("prizeAmount", { required: true })}
-                                placeholder="0.00"
-                                min="0"
-                                step="0.01"
-                                className="w-full px-4 py-3 border text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                placeholder="00"
+                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             />
                         </div>
                         {errors.prizeAmount && <p className="text-red-500 text-sm mt-2">Please enter a prize amount</p>}
@@ -157,7 +125,7 @@ const CreateContest = () => {
                                 {...register("taskInstruction", { required: true })}
                                 placeholder="Provide detailed instructions for participants"
                                 rows="4"
-                                className="w-full px-4 py-3 border text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
+                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
                             />
                             {errors.taskInstruction && <p className="text-red-500 text-sm mt-2">Please enter a task instruction</p>}
                         </div>
@@ -166,7 +134,7 @@ const CreateContest = () => {
                             <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">Contest Type</label>
                             <select
                                 {...register("contestType", { required: true })}
-                                className="w-full px-4 py-3 border text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             >
                                 <option value="">Select contest type</option>
                                 <option value="art">Education</option>
@@ -187,10 +155,24 @@ const CreateContest = () => {
                                 <Calendar className="w-4 h-4 mr-2" />
                                 Deadline
                             </label>
-                            <input
-                                {...register("deadline", { required: true })}
-                                type="datetime-local"
-                                className="w-full px-4 py-3 border text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                            <Controller
+                                control={control}
+                                name="deadline"
+                                rules={{ required: true }}
+                                render={({ field }) => (
+                                    <DatePicker
+                                        selected={field.value}
+                                        onChange={(date) => field.onChange(date)}
+                                        showTimeSelect
+                                        timeFormat="HH:mm"
+                                        timeIntervals={15}
+                                        dateFormat="MMMM d, yyyy h:mm aa"
+                                        minDate={new Date()}
+                                        placeholderText="Select deadline date and time"
+                                        className="w-full px-4 py-3 border dark:text-secondary border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                        wrapperClassName="w-full"
+                                    />
+                                )}
                             />
                             {errors.deadline && <p className="text-red-500 text-sm mt-2">Please select a deadline</p>}
                         </div>
