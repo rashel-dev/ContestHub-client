@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Search, Filter } from "lucide-react";
+import { useSearchParams } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import ContestCard from "../../Components/Contest/ContestCard";
 import GridLoader from "../../Components/Loader/GridLoader";
@@ -12,8 +13,15 @@ const Contest = () => {
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [sortBy, setSortBy] = useState("default");
     const axiosSecure = useAxiosSecure();
+    const [searchParams] = useSearchParams();
 
-    // Fetch all contests
+    // Initialize search term from URL params
+    useEffect(() => {
+        const querySearch = searchParams.get("search");
+        if (querySearch) {
+            setSearchTerm(querySearch);
+        }
+    }, [searchParams]);
     useEffect(() => {
         const fetchContests = async () => {
             try {

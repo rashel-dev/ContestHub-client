@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import bannerImg from "../../assets/banner1.jpg";
 import { FaSearch, FaTrophy } from "react-icons/fa";
+import { useNavigate } from "react-router";
 
 const Banner = () => {
+    const [searchTerm, setSearchTerm] = useState("");
+    const navigate = useNavigate();
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchTerm.trim()) {
+            navigate(`/contest?search=${encodeURIComponent(searchTerm)}`);
+            setSearchTerm("");
+        }
+    };
 
     return (
         <div className="relative w-full h-[80vh] bg-cover bg-center bg-no-repeat flex items-center justify-center" style={{ backgroundImage: `url(${bannerImg})` }}>
@@ -41,13 +51,15 @@ const Banner = () => {
                 </p>
 
                 {/* Search Bar */}
-                <form className="mb-12">
+                <form className="mb-12" onSubmit={handleSearch}>
                     <div className="relative max-w-2xl mx-auto">
                         <div className="absolute inset-0 bg-linear-to-r from-purple-500 via-pink-500 to-cyan-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
                         <div className="relative flex gap-2 items-center bg-white rounded-full shadow-2xl overflow-hidden">
                             <input
                                 type="text"
                                 placeholder="Search for contests..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
                                 className="flex-1 px-6 py-4 text-gray-800 text-base md:text-lg focus:outline-none bg-transparent"
                             />
                             <button
