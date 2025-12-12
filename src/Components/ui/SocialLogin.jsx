@@ -12,9 +12,7 @@ const SocialLogin = ({ page }) => {
 
     const handleGoogleSignIn = () => {
         signInWithGoogle()
-            .then((result) => {
-                const user = result.user;
-                console.log(user);
+            .then(() => {
                 toast.success("Login Successfully", {
                     position: "top-right",
                     autoClose: 5000,

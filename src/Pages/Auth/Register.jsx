@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight } from "react-icons/fa";
 import logoImg from "../../assets/logo.PNG";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import SocialLogin from "../../Components/ui/SocialLogin";
 import useAuth from "../../Hooks/useAuth";
@@ -13,6 +13,9 @@ export default function RegisterPage() {
     const [isHovered, setIsHovered] = useState(false);
     const navigate = useNavigate();
     const { registerUser, updateUserProfile } = useAuth();
+    const location = useLocation();
+    console.log(location);
+
 
     const {
         register,

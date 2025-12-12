@@ -4,6 +4,7 @@ import { Link, Outlet, useNavigate } from "react-router";
 import logoImg from "../assets/logo.PNG";
 import { IoIosCreate } from "react-icons/io";
 import useTheme from "../Hooks/useTheme";
+import { FaUserEdit } from "react-icons/fa";
 
 const DashboardLayout = () => {
     // Apply saved theme from localStorage
@@ -73,6 +74,13 @@ const DashboardLayout = () => {
                                 {/* create contest  */}
                                 <MdOutlineAssignmentInd className="w-6 h-6" />
                                 <span className="is-drawer-close:hidden">My Contest</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/dashboard/edit-profile" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Edit Profile">
+                                {/* create contest  */}
+                                <FaUserEdit className="w-6 h-6" />
+                                <span className="is-drawer-close:hidden">Edit Profile</span>
                             </Link>
                         </li>
                     </ul>

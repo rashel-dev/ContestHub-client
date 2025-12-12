@@ -228,16 +228,17 @@ const ContestDetails = () => {
                                     <span className="text-gray-600">Prize Pool</span>
                                     <span className="text-xl font-bold text-accent">${prizeAmount}</span>
                                 </div>
-                                <button
+                                <Link
+                                    to={`/payment/${contest._id}`}
                                     disabled={isEnded}
-                                    className={`w-full text-center py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
+                                    className={`btn btn-outline w-full text-center py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
                                         isEnded
                                             ? "bg-gray-400 text-gray-600 cursor-not-allowed"
                                             : "bg-linear-to-r from-primary to-accent text-white hover:from-primary/90 hover:to-accent/90 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                                     }`}
                                 >
                                     {isEnded ? "Contest Ended" : "Register Now"}
-                                </button>
+                                </Link>
                                 {!isEnded && (
                                     <p className="text-sm text-gray-500 text-center mt-2">
                                         Join this contest and showcase your skills

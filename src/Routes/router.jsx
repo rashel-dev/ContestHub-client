@@ -12,6 +12,8 @@ import DashboardLayout from "../Layout/DashboardLayout";
 import MyContests from "../Pages/Dashboard/MyContests/MyContests";
 import CreateContest from "../Pages/Dashboard/CreateContest/CreateContest";
 import ContestDetails from "../Pages/ContestDetails/ContestDetails";
+import Payment from "../Pages/Dashboard/Payment/Payment";
+import EditProfile from "../Pages/Dashboard/EditProfile/EditProfile";
 
 const router = createBrowserRouter([
     {
@@ -38,6 +40,10 @@ const router = createBrowserRouter([
                 path: "/about",
                 element: <AboutUs></AboutUs>,
             },
+            {
+                path: "/payment/:contestId",
+                element: <Payment></Payment>,
+            }
         ],
     },
     {
@@ -70,6 +76,11 @@ const router = createBrowserRouter([
                 path: "my-contests",
                 element: <MyContests></MyContests>,
             },
+            {
+                path: "edit-profile",
+                element: <EditProfile></EditProfile>,
+            },
+            
         ],
     },
     {

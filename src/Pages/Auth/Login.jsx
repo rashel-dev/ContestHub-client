@@ -3,7 +3,7 @@ import { MdMail } from "react-icons/md";
 import { CiLock } from "react-icons/ci";
 import { FaArrowRight, FaEye, FaEyeSlash } from "react-icons/fa";
 import logoImg from "../../assets/logo.PNG";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../../Components/ui/SocialLogin";
 import { useForm } from "react-hook-form";
 import useAuth from "../../Hooks/useAuth";
@@ -14,6 +14,8 @@ const Login = () => {
     const [isHovered, setIsHovered] = useState(false);
     const navigate = useNavigate();
     const { signInUser } = useAuth();
+    const location = useLocation();
+    console.log(location);
 
     const {
         register,
@@ -27,7 +29,7 @@ const Login = () => {
             .then((result) => {
                 console.log(result.user);
                 toast.success("Login successfully");
-                navigate("/");
+                navigate(location?.state || "/");
             })
             .catch((error) => {
                 console.error(error);
