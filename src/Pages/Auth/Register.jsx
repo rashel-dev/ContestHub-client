@@ -14,8 +14,7 @@ export default function RegisterPage() {
     const navigate = useNavigate();
     const { registerUser, updateUserProfile } = useAuth();
     const location = useLocation();
-    console.log(location);
-
+    
 
     const {
         register,
@@ -39,17 +38,20 @@ export default function RegisterPage() {
 
                 //3. upload image to imgbb server
                 axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOST_KEY}`, formData).then((res) => {
-                    console.log(res.data);                    
+                    const photoURL = res.data.data.url;   
+                    
+                    
+                    //create user object to store in database
 
                     //4. update user profile with name and photoURL to firebase
                     const userProfile = {
                         displayName: data.name,
-                        photoURL: res.data.data.url,
+                        photoURL: photoURL,
                     };
                     updateUserProfile(userProfile)
                     .then(() => {
                         toast.success("Account created successfully");
-                        navigate("/");
+                        navigate(location?.state || "/");
                     })
                     .catch((error) => {
                         // console.log(error);
@@ -223,13 +225,13 @@ export default function RegisterPage() {
                             </div>
 
                             {/* Submit Button */}
-                            <button
+                            <Link 
                                 onClick={handleSubmit}
                                 className="w-full bg-linear-to-r from-purple-600 to-cyan-600 text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group"
                             >
                                 <span>Create Account</span>
                                 <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                            </button>
+                            </Link>
                         </form>
 
                         {/* Divider */}
@@ -248,7 +250,7 @@ export default function RegisterPage() {
                         {/* Sign In Link */}
                         <p className="mt-6 text-center text-sm text-gray-600">
                             Already have an account?{" "}
-                            <Link to="/login" className="font-semibold text-purple-600 hover:text-purple-700 transition-colors">
+                            <Link to="/login" state={location.state} className="font-semibold text-purple-600 hover:text-purple-700 transition-colors">
                                 Sign in
                             </Link>
                         </p>

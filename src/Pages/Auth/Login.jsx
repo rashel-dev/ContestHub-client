@@ -15,7 +15,6 @@ const Login = () => {
     const navigate = useNavigate();
     const { signInUser } = useAuth();
     const location = useLocation();
-    console.log(location);
 
     const {
         register,
@@ -182,7 +181,7 @@ const Login = () => {
                         {/* Sign Up Link */}
                         <p className="mt-6 text-center text-sm text-gray-600">
                             Don't have an account?{" "}
-                            <Link to="/register" className="font-semibold text-purple-600 hover:text-purple-700 transition-colors">
+                            <Link to="/register" state={location.state} className="font-semibold text-purple-600 hover:text-purple-700 transition-colors">
                                 Sign up now
                             </Link>
                         </p>
