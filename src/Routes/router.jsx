@@ -13,7 +13,7 @@ import MyContests from "../Pages/Dashboard/MyContests/MyContests";
 import CreateContest from "../Pages/Dashboard/CreateContest/CreateContest";
 import ContestDetails from "../Pages/ContestDetails/ContestDetails";
 import Payment from "../Pages/Dashboard/Payment/Payment";
-import EditProfile from "../Pages/Dashboard/EditProfile/EditProfile";
+import UserProfile from "../Pages/Dashboard/UserProfile/UserProfile";
 
 const router = createBrowserRouter([
     {
@@ -77,8 +77,8 @@ const router = createBrowserRouter([
                 element: <MyContests></MyContests>,
             },
             {
-                path: "edit-profile",
-                element: <EditProfile></EditProfile>,
+                path: "user-profile",
+                element: <UserProfile></UserProfile>,
             },
             
         ],
