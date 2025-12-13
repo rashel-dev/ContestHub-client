@@ -7,7 +7,11 @@ import Swal from "sweetalert2";
 const ManageContests = () => {
     const axiosSecure = useAxiosSecure();
 
-    const { data: contests = [], isLoading, refetch } = useQuery({
+    const {
+        data: contests = [],
+        isLoading,
+        refetch,
+    } = useQuery({
         queryKey: ["contests"],
         queryFn: async () => {
             const res = await axiosSecure.get("/contests");
@@ -28,7 +32,6 @@ const ManageContests = () => {
                 });
             }
         });
-
     };
 
     const handleApprovedContest = (id) => {
@@ -37,7 +40,35 @@ const ManageContests = () => {
 
     const handleRejectContest = (id) => {
         updateContestStatus(id, "rejected");
-    }
+    };
+
+    const handleDeleteContest = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This contest will be permanently deleted!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.delete(`/contests/${id}`).then((res) => {
+                    if (res.data.deletedCount > 0) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Contest Deleted Successfully",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+
+                        // Refetch contests after successful deletion
+                        refetch();
+                    }
+                });
+            }
+        });
+    };
+    
 
     if (isLoading) {
         return <GridLoader></GridLoader>;
@@ -58,6 +89,7 @@ const ManageContests = () => {
                             <th>Creator Name</th>
                             <th>Creator Email</th>
                             <th>Approval Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -81,6 +113,10 @@ const ManageContests = () => {
                                     )}
                                     {contest.approvalStatus === "approved" && <span className="text-success">Approved</span>}
                                     {contest.approvalStatus === "rejected" && <span className="text-error">Rejected</span>}
+                                    {contest.approvalStatus === "pending" && <span className="text-warning">Pending</span>}
+                                </td>
+                                <td>
+                                    <button onClick={() => handleDeleteContest(contest._id)}className="btn btn-sm btn-error">Delete</button>
                                 </td>
                             </tr>
                         ))}
