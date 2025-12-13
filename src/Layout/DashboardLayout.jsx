@@ -5,7 +5,8 @@ import logoImg from "../assets/logo.PNG";
 import { IoIosCreate } from "react-icons/io";
 import useTheme from "../Hooks/useTheme";
 import { FaUser, FaUserEdit } from "react-icons/fa";
-import { ShieldCheckIcon } from "lucide-react";
+import { ShieldCheckIcon, SquarePlus } from "lucide-react";
+import { TfiCup } from "react-icons/tfi";
 
 const DashboardLayout = () => {
     // Apply saved theme from localStorage
@@ -77,9 +78,23 @@ const DashboardLayout = () => {
                                 <span className="is-drawer-close:hidden">My Contest</span>
                             </Link>
                         </li>
-                        {
 
-                        }
+                        <li>
+                            <Link to="/dashboard/my-participated-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Participated Contests">
+                                {/* My contest  */}
+                                <SquarePlus className="w-6 h-6" />
+                                <span className="is-drawer-close:hidden">My Participated Contests</span>
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link to="/dashboard/my-winning-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Winning Contests">
+                                {/* My winning contest  */}
+                                <TfiCup className="w-6 h-6" />
+                                <span className="is-drawer-close:hidden">My Winning Contests</span>
+                            </Link>
+                        </li>
+                        
                         <li>
                             <Link to="/dashboard/manage-users" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Users">
                                 {/* Manage Users  */}
