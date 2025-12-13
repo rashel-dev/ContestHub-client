@@ -63,7 +63,7 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: "/payment-cancel",
+                path: "/payment-cancel/:contestId",
                 element: (
                     <PrivateRoute>
                         <PaymentCancel></PaymentCancel>
