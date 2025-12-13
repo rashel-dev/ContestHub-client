@@ -5,12 +5,11 @@ import logoImg from "../assets/logo.PNG";
 import { IoIosCreate } from "react-icons/io";
 import useTheme from "../Hooks/useTheme";
 import { FaUser, FaUserEdit } from "react-icons/fa";
-import ManageUser from "../Pages/Dashboard/ManageUser/ManageUser";
 import { ShieldCheckIcon } from "lucide-react";
 
 const DashboardLayout = () => {
     // Apply saved theme from localStorage
-    useTheme();
+    useTheme(); 
 
     const navigate = useNavigate();
 
@@ -78,6 +77,9 @@ const DashboardLayout = () => {
                                 <span className="is-drawer-close:hidden">My Contest</span>
                             </Link>
                         </li>
+                        {
+
+                        }
                         <li>
                             <Link to="/dashboard/manage-users" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Users">
                                 {/* Manage Users  */}

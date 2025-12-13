@@ -31,6 +31,7 @@ const ManageUser = () => {
                             <th>User Photo</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Current Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -43,11 +44,27 @@ const ManageUser = () => {
                                 </td>
                                 <td>{user.displayName}</td>
                                 <td>{user.email}</td>
+                                <td>{user.role}</td>
                                 <td>
                                     {/* Action buttons can be added here */}
-                                    <button className="btn btn-sm btn-success mr-2">Make user</button>
-                                    <button className="btn btn-sm btn-secondary mr-2">Make Creator</button>
-                                    <button className="btn btn-sm btn-primary ">Make Admin</button>
+                                    {user.role === "user" && (
+                                        <>
+                                            <button className="btn btn-sm btn-secondary mr-2">Make Creator</button>
+                                            <button className="btn btn-sm btn-primary ">Make Admin</button>
+                                        </>
+                                    )}
+                                    {user.role === "creator" && (
+                                        <>
+                                            <button className="btn btn-sm btn-success mr-2">Make user</button>
+                                            <button className="btn btn-sm btn-primary ">Make Admin</button>
+                                        </>
+                                    )}
+                                    {user.role === "admin" && (
+                                        <>
+                                            <button className="btn btn-sm btn-success mr-2">Make user</button>
+                                            <button className="btn btn-sm btn-secondary mr-2">Make Creator</button>
+                                        </>
+                                    )}
                                 </td>
                             </tr>
                         ))}

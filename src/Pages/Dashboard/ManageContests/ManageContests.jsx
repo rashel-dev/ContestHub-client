@@ -1,18 +1,33 @@
-import React from 'react';
-import GridLoader from '../../../Components/Loader/GridLoader';
-import useAxiosSecure from '../../../Hooks/useAxiosSecure';
-import { useQuery } from '@tanstack/react-query';
+import React from "react";
+import GridLoader from "../../../Components/Loader/GridLoader";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 const ManageContests = () => {
     const axiosSecure = useAxiosSecure();
 
     const { data: contests = [], isLoading } = useQuery({
-        queryKey: ['contests'],
+        queryKey: ["contests"],
         queryFn: async () => {
-            const res = await axiosSecure.get('/contests');
+            const res = await axiosSecure.get("/contests");
             return res.data;
         },
     });
+
+    const handleContestApproved = (id) => {
+        const updateInfo = { approvalStatus: "approved" };
+        axiosSecure.patch(`/contests/${id}`, updateInfo).then((res) => {
+            if (res.data.modifiedCount > 0) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Contest Approved Successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
+        });
+    };
 
     if (isLoading) {
         return <GridLoader></GridLoader>;
@@ -21,7 +36,7 @@ const ManageContests = () => {
     return (
         <div className="p-4">
             <div>
-                <h2 className="text-2xl font-bold mb-4 text-primary">Total Users: {contests.length}</h2>
+                <h2 className="text-2xl font-bold mb-4 text-primary">Total Contest: {contests.length}</h2>
             </div>
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
@@ -44,8 +59,16 @@ const ManageContests = () => {
                                 <td>{contest.creatorEmail}</td>
                                 <td>
                                     {/* Action buttons can be added here */}
-                                    <button className="btn btn-sm btn-success mr-2">Approve</button>
-                                    <button className="btn btn-sm btn-error mr-2">Delete</button>
+                                    {contest.approvalStatus === "pending" && (
+                                        <>
+                                            <button onClick={() => handleContestApproved(contest._id)} className="btn btn-sm btn-success mr-2">
+                                                Approve
+                                            </button>
+                                            <button className="btn btn-sm btn-error mr-2">Delete</button>
+                                        </>
+                                    )}
+                                    {contest.approvalStatus === "approved" && <span className="text-success">Approved</span>}
+                                    {contest.approvalStatus === "deleted" && <span className="text-error">Deleted</span>}
                                 </td>
                             </tr>
                         ))}
