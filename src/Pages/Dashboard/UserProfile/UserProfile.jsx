@@ -4,6 +4,7 @@ import { Save, User, Image } from "lucide-react";
 import { toast } from "react-toastify";
 import Particles from "../../../Components/Animation/Particles";
 import userLogo from "../../../assets/user-logo.png"
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const UserProfile = () => {
     const { user, updateUserProfile } = useAuth();
@@ -11,12 +12,28 @@ const UserProfile = () => {
     const [photoURL, setPhotoURL] = useState(user?.photoURL || "");
     const [loading, setLoading] = useState(false);
 
+    const axiosSecure = useAxiosSecure();
+    console.log(user);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
             await updateUserProfile({ displayName, photoURL });
-            toast.success("Profile updated successfully!");
+            //update user in database
+            const updatedUser = {
+                displayName,
+                photoURL,
+            };
+            await axiosSecure.patch(`/users?email=${user.email}`, updatedUser)
+            .then(res => {
+                console.log(res.data);
+                toast.success("Profile updated successfully!");
+            })
+            .catch(err => {
+                console.error(err);
+            })
+
         } catch (err) {
             console.error(err);
             toast.error("Failed to update profile. Please check your inputs.");
