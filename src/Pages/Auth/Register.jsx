@@ -7,6 +7,7 @@ import SocialLogin from "../../Components/ui/SocialLogin";
 import useAuth from "../../Hooks/useAuth";
 import { toast } from "react-toastify";
 import axios from "axios";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
@@ -14,7 +15,7 @@ export default function RegisterPage() {
     const navigate = useNavigate();
     const { registerUser, updateUserProfile } = useAuth();
     const location = useLocation();
-    
+    const axiosSecure = useAxiosSecure();
 
     const {
         register,
@@ -26,9 +27,7 @@ export default function RegisterPage() {
         const { email, password } = data;
 
         registerUser(email, password)
-            .then((result) => {
-                console.log(result);
-
+            .then(() => {
                 //1. get the photo file by react hook form
                 const profileImage = data.photo[0];
 
@@ -38,10 +37,19 @@ export default function RegisterPage() {
 
                 //3. upload image to imgbb server
                 axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOST_KEY}`, formData).then((res) => {
-                    const photoURL = res.data.data.url;   
-                    
-                    
+                    const photoURL = res.data.data.url;
+
                     //create user object to store in database
+                    const userInfo = {
+                        displayName: data.name,
+                        email: data.email,
+                        photoURL: photoURL,
+                    };
+                    axiosSecure.post("/users", userInfo).then((res) => {
+                        if (res.data.insertedId) {
+                            console.log("user info stored in database");
+                        }
+                    });
 
                     //4. update user profile with name and photoURL to firebase
                     const userProfile = {
@@ -49,16 +57,15 @@ export default function RegisterPage() {
                         photoURL: photoURL,
                     };
                     updateUserProfile(userProfile)
-                    .then(() => {
-                        toast.success("Account created successfully");
-                        navigate(location?.state || "/");
-                    })
-                    .catch((error) => {
-                        // console.log(error);
-                        toast.error(error.message);
-                    })
+                        .then(() => {
+                            toast.success("Account created successfully");
+                            navigate(location?.state || "/");
+                        })
+                        .catch((error) => {
+                            // console.log(error);
+                            toast.error(error.message);
+                        });
                 });
-
             })
             .catch((error) => {
                 if (error.code === "auth/email-already-in-use") {
@@ -225,13 +232,13 @@ export default function RegisterPage() {
                             </div>
 
                             {/* Submit Button */}
-                            <Link 
+                            <button
                                 onClick={handleSubmit}
                                 className="w-full bg-linear-to-r from-purple-600 to-cyan-600 text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group"
                             >
                                 <span>Create Account</span>
                                 <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                            </Link>
+                            </button>
                         </form>
 
                         {/* Divider */}
