@@ -6,10 +6,12 @@ import GridLoader from "../../../Components/Loader/GridLoader";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Lock, ArrowRight } from "lucide-react";
+import useAuth from "../../../Hooks/useAuth";
 
 const Payment = () => {
     const { contestId } = useParams();
     const axiosSecure = useAxiosSecure();
+    const { user } = useAuth();
 
     const { data: contest, isLoading } = useQuery({
         queryKey: ["contestPayment", contestId],
@@ -18,6 +20,18 @@ const Payment = () => {
             return res.data;
         },
     });
+
+    const handlePayment = async () => {
+        const paymentInfo = {
+            contestId: contest._id,
+            contestName: contest.contestName,
+            entryPrice: contest.entryPrice,
+            userEmail: user.email,
+        };
+
+        const res = await axiosSecure.post("/create-checkout-session", paymentInfo);
+        window.location.href = res.data.url;    
+    };
 
     if (isLoading) {
         return <GridLoader></GridLoader>;
@@ -37,12 +51,15 @@ const Payment = () => {
                     <h3 className="text-lg font-medium text-gray-700">{contest.contestName}</h3>
                     <div className="flex justify-between text-sm text-gray-600 mt-2">
                         <p>Entry Fee</p>
-                        <p className="font-bold text-gray-800">$10</p>
+                        <p className="font-bold text-gray-800">${contest.entryPrice}</p>
                     </div>
                 </div>
 
                 {/* Pay Now Button */}
-                <button className="w-full bg-linear-to-r from-primary to-accent text-white font-semibold py-3 rounded-lg hover:from-primary/90 hover:to-accent/90 transition duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2 group cursor-pointer">
+                <button
+                    onClick={handlePayment}
+                    className="w-full bg-linear-to-r from-primary to-accent text-white font-semibold py-3 rounded-lg hover:from-primary/90 hover:to-accent/90 transition duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2 group cursor-pointer"
+                >
                     Pay Now
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>

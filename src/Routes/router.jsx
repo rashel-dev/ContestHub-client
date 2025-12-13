@@ -47,7 +47,7 @@ const router = createBrowserRouter([
             {
                 path: "/payment/:contestId",
                 element: <Payment></Payment>,
-            }
+            },
         ],
     },
     {

@@ -32,14 +32,14 @@ const Contest = () => {
                 const approvedContests = response.data.filter((contest) => contest.approvalStatus === "approved");
 
                 // Further filter to show only contests that haven't ended
-                const currentDate = new Date();
-                const activeContests = approvedContests.filter((contest) => {
-                    const deadline = new Date(contest.deadline);
-                    return deadline > currentDate; // Only show contests with future deadlines
-                });
+                // const currentDate = new Date();
+                // const activeContests = approvedContests.filter((contest) => {
+                //     const deadline = new Date(contest.deadline);
+                //     return deadline > currentDate; // Only show contests with future deadlines
+                // });
 
-                setContests(activeContests);
-                setFilteredContests(activeContests);
+                setContests(approvedContests);
+                setFilteredContests(approvedContests);
             } finally {
                 setLoading(false);
             }
@@ -54,7 +54,7 @@ const Contest = () => {
 
         // Search filter
         if (searchTerm) {
-            result = result.filter((contest) => contest.contestName.toLowerCase().includes(searchTerm.toLowerCase()));
+            result = result.filter((contest) => contest.contestName.toLowerCase().includes(searchTerm.toLowerCase()) || contest.contestCategory.toLowerCase().includes(searchTerm.toLowerCase()));
         }
 
         // Category filter

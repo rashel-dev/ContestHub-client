@@ -113,7 +113,7 @@ const ManageContests = () => {
                                     )}
                                     {contest.approvalStatus === "approved" && <span className="text-success">Approved</span>}
                                     {contest.approvalStatus === "rejected" && <span className="text-error">Rejected</span>}
-                                    {contest.approvalStatus === "pending" && <span className="text-warning">Pending</span>}
+                                    {/* {contest.approvalStatus === "pending" && <span className="text-warning">Pending</span>} */}
                                 </td>
                                 <td>
                                     <button onClick={() => handleDeleteContest(contest._id)}className="btn btn-sm btn-error">Delete</button>
