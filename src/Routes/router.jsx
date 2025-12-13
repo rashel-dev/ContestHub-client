@@ -18,6 +18,8 @@ import ManageUser from "../Pages/Dashboard/ManageUser/ManageUser";
 import ManageContests from "../Pages/Dashboard/ManageContests/ManageContests";
 import MyParticipatedContests from "../Pages/Dashboard/MyParticipatedContests/MyParticipatedContests";
 import MyWinningContests from "../Pages/Dashboard/MyWinningContests/MyWinningContests";
+import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
+import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancel";
 
 const router = createBrowserRouter([
     {
@@ -46,7 +48,27 @@ const router = createBrowserRouter([
             },
             {
                 path: "/payment/:contestId",
-                element: <Payment></Payment>,
+                element: (
+                    <PrivateRoute>
+                        <Payment></Payment>
+                    </PrivateRoute>
+                ),
+            },
+            {
+                path: "/payment-success",
+                element: (
+                    <PrivateRoute>
+                        <PaymentSuccess></PaymentSuccess>
+                    </PrivateRoute>
+                ),
+            },
+            {
+                path: "/payment-cancel",
+                element: (
+                    <PrivateRoute>
+                        <PaymentCancel></PaymentCancel>
+                    </PrivateRoute>
+                ),
             },
         ],
     },
@@ -82,7 +104,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "manage-users",
-                element: <ManageUser></ManageUser>
+                element: <ManageUser></ManageUser>,
             },
             {
                 path: "manage-contests",
@@ -98,9 +120,8 @@ const router = createBrowserRouter([
             },
             {
                 path: "my-winning-contests",
-                element: <MyWinningContests></MyWinningContests>
-            }
-            
+                element: <MyWinningContests></MyWinningContests>,
+            },
         ],
     },
     {
