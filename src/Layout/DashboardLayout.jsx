@@ -4,7 +4,8 @@ import { Link, Outlet, useNavigate } from "react-router";
 import logoImg from "../assets/logo.PNG";
 import { IoIosCreate } from "react-icons/io";
 import useTheme from "../Hooks/useTheme";
-import { FaUser } from "react-icons/fa";
+import { FaUser, FaUserEdit } from "react-icons/fa";
+import ManageUser from "../Pages/Dashboard/ManageUser/ManageUser";
 
 const DashboardLayout = () => {
     // Apply saved theme from localStorage
@@ -71,14 +72,21 @@ const DashboardLayout = () => {
                         </li>
                         <li>
                             <Link to="/dashboard/my-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Contest">
-                                {/* create contest  */}
+                                {/* My contest  */}
                                 <MdOutlineAssignmentInd className="w-6 h-6" />
                                 <span className="is-drawer-close:hidden">My Contest</span>
                             </Link>
                         </li>
                         <li>
+                            <Link to="/dashboard/manage-users" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Users">
+                                {/* Manage Users  */}
+                                <FaUserEdit className="w-6 h-6" />
+                                <span className="is-drawer-close:hidden">Manage Users</span>
+                            </Link>
+                        </li>
+                        <li>
                             <Link to="/dashboard/user-profile" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="User Profile">
-                                {/* create contest  */}
+                                {/* User Profile */}
                                 <FaUser className="w-6 h-6" />
                                 <span className="is-drawer-close:hidden">User Profile</span>
                             </Link>
