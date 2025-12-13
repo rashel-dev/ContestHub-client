@@ -4,15 +4,33 @@ import { useParams, Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import GridLoader from "../../Components/Loader/GridLoader";
+import useAuth from "../../Hooks/useAuth";
 
 const ContestDetails = () => {
     const { id } = useParams();
     const axiosSecure = useAxiosSecure();
     const [timeRemaining, setTimeRemaining] = useState(null);
     const [isEnded, setIsEnded] = useState(false);
+    const { user } = useAuth();
+
+
+    const { data: registrationData } = useQuery({
+        queryKey: ["contest-registered", id, user?.email],
+        enabled: !!user?.email && !!id,
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/contest-registered?contestId=${id}&email=${user.email}`);
+            return res.data;
+        },
+    });
+
+    const isRegistered = registrationData?.registered;
 
     // Fetch contest data
-    const { data: contest, isLoading, error } = useQuery({
+    const {
+        data: contest,
+        isLoading,
+        error,
+    } = useQuery({
         queryKey: ["contest", id],
         queryFn: async () => {
             const res = await axiosSecure.get(`/contests/${id}`);
@@ -67,19 +85,7 @@ const ContestDetails = () => {
         );
     }
 
-    const {
-        contestName,
-        contestBanner,
-        description,
-        taskInstruction,
-        entryPrice,
-        prizeAmount,
-        participants,
-        contestCategory,
-        winnerName,
-        winnerPhoto,
-        creatorName,
-    } = contest;
+    const { contestName, contestBanner, description, taskInstruction, entryPrice, prizeAmount, participants, contestCategory, winnerName, winnerPhoto, creatorName } = contest;
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
@@ -90,9 +96,7 @@ const ContestDetails = () => {
                     <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent"></div>
                     <div className="absolute bottom-6 left-6 right-6">
                         <div className="flex items-center gap-3 mb-3">
-                            <span className="bg-primary text-white px-4 py-1.5 rounded-full text-sm font-semibold">
-                                {contestCategory}
-                            </span>
+                            <span className="bg-primary text-white px-4 py-1.5 rounded-full text-sm font-semibold">{contestCategory}</span>
                         </div>
                         <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">{contestName}</h1>
                     </div>
@@ -230,20 +234,16 @@ const ContestDetails = () => {
                                 </div>
                                 <Link
                                     to={`/payment/${contest._id}`}
-                                    disabled={isEnded}
-                                    className={`btn btn-outline w-full text-center py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
-                                        isEnded
-                                            ? "bg-gray-400 text-gray-600 cursor-not-allowed"
-                                            : "bg-linear-to-r from-primary to-accent text-white hover:from-primary/90 hover:to-accent/90 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                                    onClick={(e) => {
+                                        if (isEnded || isRegistered) e.preventDefault();
+                                    }}
+                                    className={`btn w-full py-3 font-semibold transition ${
+                                        isEnded || isRegistered ? "bg-gray-400 text-gray-600 cursor-not-allowed" : "bg-linear-to-r from-primary to-accent text-white hover:opacity-90"
                                     }`}
                                 >
-                                    {isEnded ? "Contest Ended" : "Register Now"}
+                                    {isEnded ? "Contest Ended" : isRegistered ? "Already Registered" : "Register Now"}
                                 </Link>
-                                {!isEnded && (
-                                    <p className="text-sm text-gray-500 text-center mt-2">
-                                        Join this contest and showcase your skills
-                                    </p>
-                                )}
+                                {!isEnded && <p className="text-sm text-gray-500 text-center mt-2">Join this contest and showcase your skills</p>}
                             </div>
                         </div>
                     </div>
