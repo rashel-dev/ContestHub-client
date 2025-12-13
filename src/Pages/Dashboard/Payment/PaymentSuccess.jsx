@@ -2,15 +2,20 @@ import { CheckCircle, ArrowRight } from "lucide-react";
 import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { useRef } from "react";
 
 const PaymentSuccess = () => {
 
     const [searchParams] = useSearchParams();
     const sessionId = searchParams.get("session_id");
     const axiosSecure = useAxiosSecure();
-
+    const calledRef = useRef(false);
 
     useEffect(() => {
+
+        if(!sessionId || calledRef.current) return;
+        calledRef.current = true;
+
         if(sessionId){
             axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
             .then(res => {
