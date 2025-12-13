@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 const ManageContests = () => {
     const axiosSecure = useAxiosSecure();
 
-    const { data: contests = [], isLoading } = useQuery({
+    const { data: contests = [], isLoading, refetch } = useQuery({
         queryKey: ["contests"],
         queryFn: async () => {
             const res = await axiosSecure.get("/contests");
@@ -15,19 +15,29 @@ const ManageContests = () => {
         },
     });
 
-    const handleContestApproved = (id) => {
-        const updateInfo = { approvalStatus: "approved" };
+    const updateContestStatus = (id, status) => {
+        const updateInfo = { approvalStatus: status };
         axiosSecure.patch(`/contests/${id}`, updateInfo).then((res) => {
             if (res.data.modifiedCount > 0) {
+                refetch();
                 Swal.fire({
                     icon: "success",
-                    title: "Contest Approved Successfully",
+                    title: `Contest ${status} Successfully`,
                     showConfirmButton: false,
                     timer: 1500,
                 });
             }
         });
+
     };
+
+    const handleApprovedContest = (id) => {
+        updateContestStatus(id, "approved");
+    };
+
+    const handleRejectContest = (id) => {
+        updateContestStatus(id, "rejected");
+    }
 
     if (isLoading) {
         return <GridLoader></GridLoader>;
@@ -61,14 +71,16 @@ const ManageContests = () => {
                                     {/* Action buttons can be added here */}
                                     {contest.approvalStatus === "pending" && (
                                         <>
-                                            <button onClick={() => handleContestApproved(contest._id)} className="btn btn-sm btn-success mr-2">
+                                            <button onClick={() => handleApprovedContest(contest._id)} className="btn btn-sm btn-success mr-2">
                                                 Approve
                                             </button>
-                                            <button className="btn btn-sm btn-error mr-2">Delete</button>
+                                            <button onClick={() => handleRejectContest(contest._id)} className="btn btn-sm btn-error">
+                                                reject
+                                            </button>
                                         </>
                                     )}
                                     {contest.approvalStatus === "approved" && <span className="text-success">Approved</span>}
-                                    {contest.approvalStatus === "deleted" && <span className="text-error">Deleted</span>}
+                                    {contest.approvalStatus === "rejected" && <span className="text-error">Rejected</span>}
                                 </td>
                             </tr>
                         ))}
