@@ -45,8 +45,9 @@ const ManageUser = () => {
                                 <td>{user.email}</td>
                                 <td>
                                     {/* Action buttons can be added here */}
-                                    <button className="btn btn-sm btn-primary mr-2">Make Admin</button>
-                                    <button className="btn btn-sm btn-secondary">Make Creator</button>
+                                    <button className="btn btn-sm btn-success mr-2">Make user</button>
+                                    <button className="btn btn-sm btn-secondary mr-2">Make Creator</button>
+                                    <button className="btn btn-sm btn-primary ">Make Admin</button>
                                 </td>
                             </tr>
                         ))}
