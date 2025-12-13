@@ -46,7 +46,7 @@ const PaymentSuccess = () => {
 
                 {/* Button */}
                 <Link
-                    to="/dashboard/my-contests"
+                    to="/dashboard/my-participated-contests"
                     className="inline-flex items-center justify-center gap-2 bg-primary text-white font-medium px-6 py-3 rounded-lg hover:bg-primary/90 transition shadow-md"
                 >
                     Go to My Contests
