@@ -24,12 +24,13 @@ const ContestDetails = () => {
         },
     });
 
-    const { data: submissionData } = useQuery({
+    const { data: submissionData, refetch: refetchSubmission} = useQuery({
         queryKey: ["task-submission", id, user?.email],
         enabled: !!user?.email && !!id,
         queryFn: async () => {
             const res = await axiosSecure.get(`/contest-entry?contestId=${id}&email=${user.email}`);
             return res.data;
+
         },
     });
 
@@ -115,6 +116,7 @@ const ContestDetails = () => {
                 toast.success("Task submitted successfully!");
                 setTask(""); // clear textarea
                 document.getElementById("my_modal_5").close();
+                await refetchSubmission();
             } else {
                 toast.error(res.data.message || "Failed to submit task");
             }

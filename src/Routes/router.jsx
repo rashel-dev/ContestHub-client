@@ -21,6 +21,7 @@ import MyWinningContests from "../Pages/Dashboard/MyWinningContests/MyWinningCon
 import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancel";
 import EditContest from "../Pages/Dashboard/EditContest/EditContest";
+import ContestSubmissions from "../Pages/Dashboard/ContestParticipants/ContestParticipants";
 
 const router = createBrowserRouter([
     {
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
             {
                 path: "my-contests",
                 element: <MyContests></MyContests>,
+            },
+            {
+                path: "see-submissions/:contestId",
+                element: <ContestSubmissions></ContestSubmissions>
             },
             {
                 path: "edit-contest/:contestId",

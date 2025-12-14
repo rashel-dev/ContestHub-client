@@ -101,7 +101,7 @@ const MyContests = () => {
                                     </div>
                                 </td>
                                 <td>
-                                    <button className="btn btn-sm btn-info">View</button>
+                                    <button onClick={() => navigate(`/dashboard/see-submissions/${contest._id}`)} className="btn btn-sm btn-info">View</button>
                                 </td>
                             </tr>
                         ))}

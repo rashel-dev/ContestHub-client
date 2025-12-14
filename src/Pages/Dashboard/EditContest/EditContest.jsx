@@ -252,7 +252,7 @@ const EditContest = () => {
                                 type="submit"
                                 className="w-full bg-linear-to-r from-primary/70 to-accent text-white font-semibold py-4 rounded-lg hover:from-purple-700 hover:to-blue-700 transition duration-300 shadow-lg hover:shadow-xl"
                             >
-                                Create Contest
+                                Update Contest
                             </button>
                         </div>
                     </form>
