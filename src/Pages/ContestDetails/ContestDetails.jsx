@@ -243,6 +243,11 @@ const ContestDetails = () => {
                                 >
                                     {isEnded ? "Contest Ended" : isRegistered ? "Already Registered" : "Register Now"}
                                 </Link>
+                                {isRegistered && !isEnded && (
+                                    <div>
+                                        <button className="btn btn-primary w-full">Submit Your Task</button>
+                                    </div>
+                                )}
                                 {!isEnded && <p className="text-sm text-gray-500 text-center mt-2">Join this contest and showcase your skills</p>}
                             </div>
                         </div>

@@ -3,10 +3,12 @@ import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useRef } from "react";
+import { useState } from "react";
 
 const PaymentSuccess = () => {
 
     const [searchParams] = useSearchParams();
+    const [paymentInfo, setPaymentInfo] = useState({});
     const sessionId = searchParams.get("session_id");
     const axiosSecure = useAxiosSecure();
     const calledRef = useRef(false);
@@ -20,6 +22,7 @@ const PaymentSuccess = () => {
             axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
             .then(res => {
                 console.log(res.data);
+                setPaymentInfo(res.data);
             })
         }
     },[sessionId, axiosSecure])
@@ -38,6 +41,7 @@ const PaymentSuccess = () => {
                 {/* Message */}
                 <p className="text-gray-600 text-sm mb-6">Thank you for your payment. Your contest entry has been confirmed successfully.</p>
 
+                <p className="text-gray-600 text-sm mb-6">Your Transaction ID: {paymentInfo.transactionId}</p>
                 {/* Divider */}
                 <div className="border-t my-6"></div>
 
