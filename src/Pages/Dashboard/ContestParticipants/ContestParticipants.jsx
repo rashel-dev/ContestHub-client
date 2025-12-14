@@ -18,6 +18,7 @@ const ContestParticipants = () => {
     });
 
     const isWinnerSelected = !!contest?.winnerName;
+    const isDeadlineOver = new Date(contest?.deadline) < new Date();
 
     const { data: contestParticipants = [], refetch } = useQuery({
         queryKey: ["contestPaticipants", contestId],
@@ -91,8 +92,8 @@ const ContestParticipants = () => {
                                 <td>{new Date(participant.submittedAt).toLocaleString()}</td>
                                 <td>{participant.submittedTask ? participant.submittedTask : "Not Submitted"}</td>
                                 <td>
-                                    <button onClick={() => handleSelectWinner(participant.userEmail)} className="btn btn-sm btn-primary" disabled={isWinnerSelected}>
-                                        {isWinnerSelected ? "Winner already Selected" : "Select as Winner"}
+                                    <button onClick={() => handleSelectWinner(participant.userEmail)} className="btn btn-sm btn-primary" disabled={!isDeadlineOver || isWinnerSelected}>
+                                        {!isDeadlineOver ? "Deadline Not Over" : isWinnerSelected ? "Winner Selected" : "Select as Winner"}
                                     </button>
                                 </td>
                             </tr>
