@@ -37,6 +37,25 @@ const EditContest = () => {
     }, [contestId, axiosSecure]);
 
     useEffect(() => {
+        
+        if (contestData?.contestName) {
+            setValue("contestName", contestData.contestName);
+        }
+        if (contestData?.contestBanner) {
+            setValue("contestBanner", contestData.contestBanner);
+        }
+        if (contestData?.description) {
+            setValue("description", contestData.description);
+        }
+        if (contestData?.entryPrice) {
+            setValue("entryPrice", contestData.entryPrice);
+        }
+        if (contestData?.prizeAmount) {
+            setValue("prizeAmount", contestData.prizeAmount);
+        }
+        if (contestData?.taskInstruction) {
+            setValue("taskInstruction", contestData.taskInstruction);
+        }
         if (contestData?.contestCategory) {
             setValue("contestCategory", contestData.contestCategory);
         }
@@ -47,21 +66,21 @@ const EditContest = () => {
 
     const handleContestUpdate = (data) => {
         Swal.fire({
-            title: "Are you sure to create this contest?",
+            title: "Are you sure to edit this contest?",
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, create it!",
+            confirmButtonText: "Yes, update it!",
         }).then((result) => {
             if (result.isConfirmed) {
                 // save the contest info to the database
                 axiosSecure
-                    .post("/contests", data)
+                    .patch(`/contests/edit/${contestId}`, data)
                     .then((res) => {
                         // console.log(res.data);
-                        if (res.data.insertedId) {
+                        if (res.data.modifiedCount > 0) {
                             Swal.fire({
                                 title: "Updated!",
                                 text: "Your contest has been Updated successfully.",
@@ -86,8 +105,8 @@ const EditContest = () => {
             <div className="max-w-4xl mx-auto">
                 <div className="bg-white rounded-2xl shadow-xl p-8">
                     <div className="mb-8">
-                        <h1 className="text-3xl font-bold text-primary mb-2">Create New Contest</h1>
-                        <p className="text-gray-600">Fill in the details to launch your contest</p>
+                        <h1 className="text-3xl font-bold text-primary mb-2">Edit Contest Info</h1>
+                        <p className="text-gray-600">Fill in the details to update your contest</p>
                     </div>
 
                     <form onSubmit={handleSubmit(handleContestUpdate)} className="space-y-6">
@@ -101,7 +120,6 @@ const EditContest = () => {
                                 {...register("contestName", { required: true })}
                                 placeholder="Enter contest name"
                                 className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
-                                defaultValue={contestData?.contestName}
                             />
                         </div>
                         {errors.contestName && <p className="text-red-500 text-sm mt-2">Please enter a contest name</p>}
@@ -116,7 +134,6 @@ const EditContest = () => {
                                 {...register("contestBanner", { required: true })}
                                 placeholder="Enter contest banner URL"
                                 className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
-                                defaultValue={contestData?.contestBanner}
                             />
                         </div>
                         {errors.contestBanner && <p className="text-red-500 text-sm mt-2">Please upload a contest banner</p>}
