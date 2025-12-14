@@ -87,6 +87,13 @@ const ContestDetails = () => {
 
     const { contestName, contestBanner, description, taskInstruction, entryPrice, prizeAmount, participants, contestCategory, winnerName, winnerPhoto, creatorName } = contest;
 
+
+    const showModal = () => {
+        document.getElementById("my_modal_5").showModal();
+    }
+
+
+
     return (
         <div className="min-h-screen bg-gray-50 py-8">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -243,9 +250,11 @@ const ContestDetails = () => {
                                 >
                                     {isEnded ? "Contest Ended" : isRegistered ? "Already Registered" : "Register Now"}
                                 </Link>
+
+                                {/* submit task button. will appear after registration  */}
                                 {isRegistered && !isEnded && (
                                     <div>
-                                        <button className="btn btn-primary w-full">Submit Your Task</button>
+                                        <button onClick={showModal} className="btn btn-primary w-full">Submit Your Task</button>
                                     </div>
                                 )}
                                 {!isEnded && <p className="text-sm text-gray-500 text-center mt-2">Join this contest and showcase your skills</p>}
@@ -254,6 +263,26 @@ const ContestDetails = () => {
                     </div>
                 </div>
             </div>
+
+            {/* modal  */}
+
+            {/* Open the modal using document.getElementById('ID').showModal() method */}
+            {/* <button className="btn" onClick={() => document.getElementById("my_modal_5").showModal()}>
+                open modal
+            </button> */}
+            <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+                <div className="modal-box">
+                    <h3 className="font-bold text-lg">Submit necessary task link</h3>
+                    <textarea name="" id="" className="w-full border p-2 my-2"></textarea>
+                    <button  className="btn btn-primary w-full">Submit</button>
+                    <div className="modal-action">
+                        <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */}
+                            <button className="btn">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
         </div>
     );
 };
