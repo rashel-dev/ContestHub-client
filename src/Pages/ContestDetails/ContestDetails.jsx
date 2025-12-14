@@ -92,11 +92,27 @@ const ContestDetails = () => {
         document.getElementById("my_modal_5").showModal();
     };
 
-    const handleSubmitTask = () => {
+    const handleSubmitTask = async () => {
         if (!task.trim()) return toast.error("Please enter your task link");
-        console.log("Submitted task:", task);
-        setTask(""); // clear after submit
-        document.getElementById("my_modal_5").close(); // close modal
+        
+        try {
+            const res = await axiosSecure.patch("/submit-task", {
+                contestId: id,
+                email: user.email,
+                task: task,
+            });
+
+            if (res.data.success) {
+                toast.success("Task submitted successfully!");
+                setTask(""); // clear textarea
+                document.getElementById("my_modal_5").close();
+            } else {
+                toast.error(res.data.message || "Failed to submit task");
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Something went wrong!");
+        }
     }
 
     return (
