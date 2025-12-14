@@ -17,6 +17,7 @@ const EditContest = () => {
         register,
         handleSubmit,
         control,
+        setValue,
         formState: { errors },
     } = useForm();
 
@@ -35,7 +36,14 @@ const EditContest = () => {
         fetchContest();
     }, [contestId, axiosSecure]);
 
-    console.log(contestData)
+    useEffect(() => {
+        if (contestData?.contestCategory) {
+            setValue("contestCategory", contestData.contestCategory);
+        }
+        if (contestData?.deadline) {
+            setValue("deadline", new Date(contestData.deadline));
+        }
+    }, [contestData, setValue]);
 
     const handleContestUpdate = (data) => {
         Swal.fire({
@@ -93,6 +101,7 @@ const EditContest = () => {
                                 {...register("contestName", { required: true })}
                                 placeholder="Enter contest name"
                                 className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                defaultValue={contestData?.contestName}
                             />
                         </div>
                         {errors.contestName && <p className="text-red-500 text-sm mt-2">Please enter a contest name</p>}
@@ -107,6 +116,7 @@ const EditContest = () => {
                                 {...register("contestBanner", { required: true })}
                                 placeholder="Enter contest banner URL"
                                 className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                defaultValue={contestData?.contestBanner}
                             />
                         </div>
                         {errors.contestBanner && <p className="text-red-500 text-sm mt-2">Please upload a contest banner</p>}
@@ -121,6 +131,7 @@ const EditContest = () => {
                                 placeholder="Describe your contest"
                                 rows="4"
                                 className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
+                                defaultValue={contestData?.description}
                             />
                         </div>
                         {errors.description && <p className="text-red-500 text-sm mt-2">Please enter a description</p>}
@@ -135,6 +146,7 @@ const EditContest = () => {
                                 {...register("entryPrice", { required: true })}
                                 placeholder="00"
                                 className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                defaultValue={contestData?.entryPrice}
                             />
                         </div>
                         {errors.entryPrice && <p className="text-red-500 text-sm mt-2">Please enter an entry price</p>}
@@ -148,6 +160,7 @@ const EditContest = () => {
                                 {...register("prizeAmount", { required: true })}
                                 placeholder="00"
                                 className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                defaultValue={contestData?.prizeAmount}
                             />
                         </div>
                         {errors.prizeAmount && <p className="text-red-500 text-sm mt-2">Please enter a prize amount</p>}
@@ -162,6 +175,7 @@ const EditContest = () => {
                                 placeholder="Provide detailed instructions for participants"
                                 rows="4"
                                 className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
+                                defaultValue={contestData?.taskInstruction}
                             />
                             {errors.taskInstruction && <p className="text-red-500 text-sm mt-2">Please enter a task instruction</p>}
                         </div>
@@ -171,6 +185,7 @@ const EditContest = () => {
                             <select
                                 {...register("contestCategory", { required: true })}
                                 className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                defaultValue={contestData?.contestCategory}
                             >
                                 <option value="">Select contest type</option>
                                 <option value="Education">Education</option>
@@ -196,6 +211,7 @@ const EditContest = () => {
                                 control={control}
                                 name="deadline"
                                 rules={{ required: true }}
+
                                 render={({ field }) => (
                                     <DatePicker
                                         selected={field.value}
