@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import GridLoader from "../../Components/Loader/GridLoader";
 import useAuth from "../../Hooks/useAuth";
+import { toast } from 'react-toastify';
 
 const ContestDetails = () => {
     const { id } = useParams();
@@ -12,7 +13,7 @@ const ContestDetails = () => {
     const [timeRemaining, setTimeRemaining] = useState(null);
     const [isEnded, setIsEnded] = useState(false);
     const { user } = useAuth();
-
+    const [task, setTask] = useState("");
 
     const { data: registrationData } = useQuery({
         queryKey: ["contest-registered", id, user?.email],
@@ -87,12 +88,16 @@ const ContestDetails = () => {
 
     const { contestName, contestBanner, description, taskInstruction, entryPrice, prizeAmount, participants, contestCategory, winnerName, winnerPhoto, creatorName } = contest;
 
-
     const showModal = () => {
         document.getElementById("my_modal_5").showModal();
+    };
+
+    const handleSubmitTask = () => {
+        if (!task.trim()) return toast.error("Please enter your task link");
+        console.log("Submitted task:", task);
+        setTask(""); // clear after submit
+        document.getElementById("my_modal_5").close(); // close modal
     }
-
-
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
@@ -254,7 +259,9 @@ const ContestDetails = () => {
                                 {/* submit task button. will appear after registration  */}
                                 {isRegistered && !isEnded && (
                                     <div>
-                                        <button onClick={showModal} className="btn btn-primary w-full">Submit Your Task</button>
+                                        <button onClick={showModal} className="btn btn-primary w-full">
+                                            Submit Your Task
+                                        </button>
                                     </div>
                                 )}
                                 {!isEnded && <p className="text-sm text-gray-500 text-center mt-2">Join this contest and showcase your skills</p>}
@@ -273,8 +280,8 @@ const ContestDetails = () => {
             <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
                 <div className="modal-box">
                     <h3 className="font-bold text-lg">Submit necessary task link</h3>
-                    <textarea name="" id="" className="w-full border p-2 my-2"></textarea>
-                    <button  className="btn btn-primary w-full">Submit</button>
+                    <textarea value={task} onChange={(e) => setTask(e.target.value)} placeholder="Paste your task link here" className="w-full border p-3 my-2 rounded-lg focus:outline-primary" rows={4} />
+                    <button onClick={handleSubmitTask} className="btn btn-primary w-full">Submit</button>
                     <div className="modal-action">
                         <form method="dialog">
                             {/* if there is a button in form, it will close the modal */}
