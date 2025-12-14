@@ -4,10 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const MyContests = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
 
     const { data: contests = [], refetch } = useQuery({
         queryKey: ["myContests", user?.email],
@@ -16,6 +18,8 @@ const MyContests = () => {
             return res.data;
         },
     });
+
+
 
     const handleContestDelete = (contestId) => {
         Swal.fire({
@@ -78,7 +82,8 @@ const MyContests = () => {
                                     <div className="flex gap-2">
                                         {contest.approvalStatus === "pending" ? (
                                             <>
-                                                <button className="btn btn-sm btn-secondary">Edit</button>
+                                                <button onClick={() => navigate(`/dashboard/edit-contest/${contest._id}`)}
+                                                  className="btn btn-sm btn-secondary">Edit</button>
                                                 <button onClick={() => handleContestDelete(contest._id)} className="btn btn-sm btn-error">
                                                     Delete
                                                 </button>
