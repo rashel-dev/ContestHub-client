@@ -8,6 +8,17 @@ const ContestParticipants = () => {
     const { contestId } = useParams();
     const axiosSecure = useAxiosSecure();
 
+
+    const { data: contest, refetch: refetchContest } = useQuery({
+        queryKey: ["contest", contestId],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/contests/${contestId}`);
+            return res.data;
+        },
+    });
+
+    const isWinnerSelected = !!contest?.winnerName;
+
     const { data: contestParticipants = [], refetch } = useQuery({
         queryKey: ["contestPaticipants", contestId],
         queryFn: async () => {
@@ -15,6 +26,7 @@ const ContestParticipants = () => {
             return res.data;
         },
     });
+
 
     const handleSelectWinner = async (participantEmail) => {
         Swal.fire({
@@ -43,6 +55,7 @@ const ContestParticipants = () => {
                         text: "🎉 Winner has been selected! 🎉",
                         icon: "success",
                     });
+                    refetchContest();
                     refetch();
                 } catch (error) {
                     console.error("Error selecting winner:", error);
@@ -78,8 +91,8 @@ const ContestParticipants = () => {
                                 <td>{new Date(participant.submittedAt).toLocaleString()}</td>
                                 <td>{participant.submittedTask ? participant.submittedTask : "Not Submitted"}</td>
                                 <td>
-                                    <button onClick={() => handleSelectWinner(participant.userEmail)} className="btn btn-sm btn-primary">
-                                        Select as Winner
+                                    <button onClick={() => handleSelectWinner(participant.userEmail)} className="btn btn-sm btn-primary" disabled={isWinnerSelected}>
+                                        {isWinnerSelected ? "Winner already Selected" : "Select as Winner"}
                                     </button>
                                 </td>
                             </tr>
