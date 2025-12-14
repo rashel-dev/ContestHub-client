@@ -24,6 +24,15 @@ const ContestDetails = () => {
         },
     });
 
+    const { data: submissionData } = useQuery({
+        queryKey: ["task-submission", id, user?.email],
+        enabled: !!user?.email && !!id,
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/contest-entry?contestId=${id}&email=${user.email}`);
+            return res.data;
+        },
+    });
+
     const isRegistered = registrationData?.registered;
 
     // Fetch contest data
@@ -114,6 +123,10 @@ const ContestDetails = () => {
             toast.error("Something went wrong!");
         }
     }
+
+
+
+    const hasSubmitted = !!submissionData?.submittedTask;
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
@@ -275,8 +288,8 @@ const ContestDetails = () => {
                                 {/* submit task button. will appear after registration  */}
                                 {isRegistered && !isEnded && (
                                     <div>
-                                        <button onClick={showModal} className="btn btn-primary w-full">
-                                            Submit Your Task
+                                        <button onClick={showModal} className={`btn btn-primary w-full ${hasSubmitted ? "bg-gray-400 text-gray-600 cursor-not-allowed" : ""}`} disabled={hasSubmitted}>
+                                            {hasSubmitted ? "Task Submitted" : "Submit Your Task"}
                                         </button>
                                     </div>
                                 )}
@@ -296,8 +309,16 @@ const ContestDetails = () => {
             <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
                 <div className="modal-box">
                     <h3 className="font-bold text-lg">Submit necessary task link</h3>
-                    <textarea value={task} onChange={(e) => setTask(e.target.value)} placeholder="Paste your task link here" className="w-full border p-3 my-2 rounded-lg focus:outline-primary" rows={4} />
-                    <button onClick={handleSubmitTask} className="btn btn-primary w-full">Submit</button>
+                    <textarea
+                        value={task}
+                        onChange={(e) => setTask(e.target.value)}
+                        placeholder="Paste your task link here"
+                        className="w-full border p-3 my-2 rounded-lg focus:outline-primary"
+                        rows={4}
+                    />
+                    <button onClick={handleSubmitTask} className="btn btn-primary w-full">
+                        Submit
+                    </button>
                     <div className="modal-action">
                         <form method="dialog">
                             {/* if there is a button in form, it will close the modal */}
