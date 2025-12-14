@@ -27,6 +27,7 @@ const Payment = () => {
             contestName: contest.contestName,
             entryPrice: contest.entryPrice,
             userEmail: user.email,
+            userName: user.displayName,
         };
 
         const res = await axiosSecure.post("/create-checkout-session", paymentInfo);
