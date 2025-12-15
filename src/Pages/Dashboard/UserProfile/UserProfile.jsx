@@ -5,6 +5,9 @@ import { toast } from "react-toastify";
 import Particles from "../../../Components/Animation/Particles";
 import userLogo from "../../../assets/user-logo.png"
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
+
 
 const UserProfile = () => {
     const { user, updateUserProfile } = useAuth();
@@ -13,7 +16,29 @@ const UserProfile = () => {
     const [loading, setLoading] = useState(false);
 
     const axiosSecure = useAxiosSecure();
-    console.log(user);
+    
+    const { data: stats = {}, isLoading } = useQuery({
+        queryKey: ["user-stats", user?.email],
+        enabled: !!user?.email,
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/users/stats/${user.email}`);
+            return res.data;
+        },
+    });
+
+    const participated = stats.participated || 0;
+    const wins = stats.wins || 0;
+
+    const winRate = participated ? Math.round((wins / participated) * 100) : 0;
+
+    const chartData = [
+        { name: "Wins", value: wins },
+        { name: "Losses", value: participated - wins },
+    ];
+
+    const COLORS = ["#22c55e", "#ef4444"];
+
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -60,10 +85,35 @@ const UserProfile = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* win parcentage chart  */}
-                <div className="p-8 flex items-center justify-center">
-                    <h2>this is win parcentage chart section</h2>
-                </div>
+                <div className="p-8 flex flex-col items-center justify-center gap-6">
+                    <h2 className="text-2xl font-bold text-center">📊 Win Percentage</h2>
 
+                    {isLoading ? (
+                        <p className="animate-pulse">Loading stats...</p>
+                    ) : (
+                        <>
+                            <div className="w-full h-[300px]">
+                                <ResponsiveContainer>
+                                    <PieChart>
+                                        <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={70} outerRadius={110} paddingAngle={4}>
+                                            {chartData.map((_, index) => (
+                                                <Cell key={index} fill={COLORS[index]} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip />
+                                        <Legend />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+
+                            <div className="text-center space-y-1">
+                                <p className="text-lg font-semibold">🏆 Wins: {wins}</p>
+                                <p className="text-lg font-semibold">🎯 Participated: {participated}</p>
+                                <p className="text-3xl font-extrabold text-green-500">{winRate}%</p>
+                            </div>
+                        </>
+                    )}
+                </div>
 
                 {/* Edit profile section */}
                 <div className="relative z-10 min-h-screen flex items-center justify-center p-4 ">
