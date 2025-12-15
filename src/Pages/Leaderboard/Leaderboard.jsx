@@ -32,7 +32,7 @@ const Leaderboard = () => {
     return (
         <div className="max-w-7xl mx-auto px-4 py-12">
             {/* Title */}
-            <h1 className="text-4xl font-extrabold text-center mb-12">🏆 Leaderboard</h1>
+            <h1 className="text-4xl text-primary font-extrabold text-center mb-12">🏆 Leaderboard</h1>
 
             {/* ================= PODIUM ================= */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 items-end">
@@ -51,24 +51,24 @@ const Leaderboard = () => {
                 <table className="w-full">
                     <thead className="bg-gray-100">
                         <tr>
-                            <th className="py-4 px-4 text-left">Rank</th>
-                            <th className="py-4 px-4 text-left">User</th>
-                            <th className="py-4 px-4 text-center">Wins</th>
-                            <th className="py-4 px-4 text-center">Participated</th>
-                            <th className="py-4 px-4 text-center">Win Rate</th>
+                            <th className="py-4 px-4 text-left text-primary">Rank</th>
+                            <th className="py-4 px-4 text-left text-primary">User</th>
+                            <th className="py-4 px-4 text-center text-primary">Wins</th>
+                            <th className="py-4 px-4 text-center text-primary">Participated</th>
+                            <th className="py-4 px-4 text-center text-primary">Win Rate</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {restUsers.map((user, index) => (
                             <tr key={user._id} className="border-b last:border-none hover:bg-gray-50">
-                                <td className="py-4 px-4 font-semibold">#{index + 4}</td>
+                                <td className="py-4 px-4 font-semibold text-secondary">{index + 4}</td>
 
                                 <td className="py-4 px-4">
                                     <div className="flex items-center gap-3">
                                         <img src={user.photoURL} className="w-10 h-10 rounded-full" alt="" />
                                         <div>
-                                            <p className="font-semibold">{user.displayName}</p>
+                                            <p className="font-semibold text-primary">{user.displayName}</p>
                                             <p className="text-sm text-gray-500">{user.email}</p>
                                         </div>
                                     </div>
@@ -78,7 +78,7 @@ const Leaderboard = () => {
 
                                 <td className="py-4 px-4 text-center text-blue-600 font-semibold">{user.participatedCount}</td>
 
-                                <td className="py-4 px-4 text-center font-bold">{winRate(user.winCount, user.participatedCount)}%</td>
+                                <td className="py-4 px-4 text-center font-bold text-accent">{winRate(user.winCount, user.participatedCount)}%</td>
                             </tr>
                         ))}
                     </tbody>

@@ -7,7 +7,7 @@ const PodiumCard = ({ user, rank, bg, scale, crown, winRate }) => {
 
             <img src={user.photoURL} className="w-24 h-24 rounded-full mx-auto ring-4 ring-white mb-4 object-cover" alt="" />
 
-            <h3 className="text-xl font-bold">{user.displayName}</h3>
+            <h3 className="text-xl font-bold text-primary">{user.displayName}</h3>
             <p className="text-sm text-gray-500 mb-4">{user.email}</p>
 
             <div className="flex justify-center gap-6 mb-4">
@@ -19,7 +19,7 @@ const PodiumCard = ({ user, rank, bg, scale, crown, winRate }) => {
                 </div>
             </div>
 
-            <p className="font-bold text-lg">Win Rate: {winRate(user.winCount, user.participatedCount)}%</p>
+            <p className="font-bold text-lg text-primary">Win Rate: {winRate(user.winCount, user.participatedCount)}%</p>
 
             <div className="mt-3 text-2xl font-extrabold">
                 {rank === 1 && "🥇"}
