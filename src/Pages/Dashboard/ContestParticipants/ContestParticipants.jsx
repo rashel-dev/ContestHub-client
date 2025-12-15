@@ -80,7 +80,7 @@ const ContestParticipants = () => {
                             <th>Participant Email</th>
                             <th>Submitted At</th>
                             <th>Submitted Task</th>
-                            <th>Action</th>
+                            <th>Action(Winner Selection)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,7 +93,7 @@ const ContestParticipants = () => {
                                 <td>{participant.submittedTask ? participant.submittedTask : "Not Submitted"}</td>
                                 <td>
                                     <button onClick={() => handleSelectWinner(participant.userEmail)} className="btn btn-sm btn-primary" disabled={!isDeadlineOver || isWinnerSelected}>
-                                        {!isDeadlineOver ? "Deadline Not Over" : isWinnerSelected ? "Winner Selected" : "Select as Winner"}
+                                        {!isDeadlineOver ? "Winner can select after deadline" : isWinnerSelected ? "Winner Selected" : "Select as Winner"}
                                     </button>
                                 </td>
                             </tr>
