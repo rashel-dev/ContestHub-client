@@ -59,6 +59,9 @@ const Navbar = () => {
                 <NavLink to="/contest">Contest</NavLink>
             </li>
             <li>
+                <NavLink to="/leaderboard">Leaderboard</NavLink>
+            </li>
+            <li>
                 <NavLink to="/about">About</NavLink>
             </li>
         </>

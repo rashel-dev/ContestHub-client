@@ -22,6 +22,7 @@ import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancel";
 import EditContest from "../Pages/Dashboard/EditContest/EditContest";
 import ContestSubmissions from "../Pages/Dashboard/ContestParticipants/ContestParticipants";
+import Leaderboard from "../Pages/Leaderboard/Leaderboard";
 
 const router = createBrowserRouter([
     {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
             {
                 path: "/contest",
                 element: <Contest></Contest>,
+            },
+            {
+                path: "/leaderboard",
+                element: <Leaderboard></Leaderboard>,
             },
             {
                 path: "/contest/:id",
