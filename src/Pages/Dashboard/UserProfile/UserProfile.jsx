@@ -14,6 +14,8 @@ const UserProfile = () => {
     const [displayName, setDisplayName] = useState(user?.displayName || "");
     const [photoURL, setPhotoURL] = useState(user?.photoURL || "");
     const [loading, setLoading] = useState(false);
+    const [bio, setBio] = useState(user?.bio || "");
+    const [address, setAddress] = useState(user?.address || "");
 
     const axiosSecure = useAxiosSecure();
     
@@ -49,6 +51,8 @@ const UserProfile = () => {
             const updatedUser = {
                 displayName,
                 photoURL,
+                bio,
+                address,
             };
             await axiosSecure.patch(`/users?email=${user.email}`, updatedUser)
             .then(res => {
@@ -134,7 +138,7 @@ const UserProfile = () => {
                         </div>
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div>
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
+                                <label className="block text-sm font-semibold text-primary mb-2">Full Name</label>
                                 <div className="relative">
                                     <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                                     <input
@@ -147,6 +151,32 @@ const UserProfile = () => {
                                     />
                                 </div>
                             </div>
+                            {/* Bio */}
+                            <div>
+                                <label className="block text-sm font-semibold text-primary mb-2">Bio</label>
+                                <textarea
+                                    value={bio}
+                                    onChange={(e) => setBio(e.target.value)}
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-2xl focus:border-purple-500 focus:outline-none transition-colors bg-gray-50 focus:bg-white dark:bg-transparent dark:focus:bg-transparent"
+                                    rows={3}
+                                    placeholder="Write something about yourself..."
+                                    disabled={loading}
+                                />
+                            </div>
+
+                            {/* Address */}
+                            <div>
+                                <label className="block text-sm font-semibold text-primary mb-2">Address</label>
+                                <input
+                                    type="text"
+                                    value={address}
+                                    onChange={(e) => setAddress(e.target.value)}
+                                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-2xl focus:border-purple-500 focus:outline-none transition-colors bg-gray-50 focus:bg-white dark:bg-transparent dark:focus:bg-transparent"
+                                    placeholder="Enter your address"
+                                    disabled={loading}
+                                />
+                            </div>
+
                             <button
                                 type="submit"
                                 disabled={loading}
