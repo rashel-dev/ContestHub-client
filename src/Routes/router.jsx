@@ -23,7 +23,7 @@ import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancel";
 import EditContest from "../Pages/Dashboard/EditContest/EditContest";
 import ContestSubmissions from "../Pages/Dashboard/ContestParticipants/ContestParticipants";
 import Leaderboard from "../Pages/Leaderboard/Leaderboard";
-import AdminRoute from './AdminRoute';
+import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
     {
@@ -122,13 +122,17 @@ const router = createBrowserRouter([
                 path: "manage-users",
                 element: (
                     <AdminRoute>
-                        <ManageUser></ManageUser>,
+                        <ManageUser></ManageUser>
                     </AdminRoute>
                 ),
             },
             {
                 path: "manage-contests",
-                element: <ManageContests></ManageContests>,
+                element: (
+                    <AdminRoute>
+                        <ManageContests></ManageContests>
+                    </AdminRoute>
+                ),
             },
             {
                 path: "user-profile",
