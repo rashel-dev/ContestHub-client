@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { FaChevronDown, FaChevronUp, FaQuestionCircle } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 //eslint-disable-next-line
 import { motion, AnimatePresence } from "motion/react";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import faqAnimation from "../../assets/Questions and Answer.lottie";
 
 const FAQ = () => {
     const [activeIndex, setActiveIndex] = useState(null);
@@ -55,7 +57,7 @@ const FAQ = () => {
                             {/* Decorative Icon Block */}
                             <div className="hidden lg:flex items-center justify-center w-64 h-64 bg-linear-to-tr from-purple-100 to-cyan-100 dark:from-purple-900/30 dark:to-cyan-900/30 rounded-full blur-3xl absolute -top-20 -left-20 opacity-70"></div>
                             <div className="hidden lg:block relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700 transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                                <FaQuestionCircle className="text-9xl text-purple-500 mx-auto opacity-90" />
+                                <DotLottieReact src={faqAnimation} loop autoplay className="w-full h-full" />
                             </div>
                         </div>
                     </div>
