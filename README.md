@@ -1,6 +1,6 @@
 # 🏆 ContestHub - Premier Contest Platform
 
-<img src="screenShot(home).png" alt="ContestHub Home" width="700" />
+<img src="screenShot(home).png" alt="ContestHub Home" width="300" />
 
 ## 🚀 Overview
 
