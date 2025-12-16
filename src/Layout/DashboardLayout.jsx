@@ -1,130 +1,140 @@
 import React from "react";
-import { MdOutlineAssignmentInd, MdOutlineSpaceDashboard } from "react-icons/md";
-import { Link, Outlet, useNavigate } from "react-router";
+import { Link, NavLink, Outlet, useNavigate } from "react-router";
+import { LayoutDashboard, PlusCircle, ListTodo, Trophy, UserCircle, Users, ShieldCheck, Menu, LogOut, Home, Award } from "lucide-react";
 import logoImg from "../assets/logo.PNG";
-import { IoIosCreate } from "react-icons/io";
 import useTheme from "../Hooks/useTheme";
-import { FaUser, FaUserEdit } from "react-icons/fa";
-import { ShieldCheckIcon, SquarePlus } from "lucide-react";
-import { TfiCup } from "react-icons/tfi";
 import useRole from "../Hooks/useRole";
+import useAuth from "../Hooks/useAuth";
+//eslint-disable-next-line
+const SidebarItem = ({ to, icon: Icon, label, end = false }) => (
+    <NavLink
+        to={to}
+        end={end}
+        className={({ isActive }) =>
+            `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${
+                isActive
+                    ? "bg-linear-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/30"
+                    : "text-gray-600 dark:text-gray-400 hover:bg-purple-50 dark:hover:bg-gray-800 hover:text-purple-600 dark:hover:text-purple-400"
+            }`
+        }
+    >
+        <Icon className="w-5 h-5" />
+        <span className="font-medium">{label}</span>
+    </NavLink>
+);
 
 const DashboardLayout = () => {
-    // Apply saved theme from localStorage
     useTheme();
-
     const { role } = useRole();
-
+    const { user, logOut } = useAuth();
     const navigate = useNavigate();
 
-    return (
-        <div className="drawer lg:drawer-open max-w-7xl mx-auto">
-            <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content">
-                {/* Navbar */}
-                <nav className="navbar w-full bg-base-300">
-                    <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost">
-                        {/* Sidebar toggle icon */}
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            strokeLinejoin="round"
-                            strokeLinecap="round"
-                            strokeWidth="2"
-                            fill="none"
-                            stroke="currentColor"
-                            className="my-1.5 inline-block size-4"
-                        >
-                            <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
-                            <path d="M9 4v16"></path>
-                            <path d="M14 10l2 2l-2 2"></path>
-                        </svg>
-                    </label>
-                </nav>
+    const handleLogout = async () => {
+        await logOut();
+        navigate("/");
+    };
 
-                {/* Page content here */}
-                <Outlet></Outlet>
+    return (
+        <div className="drawer lg:drawer-open bg-gray-50 dark:bg-gray-900 min-h-screen font-sans max-w-7xl mx-auto">
+            <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+
+            {/* Main Content */}
+            <div className="drawer-content flex flex-col">
+                {/* Navbar */}
+                <div className="w-full navbar bg-white/80 dark:bg-gray-800/80 backdrop-blur-md sticky top-0 z-30 border-b border-gray-200 dark:border-gray-700 px-6">
+                    <div className="flex-none lg:hidden">
+                        <label htmlFor="my-drawer-2" className="btn btn-square btn-ghost text-gray-600 dark:text-gray-300">
+                            <Menu className="w-6 h-6" />
+                        </label>
+                    </div>
+                    <div className="flex-1">
+                        <h2 className="text-xl font-bold bg-clip-text text-transparent bg-linear-to-r from-purple-600 to-blue-600 hidden md:block">Dashboard Overview</h2>
+                    </div>
+                    <div className="flex-none gap-4">
+                        <div className="dropdown dropdown-end">
+                            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar ring ring-purple-500 ring-offset-2 ring-offset-base-100">
+                                <div className="w-10 rounded-full">
+                                    <img alt="User" src={user?.photoURL || "https://i.ibb.co/MgsTCcv/avater.jpg"} />
+                                </div>
+                            </div>
+                            <ul tabIndex={0} className="mt-3 z-1 p-2 shadow-2xl menu menu-sm dropdown-content bg-white dark:bg-gray-800 rounded-box w-52 border border-gray-100 dark:border-gray-700">
+                                <li>
+                                    <Link to="/dashboard/user-profile" className="justify-between">
+                                        Profile
+                                        <span className="badge badge-primary">New</span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <button onClick={handleLogout} className="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20">
+                                        Logout
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Page Content */}
+                <main className="flex-1 p-6 md:p-8 overflow-y-auto">
+                    <Outlet />
+                </main>
             </div>
 
-            <div className="drawer-side is-drawer-close:overflow-visible">
-                <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
-                <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-16 is-drawer-open:w-64">
-                    {/* Sidebar content here */}
-                    <ul className="menu w-full grow space-y-2">
-                        {/* List item */}
-                        <li>
-                            <button onClick={() => navigate("/")} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
-                                {/* Home icon */}
-                                <img src={logoImg} alt="" className="w-6 h-6" />
-                                <span className="is-drawer-close:hidden">HomePage</span>
-                            </button>
-                        </li>
-                        <li>
-                            <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Dashboard">
-                                {/* Dashboard icon */}
-                                <MdOutlineSpaceDashboard className="w-6 h-6" />
-                                <span className="is-drawer-close:hidden">Dashboard</span>
-                            </button>
-                        </li>
-                        <li>
-                            <Link to="/dashboard/create-contest" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Create Contest">
-                                {/* create contest  */}
-                                <IoIosCreate className="w-6 h-6" />
-                                <span className="is-drawer-close:hidden">Create Contest</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/dashboard/my-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Contest">
-                                {/* My contest  */}
-                                <MdOutlineAssignmentInd className="w-6 h-6" />
-                                <span className="is-drawer-close:hidden">My Contest</span>
-                            </Link>
-                        </li>
+            {/* Sidebar */}
+            <div className="drawer-side z-40">
+                <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
+                <aside className="w-72 min-h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
+                    {/* Logo Area */}
+                    <div className="p-6 flex items-center gap-3 border-b border-gray-100 dark:border-gray-800">
+                        <img src={logoImg} alt="Logo" className="w-10 h-10 rounded-lg shadow-md" />
+                        <div>
+                            <h1 className="text-xl font-bold text-gray-800 dark:text-white tracking-tight">ContestHub</h1>
+                            <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Dashboard</p>
+                        </div>
+                    </div>
 
-                        <li>
-                            <Link to="/dashboard/my-participated-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Participated Contests">
-                                {/* My contest  */}
-                                <SquarePlus className="w-6 h-6" />
-                                <span className="is-drawer-close:hidden">My Participated Contests</span>
-                            </Link>
-                        </li>
+                    {/* Navigation */}
+                    <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1">
+                        <div className="mb-6">
+                            <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Menu</p>
+                            <div className="space-y-1">
+                                <SidebarItem to="/" icon={Home} label="Home" />
+                                <SidebarItem to="/dashboard/user-profile" icon={UserCircle} label="My Profile" />
+                            </div>
+                        </div>
 
-                        <li>
-                            <Link to="/dashboard/my-winning-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Winning Contests">
-                                {/* My winning contest  */}
-                                <TfiCup className="w-6 h-6" />
-                                <span className="is-drawer-close:hidden">My Winning Contests</span>
-                            </Link>
-                        </li>
+                        <div className="mb-6">
+                            <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Contests</p>
+                            <div className="space-y-1">
+                                <SidebarItem to="/dashboard/create-contest" icon={PlusCircle} label="Create Contest" />
+                                <SidebarItem to="/dashboard/my-contests" icon={ListTodo} label="My Contests" />
+                                <SidebarItem to="/dashboard/my-participated-contests" icon={Award} label="Participated" />
+                                <SidebarItem to="/dashboard/my-winning-contests" icon={Trophy} label="Winning Contests" />
+                            </div>
+                        </div>
 
                         {role === "admin" && (
-                            <>
-                                <li>
-                                    <Link to="/dashboard/manage-users" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Users">
-                                        {/* Manage Users  */}
-                                        <FaUserEdit className="w-6 h-6" />
-                                        <span className="is-drawer-close:hidden">Manage Users</span>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to="/dashboard/manage-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Contests">
-                                        {/* Manage contest  */}
-                                        <ShieldCheckIcon className="w-6 h-6" />
-                                        <span className="is-drawer-close:hidden">Manage Contest</span>
-                                    </Link>
-                                </li>
-                            </>
+                            <div className="mb-6">
+                                <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Admin</p>
+                                <div className="space-y-1">
+                                    <SidebarItem to="/dashboard/manage-users" icon={Users} label="Manage Users" />
+                                    <SidebarItem to="/dashboard/manage-contests" icon={ShieldCheck} label="Manage Contests" />
+                                </div>
+                            </div>
                         )}
+                    </div>
 
-                        <li>
-                            <Link to="/dashboard/user-profile" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="User Profile">
-                                {/* User Profile */}
-                                <FaUser className="w-6 h-6" />
-                                <span className="is-drawer-close:hidden">User Profile</span>
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
+                    {/* Footer / Logout */}
+                    <div className="p-4 border-t border-gray-100 dark:border-gray-800">
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-3 w-full px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 rounded-xl transition-all duration-300"
+                        >
+                            <LogOut className="w-5 h-5" />
+                            <span className="font-medium">Logout</span>
+                        </button>
+                    </div>
+                </aside>
             </div>
         </div>
     );

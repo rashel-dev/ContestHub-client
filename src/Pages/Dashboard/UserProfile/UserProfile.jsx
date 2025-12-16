@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import useAuth from "../../../Hooks/useAuth";
-import { Save, User, Image } from "lucide-react";
+import { Save, User, MapPin, Trophy, Target, Award } from "lucide-react";
 import { toast } from "react-toastify";
 import Particles from "../../../Components/Animation/Particles";
-import userLogo from "../../../assets/user-logo.png"
+import userLogo from "../../../assets/user-logo.png";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
-
 
 const UserProfile = () => {
     const { user, updateUserProfile } = useAuth();
@@ -18,7 +17,7 @@ const UserProfile = () => {
     const [address, setAddress] = useState(user?.address || "");
 
     const axiosSecure = useAxiosSecure();
-    
+
     const { data: stats = {}, isLoading } = useQuery({
         queryKey: ["user-stats", user?.email],
         enabled: !!user?.email,
@@ -30,162 +29,206 @@ const UserProfile = () => {
 
     const participated = stats.participated || 0;
     const wins = stats.wins || 0;
-
     const winRate = participated ? Math.round((wins / participated) * 100) : 0;
 
-    const chartData = [
-        { name: "Wins", value: wins },
-        { name: "Losses", value: participated - wins },
-    ];
+    // Default data for when there are no stats yet
+    const defaultData = [{ name: "No Data", value: 1 }];
+    const hasData = participated > 0;
 
-    const COLORS = ["#22c55e", "#ef4444"];
+    const chartData = hasData
+        ? [
+              { name: "Wins", value: wins },
+              { name: "Participations", value: participated - wins },
+          ]
+        : defaultData;
 
-    
+    const COLORS = hasData ? ["#8b5cf6", "#e5e7eb"] : ["#f3f4f6"]; // Purple/Gray for data, Light Gray for empty
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
             await updateUserProfile({ displayName, photoURL });
-            //update user in database
             const updatedUser = {
                 displayName,
                 photoURL,
                 bio,
                 address,
             };
-            await axiosSecure.patch(`/users?email=${user.email}`, updatedUser)
-            .then(res => {
-                console.log(res.data);
-                toast.success("Profile updated successfully!");
-            })
-            .catch(err => {
-                console.error(err);
-            })
-
+            await axiosSecure
+                .patch(`/users?email=${user.email}`, updatedUser)
+                .then(() => {
+                    toast.success("Profile updated successfully!");
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         } catch (err) {
             console.error(err);
-            toast.error("Failed to update profile. Please check your inputs.");
+            toast.error("Failed to update profile.");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="relative min-h-screen overflow-hidden p-4">
-            {/* Particles Background */}
-            <div className="absolute inset-0 z-0">
+        <div className="relative min-h-[80vh] w-full max-w-6xl mx-auto">
+            {/* Background Elements */}
+            <div className="absolute inset-0 z-0 opacity-30 pointer-events-none">
                 <Particles
-                    particleColors={["#ff6347", "#ff4500"]}
-                    particleCount={100} // Lowered count for better performance
-                    particleSpread={5} // Reduced spread for tighter control
+                    particleColors={["#8b5cf6", "#ec4899"]}
+                    particleCount={50}
+                    particleSpread={10}
                     speed={0.1}
-                    particleBaseSize={50}
-                    moveParticlesOnHover={true}
-                    alphaParticles={true} // Allow transparency
-                    disableRotation={false} // Disable unnecessary rotations
+                    particleBaseSize={100}
+                    moveParticlesOnHover={false}
+                    alphaParticles={true}
+                    disableRotation={true}
                 />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* win parcentage chart  */}
-                <div className="p-8 flex flex-col items-center justify-center gap-6">
-                    <h2 className="text-2xl font-bold text-center">📊 Win Percentage</h2>
-
-                    {isLoading ? (
-                        <p className="animate-pulse">Loading stats...</p>
-                    ) : (
-                        <>
-                            <div className="w-full h-[300px]">
-                                <ResponsiveContainer>
-                                    <PieChart>
-                                        <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={70} outerRadius={110} paddingAngle={4}>
-                                            {chartData.map((_, index) => (
-                                                <Cell key={index} fill={COLORS[index]} />
-                                            ))}
-                                        </Pie>
-                                        <Tooltip />
-                                        <Legend />
-                                    </PieChart>
-                                </ResponsiveContainer>
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Left Column: Stats Card */}
+                <div className="lg:col-span-1 space-y-8">
+                    {/* Profile Summary Card */}
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-100 dark:border-gray-700 text-center relative overflow-hidden group">
+                        <div className="absolute top-0 left-0 w-full h-24 bg-linear-to-r from-purple-500 to-pink-500 opacity-10 group-hover:opacity-20 transition-opacity"></div>
+                        <div className="relative">
+                            <div className="w-32 h-32 mx-auto mb-4 rounded-full p-1 bg-linear-to-r from-purple-500 to-pink-500">
+                                <img src={photoURL || userLogo} alt="Profile" className="w-full h-full rounded-full object-cover border-4 border-white dark:border-gray-800" />
                             </div>
-
-                            <div className="text-center space-y-1">
-                                <p className="text-lg font-semibold">🏆 Wins: {wins}</p>
-                                <p className="text-lg font-semibold">🎯 Participated: {participated}</p>
-                                <p className="text-3xl font-extrabold text-green-500">{winRate}%</p>
+                            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-1">{displayName}</h2>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">{user?.email}</p>
+                            <div className="flex justify-center gap-2">
+                                <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-xs font-bold uppercase tracking-wider rounded-full">User</span>
                             </div>
-                        </>
-                    )}
+                        </div>
+                    </div>
+
+                    {/* Stats Chart */}
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
+                        <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-2">
+                            <Target className="w-5 h-5 text-purple-500" />
+                            Performance
+                        </h3>
+
+                        {isLoading ? (
+                            <div className="h-64 flex items-center justify-center">
+                                <span className="loading loading-spinner loading-md text-purple-500"></span>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="h-48 w-full relative">
+                                    <ResponsiveContainer>
+                                        <PieChart>
+                                            <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={hasData ? 5 : 0} stroke="none">
+                                                {chartData.map((_, index) => (
+                                                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                                                ))}
+                                            </Pie>
+                                            {hasData && <Tooltip contentStyle={{ backgroundColor: "#fff", borderRadius: "12px", border: "none", boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)" }} />}
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                    {/* Center Text */}
+                                    <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
+                                        <span className="text-3xl font-bold text-gray-800 dark:text-white">{winRate}%</span>
+                                        <span className="text-xs text-gray-500 uppercase">Win Rate</span>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4 mt-6">
+                                    <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-2xl text-center">
+                                        <Trophy className="w-6 h-6 text-purple-500 mx-auto mb-2" />
+                                        <p className="text-2xl font-bold text-gray-800 dark:text-white">{wins}</p>
+                                        <p className="text-xs text-gray-500">Won</p>
+                                    </div>
+                                    <div className="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-2xl text-center">
+                                        <Award className="w-6 h-6 text-gray-400 mx-auto mb-2" />
+                                        <p className="text-2xl font-bold text-gray-800 dark:text-white">{participated}</p>
+                                        <p className="text-xs text-gray-500">Joined</p>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                    </div>
                 </div>
 
-                {/* Edit profile section */}
-                <div className="relative z-10 min-h-screen flex items-center justify-center p-4 ">
-                    <div className="w-full max-w-xl bg-transparent rounded-3xl shadow-2xl p-8">
-                        <div className="flex flex-col items-center mb-8">
-                            <img src={photoURL || userLogo} alt="Profile" className="w-28 h-28 rounded-full object-cover border-4 border-purple-300 shadow-lg" />
-
-                            <input
-                                id="photoURL"
-                                type="url"
-                                value={photoURL}
-                                onChange={(e) => setPhotoURL(e.target.value)}
-                                placeholder="Paste new photo URL"
-                                className="mt-4 w-64 px-4 py-2 border border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors bg-gray-50 dark:bg-transparent"
-                                required
-                                pattern="https?://.+" // Ensure it's a valid URL format
-                            />
+                {/* Right Column: Edit Profile Form */}
+                <div className="lg:col-span-2">
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-100 dark:border-gray-700 h-full">
+                        <div className="flex items-center justify-between mb-8">
+                            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Edit Profile</h2>
+                            <button className="btn btn-ghost btn-circle">
+                                <User className="w-6 h-6 text-gray-400" />
+                            </button>
                         </div>
+
                         <form onSubmit={handleSubmit} className="space-y-6">
-                            <div>
-                                <label className="block text-sm font-semibold text-primary mb-2">Full Name</label>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Full Name</label>
+                                    <div className="relative">
+                                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                        <input
+                                            type="text"
+                                            value={displayName}
+                                            onChange={(e) => setDisplayName(e.target.value)}
+                                            className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
+                                            placeholder="Your full name"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Photo URL</label>
+                                    <div className="relative">
+                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400">📷</div>
+                                        <input
+                                            type="url"
+                                            value={photoURL}
+                                            onChange={(e) => setPhotoURL(e.target.value)}
+                                            className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
+                                            placeholder="https://..."
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
                                 <div className="relative">
-                                    <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                                     <input
                                         type="text"
-                                        value={displayName}
-                                        onChange={(e) => setDisplayName(e.target.value)}
-                                        className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:border-purple-500 focus:outline-none transition-colors bg-gray-50 focus:bg-white dark:bg-transparent dark:focus:bg-transparent"
-                                        required
-                                        disabled={loading}
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                        className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
+                                        placeholder="Your location"
                                     />
                                 </div>
                             </div>
-                            {/* Bio */}
-                            <div>
-                                <label className="block text-sm font-semibold text-primary mb-2">Bio</label>
+
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Bio</label>
                                 <textarea
                                     value={bio}
                                     onChange={(e) => setBio(e.target.value)}
-                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-2xl focus:border-purple-500 focus:outline-none transition-colors bg-gray-50 focus:bg-white dark:bg-transparent dark:focus:bg-transparent"
-                                    rows={3}
-                                    placeholder="Write something about yourself..."
-                                    disabled={loading}
+                                    rows={4}
+                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all resize-none"
+                                    placeholder="Tell us about yourself..."
                                 />
                             </div>
 
-                            {/* Address */}
-                            <div>
-                                <label className="block text-sm font-semibold text-primary mb-2">Address</label>
-                                <input
-                                    type="text"
-                                    value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
-                                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-2xl focus:border-purple-500 focus:outline-none transition-colors bg-gray-50 focus:bg-white dark:bg-transparent dark:focus:bg-transparent"
-                                    placeholder="Enter your address"
+                            <div className="pt-4">
+                                <button
+                                    type="submit"
                                     disabled={loading}
-                                />
+                                    className="w-full md:w-auto px-8 py-3 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+                                >
+                                    {loading ? <span className="loading loading-spinner loading-sm"></span> : <Save className="w-5 h-5" />}
+                                    Save Changes
+                                </button>
                             </div>
-
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className={`w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-semibold transition-all 
-                                ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-linear-to-r from-purple-600 to-pink-600 hover:shadow-xl hover:scale-105"}`}
-                            >
-                                {loading ? <div className="animate-spin w-5 h-5 border-2 border-t-2 border-white rounded-full"></div> : <Save className="w-5 h-5" />}
-                                {loading ? "Saving..." : "Save Changes"}
-                            </button>
                         </form>
                     </div>
                 </div>

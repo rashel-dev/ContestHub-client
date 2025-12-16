@@ -132,7 +132,7 @@ const Navbar = () => {
                             <div className="p-3 border-b text-gray-700 font-semibold"> Hi! {user.displayName || "User"}</div>
                             <ul className="flex flex-col">
                                 <li>
-                                    <Link to="/dashboard" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors" onClick={() => setDropdownOpen(false)}>
+                                    <Link to="/dashboard/user-profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors" onClick={() => setDropdownOpen(false)}>
                                         Dashboard
                                     </Link>
                                 </li>
