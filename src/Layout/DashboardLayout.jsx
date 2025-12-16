@@ -7,10 +7,13 @@ import useTheme from "../Hooks/useTheme";
 import { FaUser, FaUserEdit } from "react-icons/fa";
 import { ShieldCheckIcon, SquarePlus } from "lucide-react";
 import { TfiCup } from "react-icons/tfi";
+import useRole from "../Hooks/useRole";
 
 const DashboardLayout = () => {
     // Apply saved theme from localStorage
-    useTheme(); 
+    useTheme();
+
+    const { role } = useRole();
 
     const navigate = useNavigate();
 
@@ -93,21 +96,26 @@ const DashboardLayout = () => {
                                 <span className="is-drawer-close:hidden">My Winning Contests</span>
                             </Link>
                         </li>
-                        
-                        <li>
-                            <Link to="/dashboard/manage-users" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Users">
-                                {/* Manage Users  */}
-                                <FaUserEdit className="w-6 h-6" />
-                                <span className="is-drawer-close:hidden">Manage Users</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/dashboard/manage-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Contests">
-                                {/* Manage contest  */}
-                                <ShieldCheckIcon className="w-6 h-6" />
-                                <span className="is-drawer-close:hidden">Manage Contest</span>
-                            </Link>
-                        </li>
+
+                        {role.role === "admin" && (
+                            <>
+                                <li>
+                                    <Link to="/dashboard/manage-users" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Users">
+                                        {/* Manage Users  */}
+                                        <FaUserEdit className="w-6 h-6" />
+                                        <span className="is-drawer-close:hidden">Manage Users</span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/dashboard/manage-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Contests">
+                                        {/* Manage contest  */}
+                                        <ShieldCheckIcon className="w-6 h-6" />
+                                        <span className="is-drawer-close:hidden">Manage Contest</span>
+                                    </Link>
+                                </li>
+                            </>
+                        )}
+
                         <li>
                             <Link to="/dashboard/user-profile" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="User Profile">
                                 {/* User Profile */}
