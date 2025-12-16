@@ -35,8 +35,7 @@ const AuthProvider = ({ children }) => {
     //update user profile
     const updateUserProfile = (profile) => {
         return updateProfile(auth.currentUser, profile);
-    }
-
+    };
 
     //observe current user
     useEffect(() => {
@@ -47,10 +46,7 @@ const AuthProvider = ({ children }) => {
         return () => {
             unsubscribe();
         };
-    }, [])
-    
-
-
+    }, []);
 
     const authInfo = {
         user,
@@ -59,7 +55,7 @@ const AuthProvider = ({ children }) => {
         registerUser,
         signInUser,
         logOut,
-        updateUserProfile,       
+        updateUserProfile,
     };
 
     return <AuthContext value={authInfo}>{children}</AuthContext>;
