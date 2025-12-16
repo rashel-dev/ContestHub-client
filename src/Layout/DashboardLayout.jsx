@@ -106,8 +106,12 @@ const DashboardLayout = () => {
                         <div className="mb-6">
                             <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Contests</p>
                             <div className="space-y-1">
-                                <SidebarItem to="/dashboard/create-contest" icon={PlusCircle} label="Create Contest" />
-                                <SidebarItem to="/dashboard/my-contests" icon={ListTodo} label="My Contests" />
+                                {role === "creator" && (
+                                    <>
+                                        <SidebarItem to="/dashboard/create-contest" icon={PlusCircle} label="Create Contest" />
+                                        <SidebarItem to="/dashboard/my-contests" icon={ListTodo} label="My Contests" />
+                                    </>
+                                )}
                                 <SidebarItem to="/dashboard/my-participated-contests" icon={Award} label="Participated" />
                                 <SidebarItem to="/dashboard/my-winning-contests" icon={Trophy} label="Winning Contests" />
                             </div>
