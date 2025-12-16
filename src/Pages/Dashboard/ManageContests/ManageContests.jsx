@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import GridLoader from "../../../Components/Loader/GridLoader";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
@@ -6,6 +6,9 @@ import Swal from "sweetalert2";
 
 const ManageContests = () => {
     const axiosSecure = useAxiosSecure();
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
     const {
         data: contests = [],
@@ -18,6 +21,16 @@ const ManageContests = () => {
             return res.data;
         },
     });
+
+    // Pagination Logic
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = contests.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(contests.length / itemsPerPage);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     const updateContestStatus = (id, status) => {
         const updateInfo = { approvalStatus: status };
@@ -68,7 +81,6 @@ const ManageContests = () => {
             }
         });
     };
-    
 
     if (isLoading) {
         return <GridLoader></GridLoader>;
@@ -93,9 +105,9 @@ const ManageContests = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {contests.map((contest, index) => (
+                        {currentItems.map((contest, index) => (
                             <tr key={contest._id}>
-                                <th>{index + 1}</th>
+                                <th>{indexOfFirstItem + index + 1}</th>
                                 <td>{contest.contestName}</td>
                                 <td>{contest.creatorName}</td>
                                 <td>{contest.creatorEmail}</td>
@@ -116,13 +128,34 @@ const ManageContests = () => {
                                     {/* {contest.approvalStatus === "pending" && <span className="text-warning">Pending</span>} */}
                                 </td>
                                 <td>
-                                    <button onClick={() => handleDeleteContest(contest._id)}className="btn btn-sm btn-error">Delete</button>
+                                    <button onClick={() => handleDeleteContest(contest._id)} className="btn btn-sm btn-error">
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <div className="flex justify-center mt-8">
+                    <div className="join">
+                        <button className="join-item btn" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                            «
+                        </button>
+                        {[...Array(totalPages)].map((_, index) => (
+                            <button key={index + 1} className={`join-item btn ${currentPage === index + 1 ? "btn-active btn-primary" : ""}`} onClick={() => handlePageChange(index + 1)}>
+                                {index + 1}
+                            </button>
+                        ))}
+                        <button className="join-item btn" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                            »
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
