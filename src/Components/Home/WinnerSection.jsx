@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 //eslint-disable-next-line
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Trophy } from "lucide-react";
 
 const WinnerSection = () => {

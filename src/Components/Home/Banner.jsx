@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import bannerImg from "../../assets/banner1.jpg";
 import { FaSearch, FaTrophy } from "react-icons/fa";
 import { useNavigate } from "react-router";
+//eslint-disable-next-line
+import { motion } from "motion/react";
 
 const Banner = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -31,27 +33,29 @@ const Banner = () => {
             {/* Content */}
             <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
                 {/* Trophy Icon */}
-                <div className="mb-6 flex justify-center">
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 20 }} className="mb-6 flex justify-center">
                     <div className="bg-linear-to-r from-yellow-400 to-orange-500 p-4 rounded-full shadow-2xl animate-pulse">
                         <FaTrophy className="text-5xl text-white" />
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Main Heading */}
-                <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-2xl">
+                <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-2xl">
                     Welcome to <span className="bg-linear-to-r from-primary via-pink-500 to-secondary bg-clip-text text-transparent">ContestHub</span>
-                </h1>
+                </motion.h1>
 
                 {/* Subheading */}
-                <p className="text-xl md:text-2xl text-gray-100 mb-8 font-light drop-shadow-lg">Discover, Compete, and Win Amazing Prizes</p>
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 0.8 }} className="text-xl md:text-2xl text-gray-100 mb-8 font-light drop-shadow-lg">
+                    Discover, Compete, and Win Amazing Prizes
+                </motion.p>
 
                 {/* Description */}
-                <p className="text-base md:text-lg text-gray-200 mb-10 max-w-2xl mx-auto">
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 0.8 }} className="text-base md:text-lg text-gray-200 mb-10 max-w-2xl mx-auto">
                     Join thousands of participants in exciting contests. Showcase your skills, challenge yourself, and compete for incredible rewards!
-                </p>
+                </motion.p>
 
                 {/* Search Bar */}
-                <form className="mb-12" onSubmit={handleSearch}>
+                <motion.form initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.8 }} className="mb-12" onSubmit={handleSearch}>
                     <div className="relative max-w-2xl mx-auto">
                         <div className="absolute inset-0 bg-linear-to-r from-purple-500 via-pink-500 to-cyan-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
                         <div className="relative flex gap-2 items-center bg-white rounded-full shadow-2xl overflow-hidden">
@@ -71,7 +75,7 @@ const Banner = () => {
                             </button>
                         </div>
                     </div>
-                </form>
+                </motion.form>
             </div>
         </div>
     );

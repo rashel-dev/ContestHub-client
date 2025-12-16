@@ -4,6 +4,8 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import ContestCard from "../Contest/ContestCard";
 import GridLoader from "../Loader/GridLoader";
 import { Link } from "react-router";
+//eslint-disable-next-line
+import { motion } from "motion/react";
 
 const PopularContest = () => {
     const axiosSecure = useAxiosSecure();
@@ -23,14 +25,18 @@ const PopularContest = () => {
             ) : contests.length === 0 ? (
                 <p className="text-center text-gray-500">No popular contests found.</p>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                    {contests.map((contest) => (
-                        <ContestCard key={contest._id} contest={contest} />
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                    {contests.map((contest, index) => (
+                        <motion.div key={contest._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1, duration: 0.5 }}>
+                            <ContestCard contest={contest} />
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             )}
             <div className="text-center">
-                <Link to="/contest" className="btn btn-primary rounded-full mt-8 text-2xl px-8 py-6 hover:bg-accent">See All</Link>
+                <Link to="/contest" className="btn btn-primary rounded-full mt-8 text-2xl px-8 py-6 hover:bg-accent">
+                    See All
+                </Link>
             </div>
         </div>
     );

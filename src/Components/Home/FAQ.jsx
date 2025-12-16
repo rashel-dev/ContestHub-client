@@ -44,7 +44,13 @@ const FAQ = () => {
             <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     {/* Left Side: Visuals & Header */}
-                    <div className="relative">
+                    <motion.div
+                        initial={{ x: -100, opacity: 0 }}
+                        whileInView={{ x: 0, opacity: 1 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        className="relative"
+                    >
                         <div className="relative z-10">
                             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
                                 Frequently Asked <br />
@@ -60,10 +66,16 @@ const FAQ = () => {
                                 <DotLottieReact src={faqAnimation} loop autoplay className="w-full h-full" />
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Right Side: Accordion */}
-                    <div className="space-y-4">
+                    <motion.div
+                        initial={{ x: 100, opacity: 0 }}
+                        whileInView={{ x: 0, opacity: 1 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        className="space-y-4"
+                    >
                         {faqs.map((faq, index) => (
                             <div
                                 key={index}
@@ -92,7 +104,7 @@ const FAQ = () => {
                                 </AnimatePresence>
                             </div>
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </section>
