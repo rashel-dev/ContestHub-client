@@ -12,6 +12,8 @@ const Contest = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [sortBy, setSortBy] = useState("default");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 20;
     const axiosSecure = useAxiosSecure();
     const [searchParams] = useSearchParams();
 
@@ -70,10 +72,24 @@ const Contest = () => {
         }
 
         setFilteredContests(result);
+        setCurrentPage(1);
     }, [searchTerm, selectedCategory, sortBy, contests]);
 
     // Get unique categories
     const categories = ["all", ...new Set(contests.map((contest) => contest.contestCategory))];
+
+    // Pagination Logic
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredContests.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredContests.length / itemsPerPage);
+
+    const handlePageChange = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    };
 
     if (loading) {
         return <GridLoader />;
@@ -142,12 +158,33 @@ const Contest = () => {
                 </div>
 
                 {/* Contests Grid */}
-                {filteredContests.length > 0 ? (
-                    <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {filteredContests.map((contest) => (
-                            <ContestCard key={contest._id} contest={contest} />
-                        ))}
-                    </div>
+                {currentItems.length > 0 ? (
+                    <>
+                        <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            {currentItems.map((contest) => (
+                                <ContestCard key={contest._id} contest={contest} />
+                            ))}
+                        </div>
+
+                        {/* Pagination Controls */}
+                        {totalPages > 1 && (
+                            <div className="flex justify-center mt-12">
+                                <div className="join">
+                                    <button className="join-item btn" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                                        «
+                                    </button>
+                                    {[...Array(totalPages)].map((_, index) => (
+                                        <button key={index + 1} className={`join-item btn ${currentPage === index + 1 ? "btn-active btn-primary" : ""}`} onClick={() => handlePageChange(index + 1)}>
+                                            {index + 1}
+                                        </button>
+                                    ))}
+                                    <button className="join-item btn" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                                        »
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </>
                 ) : (
                     <div className="text-center py-16">
                         <div className="text-gray-400 mb-4">
