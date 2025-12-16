@@ -1,6 +1,6 @@
 # 🏆 ContestHub - Premier Contest Platform
 
-![ContestHub Home](<screenShot(home).png>)
+<img src="screenShot(home).png" alt="ContestHub Home" width="700" />
 
 ## 🚀 Overview
 
@@ -55,7 +55,7 @@
 
 ### Admin Dashboard
 
-![Admin Dashboard](<screenShot(adminDashboard).png>)
+<img src="screenShot(adminDashboard).png" alt="Admin Dashboard" width="700" />
 
 ---
 
