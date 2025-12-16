@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { signInUser } = useAuth();
     const location = useLocation();
@@ -24,26 +25,26 @@ const Login = () => {
 
     const handleSignIn = (data) => {
         const { email, password } = data;
+        setLoading(true);
         signInUser(email, password)
             .then((result) => {
                 console.log(result.user);
                 toast.success("Login successfully");
+                setLoading(false);
                 navigate(location?.state || "/");
             })
             .catch((error) => {
                 console.error(error);
+                setLoading(false);
                 if (error.code === "auth/invalid-credential") {
                     toast.error("Invalid credentials. Please check your email and password.");
-                }
-                else if (error.code === "auth/user-not-found") {
+                } else if (error.code === "auth/user-not-found") {
                     toast.error("User not found with this email");
-                }else {
+                } else {
                     toast.error("Login failed. Please try again");
                 }
             });
     };
-
-
 
     return (
         <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
@@ -156,10 +157,19 @@ const Login = () => {
 
                             {/* Submit Button */}
                             <button
-                                className="w-full bg-linear-to-r from-purple-600 to-cyan-600 text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group cursor-pointer"
+                                disabled={loading}
+                                className={`w-full bg-linear-to-r from-purple-600 to-cyan-600 text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group cursor-pointer ${
+                                    loading ? "opacity-70 cursor-not-allowed" : ""
+                                }`}
                             >
-                                <span>Sign In</span>
-                                <FaArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                {loading ? (
+                                    <span className="loading loading-spinner loading-md"></span>
+                                ) : (
+                                    <>
+                                        <span>Sign In</span>
+                                        <FaArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                    </>
+                                )}
                             </button>
                         </form>
 

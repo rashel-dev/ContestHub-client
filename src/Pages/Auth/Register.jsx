@@ -12,6 +12,7 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { registerUser, updateUserProfile } = useAuth();
     const location = useLocation();
@@ -25,6 +26,7 @@ export default function RegisterPage() {
 
     const handleRegistration = (data) => {
         const { email, password } = data;
+        setLoading(true);
 
         registerUser(email, password)
             .then(() => {
@@ -36,38 +38,48 @@ export default function RegisterPage() {
                 formData.append("image", profileImage);
 
                 //3. upload image to imgbb server
-                axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOST_KEY}`, formData).then((res) => {
-                    const photoURL = res.data.data.url;
+                axios
+                    .post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOST_KEY}`, formData)
+                    .then((res) => {
+                        const photoURL = res.data.data.url;
 
-                    //create user object to store in database
-                    const userInfo = {
-                        displayName: data.name,
-                        email: data.email,
-                        photoURL: photoURL,
-                    };
-                    axiosSecure.post("/users", userInfo).then((res) => {
-                        if (res.data.insertedId) {
-                            console.log("user info stored in database");
-                        }
-                    });
-
-                    //4. update user profile with name and photoURL to firebase
-                    const userProfile = {
-                        displayName: data.name,
-                        photoURL: photoURL,
-                    };
-                    updateUserProfile(userProfile)
-                        .then(() => {
-                            toast.success("Account created successfully");
-                            navigate(location?.state || "/");
-                        })
-                        .catch((error) => {
-                            // console.log(error);
-                            toast.error(error.message);
+                        //create user object to store in database
+                        const userInfo = {
+                            displayName: data.name,
+                            email: data.email,
+                            photoURL: photoURL,
+                        };
+                        axiosSecure.post("/users", userInfo).then((res) => {
+                            if (res.data.insertedId) {
+                                console.log("user info stored in database");
+                            }
                         });
-                });
+
+                        //4. update user profile with name and photoURL to firebase
+                        const userProfile = {
+                            displayName: data.name,
+                            photoURL: photoURL,
+                        };
+                        updateUserProfile(userProfile)
+                            .then(() => {
+                                toast.success("Account created successfully");
+                                setLoading(false);
+                                navigate(location?.state || "/");
+                            })
+                            .catch((error) => {
+                                // console.log(error);
+                                setLoading(false);
+                                toast.error(error.message);
+                            });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        setLoading(false);
+                        toast.error("Image upload failed");
+                    });
             })
             .catch((error) => {
+                setLoading(false);
                 if (error.code === "auth/email-already-in-use") {
                     toast.error("User already exists with this email. Please try another email!");
                 } else {
@@ -234,10 +246,19 @@ export default function RegisterPage() {
                             {/* Submit Button */}
                             <button
                                 onClick={handleSubmit}
-                                className="w-full bg-linear-to-r from-purple-600 to-cyan-600 text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group"
+                                disabled={loading}
+                                className={`w-full bg-linear-to-r from-purple-600 to-cyan-600 text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group ${
+                                    loading ? "opacity-70 cursor-not-allowed" : ""
+                                }`}
                             >
-                                <span>Create Account</span>
-                                <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                                {loading ? (
+                                    <span className="loading loading-spinner loading-md"></span>
+                                ) : (
+                                    <>
+                                        <span>Create Account</span>
+                                        <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                                    </>
+                                )}
                             </button>
                         </form>
 
