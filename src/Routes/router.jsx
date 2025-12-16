@@ -24,6 +24,7 @@ import EditContest from "../Pages/Dashboard/EditContest/EditContest";
 import ContestSubmissions from "../Pages/Dashboard/ContestParticipants/ContestParticipants";
 import Leaderboard from "../Pages/Leaderboard/Leaderboard";
 import AdminRoute from "./AdminRoute";
+import ContactUs from "../Pages/ContactUs/ContactUs";
 
 const router = createBrowserRouter([
     {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
             {
                 path: "/about",
                 element: <AboutUs></AboutUs>,
+            },
+            {
+                path: "/contact",
+                element: <ContactUs></ContactUs>,
             },
             {
                 path: "/payment/:contestId",
