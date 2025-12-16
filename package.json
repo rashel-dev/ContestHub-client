@@ -17,6 +17,7 @@
     "daisyui": "^5.5.8",
     "eslint-plugin-react": "^7.37.5",
     "firebase": "^12.6.0",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^0.559.0",
     "motion": "^12.23.26",
     "ogl": "^1.0.11",

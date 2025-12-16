@@ -23,6 +23,7 @@ import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancel";
 import EditContest from "../Pages/Dashboard/EditContest/EditContest";
 import ContestSubmissions from "../Pages/Dashboard/ContestParticipants/ContestParticipants";
 import Leaderboard from "../Pages/Leaderboard/Leaderboard";
+import AdminRoute from './AdminRoute';
 
 const router = createBrowserRouter([
     {
@@ -111,15 +112,19 @@ const router = createBrowserRouter([
             },
             {
                 path: "see-submissions/:contestId",
-                element: <ContestSubmissions></ContestSubmissions>
+                element: <ContestSubmissions></ContestSubmissions>,
             },
             {
                 path: "edit-contest/:contestId",
-                element: <EditContest></EditContest>
+                element: <EditContest></EditContest>,
             },
             {
                 path: "manage-users",
-                element: <ManageUser></ManageUser>,
+                element: (
+                    <AdminRoute>
+                        <ManageUser></ManageUser>,
+                    </AdminRoute>
+                ),
             },
             {
                 path: "manage-contests",

@@ -59,6 +59,7 @@ const ManageUser = () => {
 
                         // Refetch users
                         refetch();
+                        window.location.reload();
                     }
                 } catch (err) {
                     Swal.fire({

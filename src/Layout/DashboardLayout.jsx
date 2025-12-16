@@ -97,7 +97,7 @@ const DashboardLayout = () => {
                             </Link>
                         </li>
 
-                        {role.role === "admin" && (
+                        {role === "admin" && (
                             <>
                                 <li>
                                     <Link to="/dashboard/manage-users" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Users">
