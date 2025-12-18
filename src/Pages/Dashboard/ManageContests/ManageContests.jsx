@@ -111,7 +111,7 @@ const ManageContests = () => {
                                 <td>{contest.contestName}</td>
                                 <td>{contest.creatorName}</td>
                                 <td>{contest.creatorEmail}</td>
-                                <td>
+                                <td className="flex items-center justify-center">
                                     {/* Action buttons can be added here */}
                                     {contest.approvalStatus === "pending" && (
                                         <>

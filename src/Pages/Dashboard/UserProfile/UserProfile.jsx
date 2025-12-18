@@ -119,18 +119,18 @@ const UserProfile = () => {
                             <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">{user?.email}</p>
                             <div className="flex justify-center gap-2">
                                 <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-xs font-bold uppercase tracking-wider rounded-full">
-                                    {dbUser?.role || user?.role || "User"}
+                                    {dbUser?.role || "User"}
                                 </span>
                             </div>
                         </div>
                     </div>
+                    
                     {/* Stats Chart */}
                     <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
                         <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-2">
                             <Target className="w-5 h-5 text-purple-500" />
                             Performance
                         </h3>
-
                         {isLoading ? (
                             <div className="h-64 flex items-center justify-center">
                                 <span className="loading loading-spinner loading-md text-purple-500"></span>

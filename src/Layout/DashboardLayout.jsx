@@ -83,7 +83,7 @@ const DashboardLayout = () => {
             {/* Sidebar */}
             <div className="drawer-side z-40">
                 <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-                <aside className="w-72 min-h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
+                <aside className="w-64 min-h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
                     {/* Logo Area */}
                     <div className="p-6 flex items-center gap-3 border-b border-gray-100 dark:border-gray-800">
                         <img src={logoImg} alt="Logo" className="w-10 h-10 rounded-lg shadow-md" />
