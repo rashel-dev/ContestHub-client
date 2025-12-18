@@ -18,25 +18,35 @@ const PopularContest = () => {
     });
 
     return (
-        <div className="py-12 px-4">
-            <h2 className="text-3xl font-bold text-primary mb-8 text-center">Popular Contests</h2>
-            {isLoading ? (
-                <GridLoader />
-            ) : contests.length === 0 ? (
-                <p className="text-center text-gray-500">No popular contests found.</p>
-            ) : (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                    {contests.map((contest, index) => (
-                        <motion.div key={contest._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1, duration: 0.5 }}>
-                            <ContestCard contest={contest} />
-                        </motion.div>
-                    ))}
-                </motion.div>
-            )}
-            <div className="text-center">
-                <Link to="/contest" className="btn btn-primary rounded-full mt-8 text-2xl px-8 py-6 hover:bg-accent">
-                    See All
-                </Link>
+        <div className="py-16 px-4 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+            <div className="max-w-7xl mx-auto">
+                <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 leading-tight">
+                    Our <span className="bg-linear-to-r via-pink-500 from-primary to-secondary bg-clip-text text-transparent">Popular Contests</span>
+                </h2>
+                {isLoading ? (
+                    <GridLoader />
+                ) : contests.length === 0 ? (
+                    <div className="text-center py-10">
+                        <p className="text-xl text-gray-600 dark:text-gray-400">No popular contests found at the moment.</p>
+                        <p className="text-gray-500 dark:text-gray-500 mt-2">Check back later for exciting new contests!</p>
+                    </div>
+                ) : (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                        {contests.map((contest, index) => (
+                            <motion.div key={contest._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1, duration: 0.5 }}>
+                                <ContestCard contest={contest} />
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                )}
+                <div className="text-center mt-16">
+                    <Link
+                        to="/contest"
+                        className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-linear-to-r from-purple-600 to-cyan-600 rounded-full shadow-lg hover:from-purple-700 hover:to-cyan-700 transition-all duration-300 transform hover:scale-105"
+                    >
+                        See All
+                    </Link>
+                </div>
             </div>
         </div>
     );
