@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Upload, Calendar, DollarSign, Award, FileText, Type } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
@@ -8,6 +8,7 @@ import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const CreateContest = () => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const { user } = useAuth();
     const {
         register,
@@ -37,6 +38,7 @@ const CreateContest = () => {
             confirmButtonText: "Yes, create it!",
         }).then((result) => {
             if (result.isConfirmed) {
+                setIsSubmitting(true);
                 // save the contest info to the database
                 axiosSecure
                     .post("/contests", data)
@@ -55,25 +57,28 @@ const CreateContest = () => {
                             title: "Error!",
                             text: "There was an error creating your contest. Please try again later.",
                             icon: "error",
-                        })
+                        });
                         console.error("Error creating contest:", error);
+                    })
+                    .finally(() => {
+                        setIsSubmitting(false);
                     });
             }
         });
     };
 
     return (
-        <div className="min-h-screen dark:bg-gray-600 py-8 px-4">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8 px-4 transition-colors duration-300">
             <div className="max-w-4xl mx-auto">
-                <div className="bg-white rounded-2xl shadow-xl p-8">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
                     <div className="mb-8">
-                        <h1 className="text-3xl font-bold text-primary mb-2">Create New Contest</h1>
-                        <p className="text-gray-600">Fill in the details to launch your contest</p>
+                        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Create New Contest</h1>
+                        <p className="text-gray-600 dark:text-gray-400">Fill in the details to launch your contest</p>
                     </div>
 
                     <form onSubmit={handleSubmit(handleContestCreation)} className="space-y-6">
                         <div>
-                            <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+                            <label className="flex items-center text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                 <Type className="w-4 h-4 mr-2" />
                                 Contest Name
                             </label>
@@ -81,13 +86,13 @@ const CreateContest = () => {
                                 type="text"
                                 {...register("contestName", { required: true })}
                                 placeholder="Enter contest name"
-                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                className="w-full px-4 py-3 border bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             />
                         </div>
                         {errors.contestName && <p className="text-red-500 text-sm mt-2">Please enter a contest name</p>}
 
                         <div>
-                            <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+                            <label className="flex items-center text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                 <Upload className="w-4 h-4 mr-2" />
                                 Contest banner URL
                             </label>
@@ -95,13 +100,13 @@ const CreateContest = () => {
                                 type="url"
                                 {...register("contestBanner", { required: true })}
                                 placeholder="Enter contest banner URL"
-                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                className="w-full px-4 py-3 border bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             />
                         </div>
                         {errors.contestBanner && <p className="text-red-500 text-sm mt-2">Please upload a contest banner</p>}
 
                         <div>
-                            <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+                            <label className="flex items-center text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                 <FileText className="w-4 h-4 mr-2" />
                                 Description
                             </label>
@@ -109,13 +114,13 @@ const CreateContest = () => {
                                 {...register("description", { required: true })}
                                 placeholder="Describe your contest"
                                 rows="4"
-                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
+                                className="w-full px-4 py-3 border bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
                             />
                         </div>
                         {errors.description && <p className="text-red-500 text-sm mt-2">Please enter a description</p>}
 
                         <div>
-                            <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+                            <label className="flex items-center text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                 <DollarSign className="w-4 h-4 mr-2" />
                                 Entry Price
                             </label>
@@ -123,12 +128,12 @@ const CreateContest = () => {
                                 type="number"
                                 {...register("entryPrice", { required: true })}
                                 placeholder="00"
-                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                className="w-full px-4 py-3 border bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             />
                         </div>
                         {errors.entryPrice && <p className="text-red-500 text-sm mt-2">Please enter an entry price</p>}
                         <div>
-                            <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+                            <label className="flex items-center text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                 <Award className="w-4 h-4 mr-2" />
                                 Prize Amount
                             </label>
@@ -136,13 +141,13 @@ const CreateContest = () => {
                                 type="number"
                                 {...register("prizeAmount", { required: true })}
                                 placeholder="00"
-                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                className="w-full px-4 py-3 border bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             />
                         </div>
                         {errors.prizeAmount && <p className="text-red-500 text-sm mt-2">Please enter a prize amount</p>}
 
                         <div>
-                            <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+                            <label className="flex items-center text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                 <FileText className="w-4 h-4 mr-2" />
                                 Task Instruction
                             </label>
@@ -150,16 +155,16 @@ const CreateContest = () => {
                                 {...register("taskInstruction", { required: true })}
                                 placeholder="Provide detailed instructions for participants"
                                 rows="4"
-                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
+                                className="w-full px-4 py-3 border bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition resize-none"
                             />
                             {errors.taskInstruction && <p className="text-red-500 text-sm mt-2">Please enter a task instruction</p>}
                         </div>
 
                         <div>
-                            <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">Contest Type</label>
+                            <label className="flex items-center text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Contest Type</label>
                             <select
                                 {...register("contestCategory", { required: true })}
-                                className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                className="w-full px-4 py-3 border bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                             >
                                 <option value="">Select contest type</option>
                                 <option value="Education">Education</option>
@@ -177,7 +182,7 @@ const CreateContest = () => {
                         </div>
 
                         <div>
-                            <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+                            <label className="flex items-center text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                 <Calendar className="w-4 h-4 mr-2" />
                                 Deadline
                             </label>
@@ -195,7 +200,7 @@ const CreateContest = () => {
                                         dateFormat="MMMM d, yyyy h:mm aa"
                                         minDate={new Date()}
                                         placeholderText="Select deadline date and time"
-                                        className="w-full px-4 py-3 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                                        className="w-full px-4 py-3 border bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
                                         wrapperClassName="w-full"
                                     />
                                 )}
@@ -206,9 +211,10 @@ const CreateContest = () => {
                         <div className="pt-4">
                             <button
                                 type="submit"
-                                className="w-full bg-linear-to-r from-primary/70 to-accent text-white font-semibold py-4 rounded-lg hover:from-purple-700 hover:to-blue-700 transition duration-300 shadow-lg hover:shadow-xl"
+                                disabled={isSubmitting}
+                                className="w-full bg-linear-to-r from-purple-600 to-blue-600 text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300 transform hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-70"
                             >
-                                Create Contest
+                                {isSubmitting ? <span className="loading loading-spinner"></span> : "Create Contest"}
                             </button>
                         </div>
                     </form>
