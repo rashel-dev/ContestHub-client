@@ -68,7 +68,7 @@ const Leaderboard = () => {
                                     <div className="flex items-center gap-3">
                                         <img src={user.photoURL} className="w-10 h-10 rounded-full" alt="" />
                                         <div>
-                                            <p className="font-semibold text-primary dark:text-white">{user.displayName}</p>
+                                            <p className="font-semibold text-primary">{user.displayName}</p>
                                             <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
                                         </div>
                                     </div>

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import GridLoader from "../../Components/Loader/GridLoader";
 import useAuth from "../../Hooks/useAuth";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const ContestDetails = () => {
     const { id } = useParams();
@@ -24,13 +24,12 @@ const ContestDetails = () => {
         },
     });
 
-    const { data: submissionData, refetch: refetchSubmission} = useQuery({
+    const { data: submissionData, refetch: refetchSubmission } = useQuery({
         queryKey: ["task-submission", id, user?.email],
         enabled: !!user?.email && !!id,
         queryFn: async () => {
             const res = await axiosSecure.get(`/contest-entry?contestId=${id}&email=${user.email}`);
             return res.data;
-
         },
     });
 
@@ -104,7 +103,7 @@ const ContestDetails = () => {
 
     const handleSubmitTask = async () => {
         if (!task.trim()) return toast.error("Please enter your task link");
-        
+
         try {
             const res = await axiosSecure.patch("/submit-task", {
                 contestId: id,
@@ -124,14 +123,12 @@ const ContestDetails = () => {
             console.error(error);
             toast.error("Something went wrong!");
         }
-    }
-
-
+    };
 
     const hasSubmitted = !!submissionData?.submittedTask;
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 transition-colors duration-300">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Contest Banner */}
                 <div className="relative w-full h-96 rounded-2xl overflow-hidden shadow-2xl mb-8">
@@ -141,7 +138,7 @@ const ContestDetails = () => {
                         <div className="flex items-center gap-3 mb-3">
                             <span className="bg-primary text-white px-4 py-1.5 rounded-full text-sm font-semibold">{contestCategory}</span>
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">{contestName}</h1>
+                        <h1 className="text-4xl md:text-5xl font-bold text-white dark:text-primary drop-shadow-lg">{contestName}</h1>
                     </div>
                 </div>
 
@@ -151,44 +148,44 @@ const ContestDetails = () => {
                         {/* Contest Info Cards */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                             {/* Participants */}
-                            <div className="bg-white rounded-xl p-4 shadow-md">
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md border border-gray-100 dark:border-gray-700">
                                 <div className="flex items-center gap-2 mb-2">
                                     <Users className="w-5 h-5 text-green-600" />
-                                    <span className="text-sm text-gray-500">Participants</span>
+                                    <span className="text-sm text-gray-500 dark:text-gray-400">Participants</span>
                                 </div>
-                                <p className="text-2xl font-bold text-gray-900">{participants || 0}</p>
+                                <p className="text-2xl font-bold text-gray-900 dark:text-white">{participants || 0}</p>
                             </div>
 
                             {/* Entry Price */}
-                            <div className="bg-white rounded-xl p-4 shadow-md">
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md border border-gray-100 dark:border-gray-700">
                                 <div className="flex items-center gap-2 mb-2">
                                     <DollarSign className="w-5 h-5 text-primary" />
-                                    <span className="text-sm text-gray-500">Entry Fee</span>
+                                    <span className="text-sm text-gray-500 dark:text-gray-400">Entry Fee</span>
                                 </div>
-                                <p className="text-2xl font-bold text-gray-900">${entryPrice}</p>
+                                <p className="text-2xl font-bold text-gray-900 dark:text-white">${entryPrice}</p>
                             </div>
 
                             {/* Prize Amount */}
-                            <div className="bg-white rounded-xl p-4 shadow-md">
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md border border-gray-100 dark:border-gray-700">
                                 <div className="flex items-center gap-2 mb-2">
                                     <Award className="w-5 h-5 text-accent" />
-                                    <span className="text-sm text-gray-500">Prize</span>
+                                    <span className="text-sm text-gray-500 dark:text-gray-400">Prize</span>
                                 </div>
-                                <p className="text-2xl font-bold text-gray-900">${prizeAmount}</p>
+                                <p className="text-2xl font-bold text-gray-900 dark:text-white">${prizeAmount}</p>
                             </div>
 
                             {/* Creator */}
-                            <div className="bg-white rounded-xl p-4 shadow-md">
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md border border-gray-100 dark:border-gray-700">
                                 <div className="flex items-center gap-2 mb-2">
                                     <User className="w-5 h-5 text-blue-600" />
-                                    <span className="text-sm text-gray-500">Creator</span>
+                                    <span className="text-sm text-gray-500 dark:text-gray-400">Creator</span>
                                 </div>
-                                <p className="text-lg font-semibold text-gray-900 truncate">{creatorName}</p>
+                                <p className="text-lg font-semibold text-gray-900 dark:text-white truncate">{creatorName}</p>
                             </div>
                         </div>
 
                         {/* Deadline Countdown */}
-                        <div className="bg-linear-to-r from-primary to-accent rounded-xl p-4 sm:p-6 shadow-lg">
+                        <div className="bg-linear-to-r from-primary to-accent rounded-xl p-4 sm:p-6 shadow-lg shadow-purple-500/20">
                             <div className="flex items-center gap-3 mb-4">
                                 <Clock className="w-6 h-6 text-white" />
                                 <h3 className="text-xl font-bold text-white">Deadline</h3>
@@ -222,23 +219,23 @@ const ContestDetails = () => {
                         </div>
 
                         {/* Description */}
-                        <div className="bg-white rounded-xl p-6 shadow-md">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700">
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                                 <FileText className="w-6 h-6 text-primary" />
                                 Contest Description
                             </h2>
-                            <p className="text-gray-700 leading-relaxed whitespace-pre-line">{description}</p>
+                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">{description}</p>
                         </div>
 
                         {/* Task Instructions */}
                         {taskInstruction && (
-                            <div className="bg-white rounded-xl p-6 shadow-md">
-                                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700">
+                                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                                     <FileText className="w-6 h-6 text-accent" />
                                     Task Instructions
                                 </h2>
-                                <div className="prose max-w-none">
-                                    <p className="text-gray-700 leading-relaxed whitespace-pre-line">{taskInstruction}</p>
+                                <div className="prose dark:prose-invert max-w-none">
+                                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">{taskInstruction}</p>
                                 </div>
                             </div>
                         )}
@@ -248,7 +245,7 @@ const ContestDetails = () => {
                     <div className="space-y-6">
                         {/* Winner Section */}
                         {winnerName && winnerPhoto && (
-                            <div className="bg-linear-to-br from-yellow-400 to-orange-500 rounded-xl p-6 shadow-lg">
+                            <div className="bg-linear-to-br from-yellow-400 to-orange-500 rounded-xl p-6 shadow-lg shadow-yellow-500/20">
                                 <div className="flex items-center gap-3 mb-4">
                                     <Trophy className="w-6 h-6 text-white" />
                                     <h3 className="text-xl font-bold text-white">Winner</h3>
@@ -264,15 +261,15 @@ const ContestDetails = () => {
                         )}
 
                         {/* Register Button */}
-                        <div className="bg-white rounded-xl p-6 shadow-md sticky top-6">
-                            <h3 className="text-xl font-bold text-gray-900 mb-4">Join This Contest</h3>
+                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md sticky top-28 border border-gray-100 dark:border-gray-700">
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Join This Contest</h3>
                             <div className="space-y-4">
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <span className="text-gray-600">Entry Fee</span>
+                                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                                    <span className="text-gray-600 dark:text-gray-400">Entry Fee</span>
                                     <span className="text-xl font-bold text-primary">${entryPrice}</span>
                                 </div>
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <span className="text-gray-600">Prize Pool</span>
+                                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                                    <span className="text-gray-600 dark:text-gray-400">Prize Pool</span>
                                     <span className="text-xl font-bold text-accent">${prizeAmount}</span>
                                 </div>
                                 <Link
@@ -280,7 +277,7 @@ const ContestDetails = () => {
                                     onClick={(e) => {
                                         if (isEnded || isRegistered) e.preventDefault();
                                     }}
-                                    className={`btn w-full py-3 font-semibold transition ${
+                                    className={`btn w-full py-3 font-semibold transition-all duration-300 ${
                                         isEnded || isRegistered ? "bg-gray-400 text-gray-600 cursor-not-allowed" : "bg-linear-to-r from-primary to-accent text-white hover:opacity-90"
                                     }`}
                                 >
@@ -290,12 +287,16 @@ const ContestDetails = () => {
                                 {/* submit task button. will appear after registration  */}
                                 {isRegistered && !isEnded && (
                                     <div>
-                                        <button onClick={showModal} className={`btn btn-primary w-full ${hasSubmitted ? "bg-gray-400 text-gray-600 cursor-not-allowed" : ""}`} disabled={hasSubmitted}>
+                                        <button
+                                            onClick={showModal}
+                                            className={`btn btn-primary w-full ${hasSubmitted ? "bg-gray-400 dark:bg-gray-600 text-gray-600 dark:text-gray-400 cursor-not-allowed" : ""}`}
+                                            disabled={hasSubmitted}
+                                        >
                                             {hasSubmitted ? "Task Submitted" : "Submit Your Task"}
                                         </button>
                                     </div>
                                 )}
-                                {!isEnded && <p className="text-sm text-gray-500 text-center mt-2">Join this contest and showcase your skills</p>}
+                                {!isEnded && <p className="text-sm text-gray-500 dark:text-gray-400 text-center mt-2">Join this contest and showcase your skills</p>}
                             </div>
                         </div>
                     </div>
@@ -303,19 +304,14 @@ const ContestDetails = () => {
             </div>
 
             {/* modal  */}
-
-            {/* Open the modal using document.getElementById('ID').showModal() method */}
-            {/* <button className="btn" onClick={() => document.getElementById("my_modal_5").showModal()}>
-                open modal
-            </button> */}
             <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-                <div className="modal-box">
-                    <h3 className="font-bold text-lg">Submit necessary task link</h3>
+                <div className="modal-box bg-white dark:bg-gray-800">
+                    <h3 className="font-bold text-lg text-gray-900 dark:text-white">Submit necessary task link</h3>
                     <textarea
                         value={task}
                         onChange={(e) => setTask(e.target.value)}
                         placeholder="Paste your task link here"
-                        className="w-full border p-3 my-2 rounded-lg focus:outline-primary"
+                        className="w-full border p-3 my-4 rounded-lg focus:outline-primary bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200"
                         rows={4}
                     />
                     <button onClick={handleSubmitTask} className="btn btn-primary w-full">
@@ -323,7 +319,6 @@ const ContestDetails = () => {
                     </button>
                     <div className="modal-action">
                         <form method="dialog">
-                            {/* if there is a button in form, it will close the modal */}
                             <button className="btn">Close</button>
                         </form>
                     </div>
