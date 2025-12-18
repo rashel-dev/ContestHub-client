@@ -47,29 +47,29 @@ const Leaderboard = () => {
             </div>
 
             {/* ================= TABLE ================= */}
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
                 <table className="w-full">
-                    <thead className="bg-gray-100">
+                    <thead className="bg-gray-100 dark:bg-gray-700">
                         <tr>
-                            <th className="py-4 px-4 text-left text-primary">Rank</th>
-                            <th className="py-4 px-4 text-left text-primary">User</th>
-                            <th className="py-4 px-4 text-center text-primary">Wins</th>
-                            <th className="py-4 px-4 text-center text-primary">Participated</th>
-                            <th className="py-4 px-4 text-center text-primary">Win Rate</th>
+                            <th className="py-4 px-4 text-left text-primary dark:text-gray-300">Rank</th>
+                            <th className="py-4 px-4 text-left text-primary dark:text-gray-300">User</th>
+                            <th className="py-4 px-4 text-center text-primary dark:text-gray-300">Wins</th>
+                            <th className="py-4 px-4 text-center text-primary dark:text-gray-300">Participated</th>
+                            <th className="py-4 px-4 text-center text-primary dark:text-gray-300">Win Rate</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {restUsers.map((user, index) => (
-                            <tr key={user._id} className="border-b last:border-none hover:bg-gray-50">
-                                <td className="py-4 px-4 font-semibold text-secondary">{index + 4}</td>
+                            <tr key={user._id} className="border-b border-gray-200 dark:border-gray-700 last:border-none hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                <td className="py-4 px-4 font-semibold text-secondary dark:text-gray-400">{index + 4}</td>
 
                                 <td className="py-4 px-4">
                                     <div className="flex items-center gap-3">
                                         <img src={user.photoURL} className="w-10 h-10 rounded-full" alt="" />
                                         <div>
-                                            <p className="font-semibold text-primary">{user.displayName}</p>
-                                            <p className="text-sm text-gray-500">{user.email}</p>
+                                            <p className="font-semibold text-primary dark:text-white">{user.displayName}</p>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
                                         </div>
                                     </div>
                                 </td>
@@ -78,7 +78,7 @@ const Leaderboard = () => {
 
                                 <td className="py-4 px-4 text-center text-blue-600 font-semibold">{user.participatedCount}</td>
 
-                                <td className="py-4 px-4 text-center font-bold text-accent">{winRate(user.winCount, user.participatedCount)}%</td>
+                                <td className="py-4 px-4 text-center font-bold text-accent dark:text-purple-400">{winRate(user.winCount, user.participatedCount)}%</td>
                             </tr>
                         ))}
                     </tbody>
