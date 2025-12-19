@@ -89,7 +89,7 @@ const ContestParticipants = () => {
                                 <th>{index + 1}</th>
                                 <td>{participant?.participantName ? participant.participantName : "Mohammad Rashel"}</td>
                                 <td>{participant.userEmail}</td>
-                                <td>{new Date(participant.submittedAt).toLocaleString()}</td>
+                                <td>{participant.submittedAt ? new Date(participant.submittedAt).toLocaleString() : "Not Submitted"}</td>
                                 <td>{participant.submittedTask ? participant.submittedTask : "Not Submitted"}</td>
                                 <td>
                                     <button onClick={() => handleSelectWinner(participant.userEmail)} className="btn btn-sm btn-primary" disabled={!isDeadlineOver || isWinnerSelected}>

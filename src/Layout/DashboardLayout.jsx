@@ -99,12 +99,12 @@ const DashboardLayout = () => {
                             <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Menu</p>
                             <div className="space-y-1">
                                 <SidebarItem to="/" icon={Home} label="Home" />
-                                <SidebarItem to="/dashboard/user-profile" icon={UserCircle} label="My Profile" />
+                                {role === "user" && <SidebarItem to="/dashboard/user-profile" icon={UserCircle} label="My Profile" />}
                             </div>
                         </div>
 
                         <div className="mb-6">
-                            <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Contests</p>
+                            {role !== "admin" && <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Contests</p>}
                             <div className="space-y-1">
                                 {role === "creator" && (
                                     <>
@@ -112,8 +112,12 @@ const DashboardLayout = () => {
                                         <SidebarItem to="/dashboard/my-contests" icon={ListTodo} label="My Contests" />
                                     </>
                                 )}
-                                <SidebarItem to="/dashboard/my-participated-contests" icon={Award} label="Participated" />
-                                <SidebarItem to="/dashboard/my-winning-contests" icon={Trophy} label="Winning Contests" />
+                                {role === "user" && (
+                                    <>
+                                        <SidebarItem to="/dashboard/my-participated-contests" icon={Award} label="Participated" />
+                                        <SidebarItem to="/dashboard/my-winning-contests" icon={Trophy} label="Winning Contests" />
+                                    </>
+                                )}
                             </div>
                         </div>
 
