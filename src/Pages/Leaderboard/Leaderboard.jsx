@@ -32,23 +32,23 @@ const Leaderboard = () => {
     return (
         <div className="max-w-7xl mx-auto px-4 py-12">
             {/* Title */}
-            <h1 className="text-4xl text-primary font-extrabold text-center mb-12">🏆 Leaderboard</h1>
+            <h1 className="text-2xl md:text-4xl text-primary font-extrabold text-center mb-8 md:mb-12">🏆 Leaderboard</h1>
 
             {/* ================= PODIUM ================= */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 items-end">
                 {/* 🥈 Second */}
-                {topThree[1] && <PodiumCard user={topThree[1]} rank={2} scale="scale-95" bg="bg-gray-100" winRate={winRate} />}
+                {topThree[1] && <PodiumCard user={topThree[1]} rank={2} scale="scale-95" bg="bg-gray-100" winRate={winRate} className="order-2 md:order-0" />}
 
                 {/* 🥇 First */}
-                {topThree[0] && <PodiumCard user={topThree[0]} rank={1} scale="scale-105" bg="bg-yellow-100" crown winRate={winRate} />}
+                {topThree[0] && <PodiumCard user={topThree[0]} rank={1} scale="scale-105" bg="bg-yellow-100" crown winRate={winRate} className="order-1 md:order-0" />}
 
                 {/* 🥉 Third */}
-                {topThree[2] && <PodiumCard user={topThree[2]} rank={3} scale="scale-90" bg="bg-orange-100" winRate={winRate} />}
+                {topThree[2] && <PodiumCard user={topThree[2]} rank={3} scale="scale-90" bg="bg-orange-100" winRate={winRate} className="order-3 md:order-0" />}
             </div>
 
             {/* ================= TABLE ================= */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
-                <table className="w-full">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-x-auto">
+                <table className="w-full min-w-[600px]">
                     <thead className="bg-gray-100 dark:bg-gray-700">
                         <tr>
                             <th className="py-4 px-4 text-left text-primary dark:text-gray-300">Rank</th>
