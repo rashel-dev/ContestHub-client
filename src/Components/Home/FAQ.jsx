@@ -45,9 +45,9 @@ const FAQ = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     {/* Left Side: Visuals & Header */}
                     <motion.div
-                        initial={{ x: -100, opacity: 0 }}
+                        initial={{ x: 0, opacity: 0 }}
                         whileInView={{ x: 0, opacity: 1 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        transition={{ duration: 2, ease: "easeOut" }}
                         viewport={{ once: true, amount: 0.3 }}
                         className="relative"
                     >
@@ -70,9 +70,9 @@ const FAQ = () => {
 
                     {/* Right Side: Accordion */}
                     <motion.div
-                        initial={{ x: 100, opacity: 0 }}
+                        initial={{ x: 0, opacity: 0 }}
                         whileInView={{ x: 0, opacity: 1 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        transition={{ duration: 2, ease: "easeOut" }}
                         viewport={{ once: true, amount: 0.3 }}
                         className="space-y-4"
                     >
