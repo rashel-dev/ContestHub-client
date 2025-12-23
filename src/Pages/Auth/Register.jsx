@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight } from "react-icons/fa";
 import logoImg from "../../assets/logo.PNG";
 import { Link, useLocation, useNavigate } from "react-router";
@@ -17,6 +17,102 @@ export default function RegisterPage() {
     const { registerUser, updateUserProfile } = useAuth();
     const location = useLocation();
     const axiosSecure = useAxiosSecure();
+
+    const canvasRef = useRef(null);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext("2d");
+        const updateCanvasSize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = Math.max(window.innerHeight, document.documentElement.scrollHeight);
+        };
+        updateCanvasSize();
+
+        const particles = [];
+        const particleCount = 100;
+        const maxDistance = 150;
+
+        const createParticle = () => {
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: (Math.random() - 0.5) * 1.5,
+                radius: Math.random() * 2 + 1,
+
+                update: function () {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                },
+
+                draw: function () {
+                    ctx.fillStyle = "rgba(147, 51, 234, 0.8)";
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                },
+            };
+        };
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(createParticle());
+        }
+
+        const drawConnections = () => {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < maxDistance) {
+                        const opacity = (1 - distance / maxDistance) * 0.5;
+                        ctx.strokeStyle = `rgba(6, 182, 212, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        };
+
+        const animate = () => {
+            ctx.fillStyle = "rgba(15, 23, 42, 0.3)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            drawConnections();
+
+            particles.forEach((particle) => {
+                particle.update();
+                particle.draw();
+            });
+
+            requestAnimationFrame(animate);
+        };
+
+        // Set initial background
+        ctx.fillStyle = "#0f172a";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        animate();
+
+        const handleResize = () => {
+            updateCanvasSize();
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
 
     const {
         register,
@@ -89,31 +185,9 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
-            {/* Animated Stained Glass Background */}
-            <div className="absolute inset-0 bg-linear-to-br from-purple-900 via-blue-900 to-cyan-900">
-                <div className="absolute inset-0 opacity-30">
-                    <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-                    <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-                    <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
-                    <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-6000"></div>
-                    <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-8000"></div>
-                </div>
-
-                {/* Stained Glass Pattern Overlay */}
-                <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <pattern id="stained-glass" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
-                            <polygon points="0,0 100,0 50,86.6" fill="rgba(147,51,234,0.3)" />
-                            <polygon points="100,0 200,0 150,86.6" fill="rgba(59,130,246,0.3)" />
-                            <polygon points="50,86.6 150,86.6 100,173.2" fill="rgba(236,72,153,0.3)" />
-                            <polygon points="0,0 50,86.6 0,173.2" fill="rgba(234,179,8,0.3)" />
-                            <polygon points="150,86.6 200,0 200,173.2" fill="rgba(6,182,212,0.3)" />
-                        </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#stained-glass)" />
-                </svg>
-            </div>
+        <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4" style={{ backgroundColor: "#0f172a" }}>
+            {/* Animated Canvas Background */}
+            <canvas ref={canvasRef} className="absolute inset-0 z-0"></canvas>
 
             {/* Register Card */}
             <div className="relative z-10 w-full max-w-md">
