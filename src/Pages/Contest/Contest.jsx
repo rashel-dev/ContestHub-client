@@ -96,39 +96,39 @@ const Contest = () => {
     }
 
     return (
-        <div className="min-h-screen  py-8 px-4">
+        <div className="min-h-screen py-8 px-4 bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8 text-center">
                     <h1 className="text-4xl font-bold text-primary mb-2">All Contests</h1>
-                    <p className="text-gray-600 dark:text-accent">Explore and participate in exciting contests</p>
+                    <p className="text-gray-600 dark:text-gray-300">Explore and participate in exciting contests</p>
                 </div>
 
                 {/* Search and Filter Section */}
-                <div className="bg-white rounded-xl shadow-md p-6 mb-8">
+                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 mb-8 border border-gray-100 dark:border-slate-700 transition-colors duration-300">
                     <div className="grid md:grid-cols-3 gap-4">
                         {/* Search */}
                         <div className="relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                             <input
                                 type="text"
                                 placeholder="Search contests..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                                className="w-full pl-10 pr-4 py-3 text-gray-800 dark:text-gray-100 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                             />
                         </div>
 
                         {/* Category Filter */}
                         <div className="relative">
-                            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                             <select
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition appearance-none cursor-pointer"
+                                className="w-full pl-10 pr-4 py-3 text-gray-800 dark:text-gray-100 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition appearance-none cursor-pointer"
                             >
                                 {categories.map((category) => (
-                                    <option key={category} value={category}>
+                                    <option key={category} value={category} className="bg-white dark:bg-slate-700">
                                         {category === "all" ? "All Categories" : category}
                                     </option>
                                 ))}
@@ -136,15 +136,21 @@ const Contest = () => {
                         </div>
 
                         {/* Sort */}
-                        <div>
+                        <div className="relative">
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
-                                className="w-full px-4 py-3 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition cursor-pointer"
+                                className="w-full px-4 py-3 text-gray-800 dark:text-gray-100 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition cursor-pointer"
                             >
-                                <option value="default">Sort By</option>
-                                <option value="participants">Most Participants</option>
-                                <option value="deadline">Deadline (Soonest)</option>
+                                <option value="default" className="bg-white dark:bg-slate-700">
+                                    Sort By
+                                </option>
+                                <option value="participants" className="bg-white dark:bg-slate-700">
+                                    Most Participants
+                                </option>
+                                <option value="deadline" className="bg-white dark:bg-slate-700">
+                                    Deadline (Soonest)
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -152,7 +158,7 @@ const Contest = () => {
 
                 {/* Results Count */}
                 <div className="mb-6">
-                    <p className="text-gray-600 dark:text-white">
+                    <p className="text-gray-600 dark:text-gray-300">
                         Showing <span className="font-semibold text-primary">{filteredContests.length}</span> contest{filteredContests.length !== 1 ? "s" : ""}
                     </p>
                 </div>
@@ -170,15 +176,31 @@ const Contest = () => {
                         {totalPages > 1 && (
                             <div className="flex justify-center mt-12">
                                 <div className="join">
-                                    <button className="join-item btn" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                                    <button
+                                        className="join-item btn bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700"
+                                        onClick={() => handlePageChange(currentPage - 1)}
+                                        disabled={currentPage === 1}
+                                    >
                                         «
                                     </button>
                                     {[...Array(totalPages)].map((_, index) => (
-                                        <button key={index + 1} className={`join-item btn ${currentPage === index + 1 ? "btn-active btn-primary" : ""}`} onClick={() => handlePageChange(index + 1)}>
+                                        <button
+                                            key={index + 1}
+                                            className={`join-item btn ${
+                                                currentPage === index + 1
+                                                    ? "btn-active btn-primary"
+                                                    : "bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700"
+                                            }`}
+                                            onClick={() => handlePageChange(index + 1)}
+                                        >
                                             {index + 1}
                                         </button>
                                     ))}
-                                    <button className="join-item btn" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                                    <button
+                                        className="join-item btn bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700"
+                                        onClick={() => handlePageChange(currentPage + 1)}
+                                        disabled={currentPage === totalPages}
+                                    >
                                         »
                                     </button>
                                 </div>
@@ -187,13 +209,13 @@ const Contest = () => {
                     </>
                 ) : (
                     <div className="text-center py-16">
-                        <div className="text-gray-400 mb-4">
+                        <div className="text-gray-400 dark:text-gray-600 mb-4">
                             <svg className="w-24 h-24 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-700 mb-2">No Contests Found</h3>
-                        <p className="text-gray-500">Try adjusting your search or filter criteria</p>
+                        <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-2">No Contests Found</h3>
+                        <p className="text-gray-500 dark:text-gray-400">Try adjusting your search or filter criteria</p>
                     </div>
                 )}
             </div>
