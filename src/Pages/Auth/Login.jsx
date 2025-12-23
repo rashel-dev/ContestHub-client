@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MdMail } from "react-icons/md";
 import { CiLock } from "react-icons/ci";
 import { FaArrowRight, FaEye, FaEyeSlash } from "react-icons/fa";
@@ -46,32 +46,129 @@ const Login = () => {
             });
     };
 
-    return (
-        <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
-            {/* Animated Stained Glass Background */}
-            <div className="absolute inset-0 bg-linear-to-br from-purple-900 via-blue-900 to-cyan-900">
-                <div className="absolute inset-0 opacity-30">
-                    <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-                    <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-                    <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
-                    <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-6000"></div>
-                    <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-8000"></div>
-                </div>
+    const canvasRef = useRef(null);
 
-                {/* Stained Glass Pattern Overlay */}
-                <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <pattern id="stained-glass" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
-                            <polygon points="0,0 100,0 50,86.6" fill="rgba(147,51,234,0.3)" />
-                            <polygon points="100,0 200,0 150,86.6" fill="rgba(59,130,246,0.3)" />
-                            <polygon points="50,86.6 150,86.6 100,173.2" fill="rgba(236,72,153,0.3)" />
-                            <polygon points="0,0 50,86.6 0,173.2" fill="rgba(234,179,8,0.3)" />
-                            <polygon points="150,86.6 200,0 200,173.2" fill="rgba(6,182,212,0.3)" />
-                        </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#stained-glass)" />
-                </svg>
-            </div>
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext("2d");
+        const updateCanvasSize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = Math.max(window.innerHeight, document.documentElement.scrollHeight);
+        };
+        updateCanvasSize();
+
+        const particles = [];
+        const particleCount = 100;
+        const maxDistance = 150;
+
+        const isDarkMode = () => {
+            const theme = document.documentElement.getAttribute("data-theme");
+            if (theme) return theme === "dark";
+            return document.documentElement.classList.contains("dark");
+        };
+
+        const createParticle = () => {
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: (Math.random() - 0.5) * 1.5,
+                radius: Math.random() * 2 + 1,
+
+                update: function () {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                },
+
+                draw: function () {
+                    const isDark = isDarkMode();
+                    ctx.fillStyle = isDark ? "rgba(147, 51, 234, 0.8)" : "rgba(147, 51, 234, 0.6)";
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                },
+            };
+        };
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(createParticle());
+        }
+
+        const drawConnections = () => {
+            const isDark = isDarkMode();
+
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < maxDistance) {
+                        const opacity = (1 - distance / maxDistance) * 0.5;
+                        ctx.strokeStyle = isDark ? `rgba(6, 182, 212, ${opacity})` : `rgba(139, 92, 246, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        };
+
+        const animate = () => {
+            const isDark = isDarkMode();
+            ctx.fillStyle = isDark ? "rgba(15, 23, 42, 0.3)" : "rgba(249, 250, 251, 0.3)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            drawConnections();
+
+            particles.forEach((particle) => {
+                particle.update();
+                particle.draw();
+            });
+
+            requestAnimationFrame(animate);
+        };
+
+        const isDark = isDarkMode();
+        ctx.fillStyle = isDark ? "#0f172a" : "#f9fafb";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        animate();
+
+        const handleResize = () => {
+            updateCanvasSize();
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        const observer = new MutationObserver(() => {
+            // Clear canvas on theme change to avoid fade delay
+            const isDark = isDarkMode();
+            ctx.fillStyle = isDark ? "#0f172a" : "#f9fafb";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        });
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["class", "data-theme"],
+        });
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+            observer.disconnect();
+        };
+    }, []);
+
+    return (
+        <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-8 bg-gray-50 dark:bg-slate-900">
+            {/* Animated Canvas Background */}
+            <canvas ref={canvasRef} className="absolute inset-0 z-0"></canvas>
+
             {/* Login Card */}
             <div className="relative z-10 w-full max-w-md">
                 {/* Animated Border Container */}
@@ -87,31 +184,31 @@ const Login = () => {
                     ></div>
 
                     {/* Main Card Content */}
-                    <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl p-8">
+                    <div className="relative bg-white/95 dark:bg-slate-800/95 backdrop-blur-xl rounded-2xl shadow-2xl p-8">
                         {/* Logo and Title */}
                         <div className="text-center mb-8">
                             <div className="inline-flex items-center justify-center w-16 h-16  mb-4">
                                 <img src={logoImg} alt="" />
                             </div>
-                            <h1 className="text-3xl font-bold bg-linear-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mb-2">Contest Hub</h1>
-                            <p className="text-gray-600">Welcome back! Please login to your account</p>
+                            <h1 className="text-3xl font-bold bg-linear-to-r from-purple-600 to-cyan-600 dark:from-purple-400 dark:to-cyan-400 bg-clip-text text-transparent mb-2">Contest Hub</h1>
+                            <p className="text-gray-600 dark:text-gray-300">Welcome back! Please login to your account</p>
                         </div>
 
                         {/* Login Form */}
                         <form onSubmit={handleSubmit(handleSignIn)} className="space-y-5">
                             {/* Email Field */}
                             <div className="relative group">
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                                     Email Address
                                 </label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <MdMail className="h-5 w-5 text-gray-400 group-focus-within:text-purple-500 transition-colors" />
+                                        <MdMail className="h-5 w-5 text-gray-400 group-focus-within:text-purple-500 dark:group-focus-within:text-purple-400 transition-colors" />
                                     </div>
                                     <input
                                         type="email"
                                         {...register("email", { required: true })}
-                                        className="block text-black w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
+                                        className="block text-gray-900 dark:text-gray-100 bg-white/50 dark:bg-slate-700/50 w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 placeholder-gray-400"
                                         placeholder="you@example.com"
                                     />
                                 </div>
@@ -120,23 +217,23 @@ const Login = () => {
 
                             {/* Password Field */}
                             <div className="relative group">
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                                     Password
                                 </label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <CiLock className="h-5 w-5 text-gray-400 group-focus-within:text-purple-500 transition-colors" />
+                                        <CiLock className="h-5 w-5 text-gray-400 group-focus-within:text-purple-500 dark:group-focus-within:text-purple-400 transition-colors" />
                                     </div>
                                     <input
                                         type={showPassword ? "text" : "password"}
                                         {...register("password", { required: true })}
-                                        className="block text-black w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
+                                        className="block text-gray-900 dark:text-gray-100 bg-white/50 dark:bg-slate-700/50 w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 placeholder-gray-400"
                                         placeholder="••••••••"
                                     />
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-purple-500 transition-colors"
+                                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-purple-500 dark:hover:text-purple-400 transition-colors"
                                     >
                                         {showPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}
                                     </button>
@@ -147,10 +244,13 @@ const Login = () => {
                             {/* Remember Me & Forgot Password */}
                             <div className="flex items-center justify-between text-sm">
                                 <label className="flex items-center cursor-pointer group">
-                                    <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500 focus:ring-offset-0 cursor-pointer" />
-                                    <span className="ml-2 text-gray-600 group-hover:text-purple-600 transition-colors">Remember me</span>
+                                    <input
+                                        type="checkbox"
+                                        className="w-4 h-4 rounded border-gray-300 dark:border-slate-600 dark:bg-slate-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-0 cursor-pointer"
+                                    />
+                                    <span className="ml-2 text-gray-600 dark:text-gray-300 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">Remember me</span>
                                 </label>
-                                <a href="#" className="text-purple-600 hover:text-purple-700 font-medium transition-colors">
+                                <a href="#" className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium transition-colors">
                                     Forgot Password?
                                 </a>
                             </div>
@@ -176,83 +276,30 @@ const Login = () => {
                         {/* Divider */}
                         <div className="relative my-6">
                             <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-300"></div>
+                                <div className="w-full border-t border-gray-300 dark:border-slate-600"></div>
                             </div>
                             <div className="relative flex justify-center text-sm">
-                                <span className="px-4 bg-white/95 text-gray-500">Or continue with</span>
+                                <span className="px-4 bg-white/95 dark:bg-slate-800 text-gray-500 dark:text-gray-400">Or continue with</span>
                             </div>
                         </div>
 
                         {/* Social Login */}
-
-                        {/* Google */}
                         <SocialLogin page="login"></SocialLogin>
 
                         {/* Sign Up Link */}
-                        <p className="mt-6 text-center text-sm text-gray-600">
+                        <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
                             Don't have an account?{" "}
-                            <Link to="/register" state={location.state} className="font-semibold text-purple-600 hover:text-purple-700 transition-colors">
+                            <Link
+                                to="/register"
+                                state={location.state}
+                                className="font-semibold text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors"
+                            >
                                 Sign up now
                             </Link>
                         </p>
                     </div>
                 </div>
             </div>
-
-            <style>{`
-                @keyframes blob {
-                    0%,
-                    100% {
-                        transform: translate(0, 0) scale(1);
-                    }
-                    25% {
-                        transform: translate(20px, -50px) scale(1.1);
-                    }
-                    50% {
-                        transform: translate(-20px, 20px) scale(0.9);
-                    }
-                    75% {
-                        transform: translate(50px, 50px) scale(1.05);
-                    }
-                }
-
-                @keyframes gradient-rotate {
-                    0% {
-                        background-position: 0% 50%;
-                    }
-                    50% {
-                        background-position: 100% 50%;
-                    }
-                    100% {
-                        background-position: 0% 50%;
-                    }
-                }
-
-                .animate-blob {
-                    animation: blob 20s infinite;
-                }
-
-                .animation-delay-2000 {
-                    animation-delay: 2s;
-                }
-
-                .animation-delay-4000 {
-                    animation-delay: 4s;
-                }
-
-                .animation-delay-6000 {
-                    animation-delay: 6s;
-                }
-
-                .animation-delay-8000 {
-                    animation-delay: 8s;
-                }
-
-                .animate-gradient-rotate {
-                    background-size: 200% 200%;
-                    animation: gradient-rotate 3s ease infinite;
-                }
-            `}</style>
         </div>
     );
 };
