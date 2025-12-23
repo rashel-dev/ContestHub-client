@@ -232,7 +232,7 @@ export default function RegisterPage() {
                             <div className="inline-flex items-center justify-center w-16 h-16 mb-4">
                                 <img src={logoImg} alt="" />
                             </div>
-                            <h1 className="text-3xl font-bold bg-linear-to-r from-purple-600 to-cyan-600 dark:from-purple-400 dark:to-cyan-400 bg-clip-text text-transparent mb-2">Join Contest Hub</h1>
+                            <h1 className="text-3xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent mb-2">Join Contest Hub</h1>
                             <p className="text-gray-600 dark:text-gray-300">Create your account and start competing</p>
                         </div>
 
@@ -334,7 +334,7 @@ export default function RegisterPage() {
                                         className="w-4 h-4 mt-0.5 rounded border-gray-300 dark:border-slate-600 dark:bg-slate-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-0 cursor-pointer"
                                         required
                                     />
-                                    <span className="ml-2 text-gray-600 dark:text-gray-300 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                                    <span className="ml-2 text-gray-600 dark:text-gray-300 transition-colors">
                                         I agree to the{" "}
                                         <a href="" className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium">
                                             Terms & Conditions
@@ -351,7 +351,7 @@ export default function RegisterPage() {
                             <button
                                 onClick={handleSubmit}
                                 disabled={loading}
-                                className={`w-full bg-linear-to-r from-purple-600 to-cyan-600 text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group ${
+                                className={`w-full bg-linear-to-r from-primary to-accent text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group cursor-pointer ${
                                     loading ? "opacity-70 cursor-not-allowed" : ""
                                 }`}
                             >

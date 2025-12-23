@@ -190,7 +190,7 @@ const Login = () => {
                             <div className="inline-flex items-center justify-center w-16 h-16  mb-4">
                                 <img src={logoImg} alt="" />
                             </div>
-                            <h1 className="text-3xl font-bold bg-linear-to-r from-purple-600 to-cyan-600 dark:from-purple-400 dark:to-cyan-400 bg-clip-text text-transparent mb-2">Contest Hub</h1>
+                            <h1 className="text-3xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent mb-2">Contest Hub</h1>
                             <p className="text-gray-600 dark:text-gray-300">Welcome back! Please login to your account</p>
                         </div>
 
@@ -258,7 +258,7 @@ const Login = () => {
                             {/* Submit Button */}
                             <button
                                 disabled={loading}
-                                className={`w-full bg-linear-to-r from-purple-600 to-cyan-600 text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group cursor-pointer ${
+                                className={`w-full bg-linear-to-r from-primary to-accent text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group cursor-pointer ${
                                     loading ? "opacity-70 cursor-not-allowed" : ""
                                 }`}
                             >

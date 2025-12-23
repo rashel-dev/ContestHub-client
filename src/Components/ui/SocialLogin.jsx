@@ -56,7 +56,7 @@ const SocialLogin = ({ page }) => {
         <>
             <button
                 onClick={handleGoogleSignIn}
-                className="w-full bg-white dark:bg-slate-600 text-black dark:text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group"
+                className="w-full bg-white dark:bg-slate-600 text-black dark:text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 cursor-pointer group"
             >
                 <FcGoogle className="text-xl" />
                 <span>{page === "login" ? "Login with Google" : "Register with Google"}</span>
