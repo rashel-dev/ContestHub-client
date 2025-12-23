@@ -1,5 +1,6 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
+import { FaArrowRight } from "react-icons/fa";
 import useAuth from "../../Hooks/useAuth";
 import { useLocation, useNavigate } from "react-router";
 import { Bounce, toast } from "react-toastify";
@@ -12,22 +13,19 @@ const SocialLogin = ({ page }) => {
     const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
 
-
     const handleGoogleSignIn = () => {
         signInWithGoogle()
             .then((result) => {
-
                 const userInfo = {
                     displayName: result.user.displayName,
                     email: result.user.email,
                     photoURL: result.user.photoURL,
                 };
                 //save user to database
-                axiosSecure.post("/users", userInfo)
-                .then(res => {
+                axiosSecure.post("/users", userInfo).then((res) => {
                     console.log("User saved to database", res.data);
                     navigate(location?.state || "/");
-                })
+                });
 
                 toast.success("Login Successfully", {
                     position: "top-right",
@@ -37,12 +35,10 @@ const SocialLogin = ({ page }) => {
                     theme: "light",
                     transition: Bounce,
                 });
-
-
             })
             .catch((error) => {
                 console.error(error);
-                if(error.code === "auth/popup-closed-by-user"){
+                if (error.code === "auth/popup-closed-by-user") {
                     return;
                 }
                 toast.error("Failed to login with Google", {
@@ -58,9 +54,13 @@ const SocialLogin = ({ page }) => {
 
     return (
         <>
-            <button onClick={handleGoogleSignIn} className="btn bg-white text-black border-[#e5e5e5] w-full">
-                <FcGoogle />
-                {page === "login" ? "Login with Google" : "Register with Google"}
+            <button
+                onClick={handleGoogleSignIn}
+                className="w-full bg-white dark:bg-slate-600 text-black dark:text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group"
+            >
+                <FcGoogle className="text-xl" />
+                <span>{page === "login" ? "Login with Google" : "Register with Google"}</span>
+                <FaArrowRight className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
             </button>
         </>
     );

@@ -185,7 +185,7 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4" style={{ backgroundColor: "#0f172a" }}>
+        <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-8" style={{ backgroundColor: "#0f172a" }}>
             {/* Animated Canvas Background */}
             <canvas ref={canvasRef} className="absolute inset-0 z-0"></canvas>
 
@@ -204,33 +204,33 @@ export default function RegisterPage() {
                     ></div>
 
                     {/* Main Card Content */}
-                    <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl p-8">
+                    <div className="relative bg-white/95 dark:bg-slate-800/95 backdrop-blur-xl rounded-2xl shadow-2xl p-8">
                         {/* Logo and Title */}
                         <div className="text-center mb-6">
                             <div className="inline-flex items-center justify-center w-16 h-16 mb-4">
                                 <img src={logoImg} alt="" />
                             </div>
-                            <h1 className="text-3xl font-bold bg-linear-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mb-2">Join Contest Hub</h1>
-                            <p className="text-gray-600">Create your account and start competing</p>
+                            <h1 className="text-3xl font-bold bg-linear-to-r from-purple-600 to-cyan-600 dark:from-purple-400 dark:to-cyan-400 bg-clip-text text-transparent mb-2">Join Contest Hub</h1>
+                            <p className="text-gray-600 dark:text-gray-300">Create your account and start competing</p>
                         </div>
 
                         {/* Register Form */}
                         <form onSubmit={handleSubmit(handleRegistration)} className="space-y-4">
                             {/* Name Field */}
                             <div className="relative group">
-                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                                     Full Name
                                 </label>
 
                                 <div className="relative h-12 flex items-center">
                                     <div className="absolute left-3 text-gray-400">
-                                        <FaUser className="text-gray-400 group-focus-within:text-purple-500 transition-colors" />
+                                        <FaUser className="text-gray-400 group-focus-within:text-purple-500 dark:group-focus-within:text-purple-400 transition-colors" />
                                     </div>
 
                                     <input
                                         type="text"
                                         {...register("name", { required: true })}
-                                        className="w-full text-accent pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
+                                        className="w-full text-gray-900 dark:text-gray-100 bg-white/50 dark:bg-slate-700/50 pl-10 pr-3 py-3 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 placeholder-gray-400"
                                         placeholder="John Doe"
                                     />
                                 </div>
@@ -241,28 +241,32 @@ export default function RegisterPage() {
 
                             {/* Photo Field */}
                             <div className="relative group">
-                                <label htmlFor="photoURL" className="block text-sm font-medium text-gray-700 mb-2">
+                                <label htmlFor="photoURL" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                                     Photo
                                 </label>
                                 <div className="relative h-12 flex items-center">
-                                    <input type="file" {...register("photo", { required: true })} className="file-input file-input-primary bg-accent w-full" />
+                                    <input
+                                        type="file"
+                                        {...register("photo", { required: true })}
+                                        className="file-input file-input-primary bg-white dark:bg-slate-700/50 dark:border-slate-600 dark:text-gray-200 w-full"
+                                    />
                                 </div>
                                 {errors.photoURL?.type === "required" && <p className="text-red-500">Photo is required.</p>}
                             </div>
 
                             {/* Email Field */}
                             <div className="relative group">
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                                     Email Address
                                 </label>
                                 <div className="relative h-12 flex items-center">
                                     <div className="absolute left-3 text-gray-400">
-                                        <FaEnvelope className="text-gray-400 group-focus-within:text-purple-500 transition-colors" />
+                                        <FaEnvelope className="text-gray-400 group-focus-within:text-purple-500 dark:group-focus-within:text-purple-400 transition-colors" />
                                     </div>
                                     <input
                                         type="email"
                                         {...register("email", { required: true })}
-                                        className="block text-accent w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
+                                        className="block text-gray-900 dark:text-gray-100 bg-white/50 dark:bg-slate-700/50 w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 placeholder-gray-400"
                                         placeholder="you@example.com"
                                     />
                                 </div>
@@ -271,23 +275,23 @@ export default function RegisterPage() {
 
                             {/* Password Field */}
                             <div className="relative group">
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                                     Password
                                 </label>
                                 <div className="relative h-12 flex items-center">
                                     <div className="absolute left-3 text-gray-400">
-                                        <FaLock className="text-gray-400 group-focus-within:text-purple-500 transition-colors" />
+                                        <FaLock className="text-gray-400 group-focus-within:text-purple-500 dark:group-focus-within:text-purple-400 transition-colors" />
                                     </div>
                                     <input
                                         type={showPassword ? "text" : "password"}
                                         {...register("password", { required: true, minLength: 6, pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/ })}
-                                        className="block text-accent w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50"
+                                        className="block text-gray-900 dark:text-gray-100 bg-white/50 dark:bg-slate-700/50 w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 placeholder-gray-400"
                                         placeholder="••••••••"
                                     />
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-purple-500 transition-colors"
+                                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-purple-500 dark:hover:text-purple-400 transition-colors"
                                     >
                                         {showPassword ? <FaEyeSlash /> : <FaEye />}
                                     </button>
@@ -303,14 +307,18 @@ export default function RegisterPage() {
                             {/* Terms & Conditions */}
                             <div className="flex items-start text-sm">
                                 <label className="flex items-start cursor-pointer group">
-                                    <input type="checkbox" className="w-4 h-4 mt-0.5 rounded border-gray-300 text-purple-600 focus:ring-purple-500 focus:ring-offset-0 cursor-pointer" required />
-                                    <span className="ml-2 text-gray-600 group-hover:text-purple-600 transition-colors">
+                                    <input
+                                        type="checkbox"
+                                        className="w-4 h-4 mt-0.5 rounded border-gray-300 dark:border-slate-600 dark:bg-slate-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-0 cursor-pointer"
+                                        required
+                                    />
+                                    <span className="ml-2 text-gray-600 dark:text-gray-300 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                                         I agree to the{" "}
-                                        <a href="" className="text-purple-600 hover:text-purple-700 font-medium">
+                                        <a href="" className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium">
                                             Terms & Conditions
                                         </a>{" "}
                                         and{" "}
-                                        <a href="#" className="text-purple-600 hover:text-purple-700 font-medium">
+                                        <a href="#" className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium">
                                             Privacy Policy
                                         </a>
                                     </span>
@@ -339,10 +347,10 @@ export default function RegisterPage() {
                         {/* Divider */}
                         <div className="relative my-6">
                             <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-300"></div>
+                                <div className="w-full border-t border-gray-300 dark:border-slate-600"></div>
                             </div>
                             <div className="relative flex justify-center text-sm">
-                                <span className="px-4 bg-white/95 text-gray-500">Or sign up with</span>
+                                <span className="px-4 bg-white/95 dark:bg-slate-800 text-gray-500 dark:text-gray-400">Or sign up with</span>
                             </div>
                         </div>
 
@@ -350,9 +358,9 @@ export default function RegisterPage() {
                         <SocialLogin page="register"></SocialLogin>
 
                         {/* Sign In Link */}
-                        <p className="mt-6 text-center text-sm text-gray-600">
+                        <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
                             Already have an account?{" "}
-                            <Link to="/login" state={location.state} className="font-semibold text-purple-600 hover:text-purple-700 transition-colors">
+                            <Link to="/login" state={location.state} className="font-semibold text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
                                 Sign in
                             </Link>
                         </p>
