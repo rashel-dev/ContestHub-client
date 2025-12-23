@@ -29,7 +29,7 @@ const ContactUs = () => {
                         transition={{ duration: 0.5 }}
                         className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4"
                     >
-                        Get in <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-pink-600">Touch</span>
+                        Get in <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-accent">Touch</span>
                     </motion.h1>
                     <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2, duration: 0.5 }} className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                         Have questions about a contest? Want to partner with us? We'd love to hear from you.
@@ -43,7 +43,7 @@ const ContactUs = () => {
                             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Contact Information</h3>
                             <div className="space-y-6">
                                 <div className="flex items-start gap-4">
-                                    <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400">
+                                    <div className="p-3 bg-primary/10 dark:bg-primary/20 rounded-lg text-primary">
                                         <Mail className="w-6 h-6" />
                                     </div>
                                     <div>
@@ -54,7 +54,7 @@ const ContactUs = () => {
                                 </div>
 
                                 <div className="flex items-start gap-4">
-                                    <div className="p-3 bg-pink-100 dark:bg-pink-900/30 rounded-lg text-pink-600 dark:text-pink-400">
+                                    <div className="p-3 bg-accent/10 dark:bg-accent/20 rounded-lg text-accent">
                                         <Phone className="w-6 h-6" />
                                     </div>
                                     <div>
@@ -65,7 +65,7 @@ const ContactUs = () => {
                                 </div>
 
                                 <div className="flex items-start gap-4">
-                                    <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+                                    <div className="p-3 bg-primary/10 dark:bg-primary/20 rounded-lg text-primary">
                                         <MapPin className="w-6 h-6" />
                                     </div>
                                     <div>
@@ -106,7 +106,7 @@ const ContactUs = () => {
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">First Name</label>
                                     <input
                                         type="text"
-                                        className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
+                                        className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                                         placeholder="John"
                                         required
                                     />
@@ -115,7 +115,7 @@ const ContactUs = () => {
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Last Name</label>
                                     <input
                                         type="text"
-                                        className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
+                                        className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                                         placeholder="Doe"
                                         required
                                     />
@@ -126,7 +126,7 @@ const ContactUs = () => {
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
                                 <input
                                     type="email"
-                                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
+                                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                                     placeholder="john@example.com"
                                     required
                                 />
@@ -134,7 +134,7 @@ const ContactUs = () => {
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subject</label>
-                                <select className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all">
+                                <select className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all">
                                     <option>General Inquiry</option>
                                     <option>Contest Support</option>
                                     <option>Partnership</option>
@@ -146,7 +146,7 @@ const ContactUs = () => {
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message</label>
                                 <textarea
                                     rows="4"
-                                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all resize-none"
+                                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all resize-none"
                                     placeholder="How can we help you?"
                                     required
                                 ></textarea>
@@ -155,7 +155,7 @@ const ContactUs = () => {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className={`w-full py-4 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-xl shadow-lg shadow-purple-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 ${
+                                className={`w-full py-4 bg-linear-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-bold rounded-xl shadow-lg shadow-primary/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 ${
                                     loading ? "opacity-70 cursor-not-allowed" : ""
                                 }`}
                             >
