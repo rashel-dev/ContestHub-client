@@ -359,61 +359,6 @@ export default function RegisterPage() {
                     </div>
                 </div>
             </div>
-
-            <style>{`
-                @keyframes blob {
-                    0%,
-                    100% {
-                        transform: translate(0, 0) scale(1);
-                    }
-                    25% {
-                        transform: translate(20px, -50px) scale(1.1);
-                    }
-                    50% {
-                        transform: translate(-20px, 20px) scale(0.9);
-                    }
-                    75% {
-                        transform: translate(50px, 50px) scale(1.05);
-                    }
-                }
-
-                @keyframes gradient-rotate {
-                    0% {
-                        background-position: 0% 50%;
-                    }
-                    50% {
-                        background-position: 100% 50%;
-                    }
-                    100% {
-                        background-position: 0% 50%;
-                    }
-                }
-
-                .animate-blob {
-                    animation: blob 20s infinite;
-                }
-
-                .animation-delay-2000 {
-                    animation-delay: 2s;
-                }
-
-                .animation-delay-4000 {
-                    animation-delay: 4s;
-                }
-
-                .animation-delay-6000 {
-                    animation-delay: 6s;
-                }
-
-                .animation-delay-8000 {
-                    animation-delay: 8s;
-                }
-
-                .animate-gradient-rotate {
-                    background-size: 200% 200%;
-                    animation: gradient-rotate 3s ease infinite;
-                }
-            `}</style>
         </div>
     );
 }
