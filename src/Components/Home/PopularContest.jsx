@@ -42,7 +42,7 @@ const PopularContest = () => {
                 <div className="text-center mt-16">
                     <Link
                         to="/contest"
-                        className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-linear-to-r from-purple-600 to-cyan-600 rounded-full shadow-lg hover:from-purple-700 hover:to-cyan-700 transition-all duration-300 transform hover:scale-105"
+                        className="inline-flex items-center justify-center px-6 py-2 text-lg font-semibold text-white bg-linear-to-r from-primary to-accent rounded-full shadow-lg transition-all duration-300 transform hover:scale-105"
                     >
                         See All
                     </Link>

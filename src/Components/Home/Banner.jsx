@@ -57,7 +57,7 @@ const Banner = () => {
                 {/* Search Bar */}
                 <motion.form initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.8 }} className="mb-12" onSubmit={handleSearch}>
                     <div className="relative max-w-2xl mx-auto">
-                        <div className="absolute inset-0 bg-linear-to-r from-purple-500 via-pink-500 to-cyan-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
+                        <div className="pointer-events-none absolute -inset-3 z-0 bg-linear-to-r from-purple-500 via-pink-500 to-cyan-500 rounded-full blur-xl opacity-70"></div>
                         <div className="relative flex gap-2 items-center bg-white rounded-full shadow-2xl overflow-hidden">
                             <input
                                 type="text"
@@ -68,7 +68,7 @@ const Banner = () => {
                             />
                             <button
                                 type="submit"
-                                className="bg-linear-to-r from-purple-600 to-cyan-600 text-white px-6 md:px-8 py-5 hover:from-purple-700 hover:to-cyan-700 transition-all duration-300 flex items-center gap-2 font-semibold"
+                                className="bg-linear-to-r from-primary to-accent text-white px-6 md:px-8 py-5 hover:from-primary/90 hover:to-accent/90 transition-all duration-300 flex items-center gap-2 font-semibold cursor-pointer"
                             >
                                 <FaSearch className="text-xl" />
                                 <span className="hidden md:inline">Search</span>

@@ -54,14 +54,12 @@ const FAQ = () => {
                         <div className="relative z-10">
                             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
                                 Frequently Asked <br />
-                                <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-cyan-500">Questions</span>
+                                <span className="text-transparent bg-clip-text bg-linear-to-r from-primary via-pink-500 to-secondary">Questions</span>
                             </h2>
                             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
                                 Have questions? We're here to help. Check out our most common inquiries below or contact our support team for further assistance.
                             </p>
 
-                            {/* Decorative Icon Block */}
-                            <div className="hidden lg:flex items-center justify-center w-64 h-64 bg-linear-to-tr from-purple-100 to-cyan-100 dark:from-purple-900/30 dark:to-cyan-900/30 rounded-full blur-3xl absolute -top-20 -left-20 opacity-70"></div>
                             <div className="hidden lg:block relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700 transform rotate-3 hover:rotate-0 transition-transform duration-500">
                                 <DotLottieReact src={faqAnimation} loop autoplay className="w-full h-full" />
                             </div>
