@@ -143,7 +143,7 @@ export default function RegisterPage() {
                                 <input
                                     type="file"
                                     {...register("photo", { required: true })}
-                                    className="file-input file-input-primary bg-white dark:bg-slate-700/50 dark:border-slate-600 dark:text-gray-200 w-full"
+                                    className="file-input file-input-primary bg-white dark:bg-slate-700/50 dark:border-slate-600 dark:text-gray-200 w-full h-12 rounded-lg"
                                 />
                             </div>
                             {errors.photoURL?.type === "required" && <p className="text-red-500">Photo is required.</p>}

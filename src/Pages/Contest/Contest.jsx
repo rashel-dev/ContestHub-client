@@ -28,20 +28,10 @@ const Contest = () => {
         const fetchContests = async () => {
             try {
                 setLoading(true);
-                const response = await axiosSecure.get("/contests");
+                const response = await axiosSecure.get("/contests?status=approved");
 
-                // Filter for approved contests only
-                const approvedContests = response.data.filter((contest) => contest.approvalStatus === "approved");
-
-                // Further filter to show only contests that haven't ended
-                // const currentDate = new Date();
-                // const activeContests = approvedContests.filter((contest) => {
-                //     const deadline = new Date(contest.deadline);
-                //     return deadline > currentDate; // Only show contests with future deadlines
-                // });
-
-                setContests(approvedContests);
-                setFilteredContests(approvedContests);
+                setContests(response.data);
+                setFilteredContests(response.data);
             } finally {
                 setLoading(false);
             }
