@@ -12,7 +12,7 @@ const PopularContest = () => {
     const { data: contests = [], isLoading } = useQuery({
         queryKey: ["popular-contests"],
         queryFn: async () => {
-            const res = await axiosSecure.get("/contests/popular");
+            const res = await axiosSecure.get("/contests?status=approved&sort=popular&limit=8&upcoming=true");
             return res.data;
         },
     });

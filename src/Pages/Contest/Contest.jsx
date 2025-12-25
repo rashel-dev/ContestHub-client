@@ -56,7 +56,7 @@ const Contest = () => {
 
         // Sort
         if (sortBy === "participants") {
-            result.sort((a, b) => (b.participents || 0) - (a.participents || 0));
+            result.sort((a, b) => (b.participants || 0) - (a.participants || 0));
         } else if (sortBy === "deadline") {
             result.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
         }
