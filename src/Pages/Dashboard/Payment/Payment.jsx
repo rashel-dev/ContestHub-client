@@ -82,7 +82,7 @@ const Payment = () => {
                 <button
                     onClick={handlePayment}
                     disabled={isProcessing}
-                    className="w-full bg-linear-to-r from-purple-600 to-blue-600 text-white font-bold py-4 rounded-xl hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3 group cursor-pointer disabled:cursor-not-allowed disabled:opacity-70"
+                    className="w-full bg-primary text-white font-bold py-4 rounded-xl hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3 group cursor-pointer disabled:cursor-not-allowed disabled:opacity-70"
                 >
                     {isProcessing ? (
                         <span className="loading loading-spinner loading-sm"></span>
