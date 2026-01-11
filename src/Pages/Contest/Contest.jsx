@@ -3,7 +3,7 @@ import { Search, Filter } from "lucide-react";
 import { useSearchParams } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import ContestCard from "../../Components/Contest/ContestCard";
-import GridLoader from "../../Components/Loader/GridLoader";
+import SkeletonGrid from "../../Components/Loader/SkeletonGrid";
 
 const Contest = () => {
     const [contests, setContests] = useState([]);
@@ -81,10 +81,6 @@ const Contest = () => {
         }
     };
 
-    if (loading) {
-        return <GridLoader />;
-    }
-
     return (
         <div className="min-h-screen py-8 px-4 bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
             <div className="max-w-7xl mx-auto">
@@ -154,7 +150,9 @@ const Contest = () => {
                 </div>
 
                 {/* Contests Grid */}
-                {currentItems.length > 0 ? (
+                {loading ? (
+                    <SkeletonGrid count={8} />
+                ) : currentItems.length > 0 ? (
                     <>
                         <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
                             {currentItems.map((contest) => (

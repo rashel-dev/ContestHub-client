@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import ContestCard from "../Contest/ContestCard";
-import GridLoader from "../Loader/GridLoader";
+import SkeletonGrid from "../Loader/SkeletonGrid";
 import { Link } from "react-router";
 //eslint-disable-next-line
 import { motion } from "motion/react";
@@ -24,7 +24,7 @@ const PopularContest = () => {
                     Our <span className="bg-linear-to-r via-pink-500 from-primary to-secondary bg-clip-text text-transparent">Popular Contests</span>
                 </h2>
                 {isLoading ? (
-                    <GridLoader />
+                    <SkeletonGrid count={8} />
                 ) : contests.length === 0 ? (
                     <div className="text-center py-10">
                         <p className="text-xl text-gray-600 dark:text-gray-400">No popular contests found at the moment.</p>
