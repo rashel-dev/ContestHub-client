@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router";
-import { LayoutDashboard, PlusCircle, ListTodo, Trophy, UserCircle, Users, ShieldCheck, Menu, LogOut, Home, Award } from "lucide-react";
+import { PlusCircle, ListTodo, Trophy, UserCircle, Users, ShieldCheck, Menu, LogOut, Home, Award } from "lucide-react";
 import logoImg from "../assets/logo.PNG";
 import useTheme from "../Hooks/useTheme";
 import useRole from "../Hooks/useRole";
