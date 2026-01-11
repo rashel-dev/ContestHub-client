@@ -45,11 +45,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/contest/:id",
-                element: (
-                    <PrivateRoute>
-                        <ContestDetails></ContestDetails>
-                    </PrivateRoute>
-                ),
+                element: <ContestDetails></ContestDetails>,
             },
             {
                 path: "/about",
